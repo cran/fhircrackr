@@ -167,6 +167,13 @@ fhir_search <- function(request, username = NULL, password = NULL, max_bundles =
 
 fhir_save <- function(bundles, directory = "result") {
 
+	if(is_invalid_bundles_list(bundles)){
+
+		warning("Invalid bundle list format. No bundles have been saved")
+
+		return(NULL)
+	}
+
 	w <- 1 + floor(log10(length(bundles)))
 
 	if (!dir.exists(directory))
@@ -250,15 +257,15 @@ fhir_load <- function(directory) {
 #' 		".//MedicationStatement",
 #'
 #' 		list(
-#' 			MS.ID              = "id/@value",
-#' 			STATUS.TEXT        = "text/status/@value",
-#' 			STATUS             = "status/@value",
-#' 			MEDICATION.SYSTEM  = "medicationCodeableConcept/coding/system/@value",
-#' 			MEDICATION.CODE    = "medicationCodeableConcept/coding/code/@value",
-#' 			MEDICATION.DISPLAY = "medicationCodeableConcept/coding/display/@value",
-#' 			DOSAGE             = "dosage/text/@value",
-#' 			PATIENT            = "subject/reference/@value",
-#' 			LAST.UPDATE        = "meta/lastUpdated/@value"
+#' 			MS.ID              = "id",
+#' 			STATUS.TEXT        = "text/status",
+#' 			STATUS             = "status",
+#' 			MEDICATION.SYSTEM  = "medicationCodeableConcept/coding/system",
+#' 			MEDICATION.CODE    = "medicationCodeableConcept/coding/code",
+#' 			MEDICATION.DISPLAY = "medicationCodeableConcept/coding/display",
+#' 			DOSAGE             = "dosage/text",
+#' 			PATIENT            = "subject/reference",
+#' 			LAST.UPDATE        = "meta/lastUpdated"
 #' 		)
 #' 	),
 #'
@@ -285,6 +292,8 @@ fhir_crack <- function(bundles, design, sep = " -+- ", remove_empty_columns = FA
 	if (is_invalid_design(design)) return(NULL)
 
 	if (is_invalid_bundles_list(bundles)) return(NULL)
+
+	design <- add_attribute_to_design(design)
 
 	dfs <- bundles2dfs(bundles = bundles, design = design, sep = sep, remove_empty_columns = remove_empty_columns, add_indices = add_indices, brackets = brackets, verbose = verbose)
 
@@ -346,6 +355,8 @@ fhir_capability_statement <- function(url = "https://hapi.fhir.org/baseR4", sep 
 
 fhir_serialize <- function(bundles) {
 
+	if(is_invalid_bundles_list(bundles)){return(NULL)}
+
 	lapply(bundles, xml2::xml_serialize, connection=NULL)
 }
 
@@ -359,6 +370,11 @@ fhir_serialize <- function(bundles) {
 #' bundles <- fhir_unserialize(medication_bundles)
 
 fhir_unserialize <- function(bundles) {
+
+	if(any(!sapply(bundles, is.raw))) {
+		warning("The list you provided doesn't seem to contain serialized objects. Returing NULL")
+		return(NULL)
+		}
 
 	lapply(bundles, xml2::xml_unserialize)
 }
@@ -487,7 +503,7 @@ fhir_common_columns <- function(data_frame, column_names_prefix) {
 #'           brackets = c("[","]"), sep = " ", all_columns = TRUE)
 #' @export
 
-fhir_melt <- function(indexed_data_frame, columns, brackets = c( "<", ">" ), sep = " -+- ", id_name = "resource_identifier", all_columns = FALSE) {
+fhir_melt <- function(indexed_data_frame, columns, brackets = c("<", ">"), sep = " -+- ", id_name = "resource_identifier", all_columns = FALSE) {
 
 	if (! is_indexed_data_frame(indexed_data_frame)) {stop("The data frame is not indexed by fhir_crack.")}
 
@@ -503,19 +519,18 @@ fhir_melt <- function(indexed_data_frame, columns, brackets = c( "<", ">" ), sep
 			function(row.id) {
 
 				#dbg
-				#row.id <- 1
-
+				#row.id <- 3
 
 				e <- melt_row(row = indexed_data_frame[ row.id, ], columns = columns, brackets = brackets, sep = sep, all_columns = all_columns)
 
-				e[1:nrow(e), id_name] <- row.id
+				if (0<nrow(e)) e[seq_len(nrow(e)), id_name] <- row.id
 
 				e
 			}
 		)
 	)
 
-	d[order(d[[id_name]]), ]
+	if (! is.null(d) && 0 < nrow(d)) d[order(d[[id_name]]), ]
 }
 
 #' Remove indices from data frame

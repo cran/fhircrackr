@@ -37,7 +37,7 @@ list_of_tables$Patient[1:5,1:5]
 design2 <- list(
   Patients = list(
     "//Patient",
-    "./*/@value"
+    "./*"
   )
 )
 
@@ -54,12 +54,12 @@ design3 <- list(
 	Patients = list(
 		"//Patient",
 		list(
-			PID           = "id/@value",
-			NAME.USE      = "name/use/@value",
-			NAME.GIVEN    = "name/given/@value",
-			NAME.FAMILY   = "name/family/@value",
-			GENDER        = "gender/@value",
-			BIRTHDAY      = "birthDate/@value"
+			PID           = "id",
+			NAME.USE      = "name/use",
+			NAME.GIVEN    = "name/given",
+			NAME.FAMILY   = "name/family",
+			GENDER        = "gender",
+			BIRTHDAY      = "birthDate"
 		)
 	)
 )
@@ -116,22 +116,22 @@ design <- list(
 		"//MedicationStatement",
 
 		list(
-			MS.ID              = "id/@value",
-			STATUS.TEXT        = "text/status/@value",
-			STATUS             = "status/@value",
-			MEDICATION.SYSTEM  = "medicationCodeableConcept/coding/system/@value",
-			MEDICATION.CODE    = "medicationCodeableConcept/coding/code/@value",
-			MEDICATION.DISPLAY = "medicationCodeableConcept/coding/display/@value",
-			DOSAGE             = "dosage/text/@value",
-			PATIENT            = "subject/reference/@value",
-			LAST.UPDATE        = "meta/lastUpdated/@value"
+			MS.ID              = "id",
+			STATUS.TEXT        = "text/status",
+			STATUS             = "status",
+			MEDICATION.SYSTEM  = "medicationCodeableConcept/coding/system",
+			MEDICATION.CODE    = "medicationCodeableConcept/coding/code",
+			MEDICATION.DISPLAY = "medicationCodeableConcept/coding/display",
+			DOSAGE             = "dosage/text",
+			PATIENT            = "subject/reference",
+			LAST.UPDATE        = "meta/lastUpdated"
 		)
 	),
 
 	Patients = list(
 
 		"//Patient",
-		"./*/@value"
+		"./*"
 	)
 )
 
@@ -217,12 +217,12 @@ df2 <- fhir_crack(bundle_list, design1, sep = " ", add_indices = T,
 df2$Patients
 
 ## -----------------------------------------------------------------------------
-fhir_melt(df2$Patients, columns = "address.city.value", brackets = c("[","]"), 
+fhir_melt(df2$Patients, columns = "address.city", brackets = c("[","]"), 
 		  sep=" ", all_columns = FALSE)
 
 ## -----------------------------------------------------------------------------
-cols <- c("address.city.value", "address.use.value", "address.type.value", 
-		  "address.country.value")
+cols <- c("address.city", "address.use", "address.type", 
+		  "address.country")
 
 fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"), 
 		  sep=" ", all_columns = FALSE)
@@ -236,7 +236,7 @@ fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"),
 		  sep=" ", all_columns = TRUE)
 
 ## -----------------------------------------------------------------------------
-cols <- c(cols, "id.value")
+cols <- c(cols, "id")
 fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"), 
 		  sep=" ", all_columns = TRUE)
 
@@ -248,7 +248,7 @@ molten_1 <- fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"),
 					  sep=" ", all_columns = TRUE)
 molten_1
 
-molten_2 <- fhir_melt(molten_1, columns = "id.value", brackets = c("[","]"), 
+molten_2 <- fhir_melt(molten_1, columns = "id", brackets = c("[","]"), 
 					  sep=" ", all_columns = TRUE)
 molten_2
 

@@ -30,7 +30,7 @@ rbind_list_of_data_frames <- function( list ) {
 
 		warning( "no data in list for rbind_list_of_data_frames(list)" )
 
-		return( NULL )
+		return(as.data.frame(NULL))
 	}
 
 	#dbg
@@ -74,6 +74,64 @@ rbind_list_of_data_frames <- function( list ) {
 	d
 }
 
+
+#' @description Remove attributes from xpath expressions
+#'
+#' @param design a fhircrackr design
+#'
+#' @return A design without attributes in all xpath expressions.
+#' @noRd
+
+remove_attribute_from_design <- function(design) {
+	for (n_d in names(design)) {
+		if (1 < length(design[[n_d]])) {
+			if (1 < length(design[[n_d]][[2]])){
+				for (n_c in names(design[[n_d]][[2]])) {
+					txt <- design[[n_d]][[2]][[n_c]]
+					txt <- sub("/@(\\w|\\*)+$", "", txt)
+					design[[n_d]][[2]][[n_c]] <- txt
+				}
+			}
+			else {
+				txt <- design[[n_d]][[2]]
+				txt <- sub("/@(\\w|\\*)+$", "", txt)
+				design[[n_d]][[2]] <- txt
+			}
+		}
+	}
+	design
+}
+
+#' @description Add attributes to xpath expressions
+#'
+#' @param design A fhircrackr design.
+#' @param attrib The attribute that should be added to the xpath expressions. Default is 'value'
+#'
+#' @return A design with attribute attrib in all xpath expressions.
+#' @noRd
+add_attribute_to_design <- function(design, attrib="value") {
+	for (n_d in names(design)) {
+		if (1 < length(design[[n_d]])) {
+			if (1 < length(design[[n_d]][[2]])){
+				for (n_c in names(design[[n_d]][[2]])) {
+					txt <- design[[n_d]][[2]][[n_c]]
+					if (length(grep("/@(\\w|\\*)+$", txt)) < 1) {
+						txt <- paste_paths(txt, paste0("@", attrib))
+						design[[n_d]][[2]][[n_c]] <- txt
+					}
+				}
+			}
+			else {
+				txt <- design[[n_d]][[2]]
+				if (length(grep("/@(\\w|\\*)+$", txt)) < 1) {
+					txt <- paste_paths(txt, paste0("@", attrib))
+					design[[n_d]][[2]] <- txt
+				}
+			}
+		}
+	}
+	design
+}
 
 
 #' Download single FHIR bundle
@@ -352,20 +410,26 @@ is_invalid_bundles_list <- function(bundles_list){
 
 	if (is.null(bundles_list)) {
 
-		warning("Argument bundles_list is NULL, returning NULL.")
+		warning("Argument bundles is NULL, returning NULL.")
 
 		return(TRUE)
 	}
 
 	if (!is.list(bundles_list)) {
 
-		warning("Argument bundles_list has to be a list, returnign NULL.")
+		warning("Argument bundles has to be a list, returnin NULL.")
 		return(TRUE)
 	}
 
 	if (length(bundles_list)<1) {
 
-		warning("Argument bundles_list has length 0, returning NULL.")
+		warning("Argument bundles has length 0, returning NULL.")
+		return(TRUE)
+	}
+
+	if (any(sapply(bundles_list,is.raw))) {
+
+		warning("Argument bundles seems to contain serialized bundles. Use fhir_unserialize() before proceeding. Returning NULL")
 		return(TRUE)
 	}
 
@@ -389,7 +453,7 @@ is_invalid_bundles_list <- function(bundles_list){
 
 	if (!valid.doc.types) {
 
-		warning("Argument bundles_list contains at least one invalid Bundle. Bundles have to be of Class 'xml_document' and 'xml_node'. Returning NULL")
+		warning("Argument bundles contains at least one invalid Bundle. Bundles have to be of Class 'xml_document' and 'xml_node'. Returning NULL")
 		return(TRUE)
 	}
 
@@ -474,7 +538,9 @@ xtrct_all_columns <- function(child, sep = " -+- ", xpath = ".//@*", add_indices
 		d[[col]] <- paste0(val[col == o[2, ]], collapse = sep)
 	}
 
-	as.data.frame(d, stringsAsFactors = FALSE)
+	result <- as.data.frame(d, stringsAsFactors = FALSE)
+	names(result) <- gsub("(\\.\\w+)$", "", names(result))
+	result
 }
 
 #' Extract columns
@@ -600,41 +666,47 @@ bundle2df <- function(bundle, design.df, sep = " -+- ", add_indices = FALSE, bra
 
 	children <- xml2::xml_find_all(bundle, xpath)
 
-	if(length(children) == 0) {stop(esc(xpath), " seems not to be present in the bundles.")}
+	df.list <- if (length(children) == 0) {
 
-	df.list <- lapply(
-		children,
-		function(child) {
+		warning( paste0(esc(xpath), " seems not to be present in the bundles.") )
 
-			#dbg
-			#child <- children[[ 1 ]]
+		list()
+	}
+	else {
+		lapply(
+			children,
+			function(child) {
 
-			if (1<length(design.df) && is.list(design.df[[2]])) {
+				#dbg
+				#child <- children[[ 1 ]]
 
-				df.columns <- design.df[[2]]
+				if (1<length(design.df) && is.list(design.df[[2]])) {
 
-				res <- xtrct_columns( child, df.columns, sep = sep, add_indices = add_indices, brackets = brackets)
+					df.columns <- design.df[[2]]
 
-				if(1 < verbose){
+					res <- xtrct_columns( child, df.columns, sep = sep, add_indices = add_indices, brackets = brackets)
 
-					if(all(sapply(res, is.na))) {cat("x")} else {cat( ".")}
+					if(1 < verbose){
+
+						if(all(sapply(res, is.na))) {cat("x")} else {cat( ".")}
+					}
 				}
-			}
-			else{
+				else{
 
-				xp <- if(1<length(design.df)) {design.df[[2]]} else {".//@*"}
+					xp <- if(1<length(design.df)) {design.df[[2]]} else {".//@*"}
 
-				res <- xtrct_all_columns(child = child, sep = sep, xpath = xp, add_indices = add_indices, brackets = brackets)
+					res <- xtrct_all_columns(child = child, sep = sep, xpath = xp, add_indices = add_indices, brackets = brackets)
 
-				if(1 < verbose){
+					if(1 < verbose){
 
-					if(nrow(res) < 1) {cat("x")} else {cat(".")}
+						if(nrow(res) < 1) {cat("x")} else {cat(".")}
+					}
 				}
-			}
 
-			res
-		}
-	)
+				res
+			}
+		)
+	}
 
 	rbind_list_of_data_frames(list = df.list)
 }
@@ -792,7 +864,11 @@ bundles2dfs <- function(bundles, design, sep = " -+- ", remove_empty_columns = F
 
 				cols <- names( df )[ sapply( df, function( col ) 0 < sum( ! is.na( col ) ) ) ]
 
-				dplyr::select( df, cols )
+				df <- dplyr::select( df, cols )
+
+				if (add_indices) attr(df, "indexed") <- TRUE
+
+				df
 			}
 		)
 	}
@@ -814,7 +890,6 @@ is_indexed_data_frame <- function( data_frame ) {
 esc <- function(s) {
 
 	gsub("([\\.|\\^|\\$|\\*|\\+|\\?|\\(|\\)|\\[|\\{|\\\\\\|\\|])", "\\\\\\1", s)
-
 }
 
 #' Turn a row with multiple entries into a data frame
@@ -848,7 +923,7 @@ melt_row <- function(row, columns, brackets = c( "<", ">" ), sep = " -+- ", all_
 
 	ids <- stringr::str_extract_all(row.mutable, pattern.ids)
 
-	if (sum(sapply(ids, length)) < 1) {stop("The brackets you specified don't seem to fit the index brackets in your data.frame, please check.")}
+	#if (sum(sapply(ids, length)) < 1) {stop("The brackets you specified don't seem to fit the index brackets in your data.frame, please check.")}
 
 	names(ids) <- col.names.mutable
 
@@ -898,11 +973,11 @@ melt_row <- function(row, columns, brackets = c( "<", ">" ), sep = " -+- ", all_
 
 	if (0 < length(col.names.constant) && all_columns) {
 
-		d[, col.names.constant] <- dplyr::select( row, col.names.constant )
+		if (0 < nrow(d) ) d[, col.names.constant] <- dplyr::select( row, col.names.constant )
+		else d[1, col.names.constant] <- dplyr::select( row, col.names.constant )
 	}
 
 #	names( d )[ names( d ) %in% col.names.mutable ] <- gsub( paste0( "^", column.prefix, "\\." ), "", col.names.mutable )
 
 	d
 }
-

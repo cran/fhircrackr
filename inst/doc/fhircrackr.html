@@ -11,9 +11,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2020-07-08" />
+<meta name="date" content="2020-07-22" />
 
-<title>fhircrackr: Handling HL7 FHIR resources in R</title>
+<title>fhircrackr: Handling HL7® FHIR® resources in R</title>
 
 
 
@@ -298,14 +298,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">fhircrackr: Handling HL7 FHIR resources in R</h1>
-<h4 class="date">2020-07-08</h4>
+<h1 class="title toc-ignore">fhircrackr: Handling HL7® FHIR® resources in R</h1>
+<h4 class="date">2020-07-22</h4>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><code>fhircrackr</code> is a package designed to help analyzing HL7 FHIR resources.</p>
+<p><code>fhircrackr</code> is a package designed to help analyzing HL7 FHIR<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> resources.</p>
 <p>FHIR stands for <em>Fast Healthcare Interoperability Resources</em> and is a standard describing data formats and elements (known as “resources”) as well as an application programming interface (API) for exchanging electronic health records. The standard was created by the Health Level Seven International (HL7) health-care standards organization. For more information on the FHIR standard, visit <a href="https://www.hl7.org/fhir/" class="uri">https://www.hl7.org/fhir/</a>.</p>
 <p>While FHIR is a very useful standard to describe and exchange medical data in an interoperable way, it is not at all useful for statistical analyses of data. This is due to the fact that FHIR data is stored in many nested and interlinked resources instead of matrix-like structures.</p>
 <p>Thus, to be able to do statistical analyses a tool is needed that allows converting these nested resources into data frames. This process of tabulating FHIR resources is not trivial, as the unpredictable degree of nesting and connectedness of the resources makes generic solutions to this problem not feasible.</p>
@@ -360,18 +360,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb3-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#have look at part of the results</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12">list_of_tables<span class="op">$</span>Patient[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;   id.value meta.versionId.value        meta.lastUpdated.value text.status.value</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 1     1282                    1 2019-03-05T11:33:15.214+01:00         generated</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 2      267                    2 2018-05-13T10:17:40.800+02:00         generated</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 3      722                    1 2018-09-02T17:24:17.083+02:00         generated</span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 4      731                    1 2018-09-02T17:28:16.838+02:00         generated</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; 5      736                    1 2018-09-02T17:34:50.955+02:00         generated</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;   text.div.div.class</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; 1     hapiHeaderText</span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; 2     hapiHeaderText</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; 3     hapiHeaderText</span></a>
-<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; 4     hapiHeaderText</span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; 5     hapiHeaderText</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt;     id meta.versionId              meta.lastUpdated text.status   text.div.div</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 1 1282              1 2019-03-05T11:33:15.214+01:00   generated hapiHeaderText</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 2  267              2 2018-05-13T10:17:40.800+02:00   generated hapiHeaderText</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 3  722              1 2018-09-02T17:24:17.083+02:00   generated hapiHeaderText</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 4  731              1 2018-09-02T17:28:16.838+02:00   generated hapiHeaderText</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; 5  736              1 2018-09-02T17:34:50.955+02:00   generated hapiHeaderText</span></a></code></pre></div>
 <p>Note that this can easily become a rather wide and sparse data frame. This is due to the fact that every attribute appearing in at least one of the resources will be turned into a variable (i.e. column), even if none of the other resources contain this attribute. For those resources, the value on that attribute will be set to <code>NA</code>. Depending on the variability of the resources, the resulting data frame can contain a lot of <code>NA</code> values. If a resource has multiple entries for an attribute, these are pasted together using the string provided in the argument <code>sep</code> as a separator. The column names in this option are automatically generated by pasting together the path to the respective attribute, e.g. <code>name.given.value</code></p>
 </div>
 <div id="extract-all-attributes-at-certain-levels" class="section level4">
@@ -381,7 +375,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb4-2" data-line-number="2">design2 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">Patients =</span> <span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">    <span class="st">&quot;//Patient&quot;</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="st">&quot;./*/@value&quot;</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="st">&quot;./*&quot;</span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">  )</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">)</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"></a>
@@ -390,14 +384,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb4-11" data-line-number="11"></a>
 <a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#have look at the results</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"><span class="kw">head</span>(list_of_tables<span class="op">$</span>Patients)</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;   id.value birthDate.value gender.value</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; 1     1282            &lt;NA&gt;         &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; 2      267      1960-10-04         &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; 3      722      1982-01-01         male</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 4      731      1982-01-01         male</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 5      736      1982-01-01         male</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 6      737      1982-01-01         male</span></a></code></pre></div>
-<p><code>&quot;./*/@value&quot;</code> for example tells <code>fhir_crack()</code> to extract all attributes that are located (exactly) one level below the Patient’s level given by the XPath expression <code>//Patient</code>. In this case, the column names are still automatically generated. Combinations of XPath expressions with conditions are also allowed.</p>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt;     id  birthDate gender</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; 1 1282       &lt;NA&gt;   &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; 2  267 1960-10-04   &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; 3  722 1982-01-01   male</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 4  731 1982-01-01   male</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; 5  736 1982-01-01   male</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; 6  737 1982-01-01   male</span></a></code></pre></div>
+<p><code>&quot;./*&quot;</code> for example tells <code>fhir_crack()</code> to extract all attributes that are located (exactly) one level below the Patient’s level given by the XPath expression <code>//Patient</code>. In this case, the column names are still automatically generated. Combinations of XPath expressions with conditions are also allowed.</p>
 </div>
 <div id="extract-specific-attributes" class="section level4">
 <h4>3. Extract specific attributes</h4>
@@ -408,12 +402,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="dt">Patients =</span> <span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">        <span class="st">&quot;//Patient&quot;</span>,</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">        <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">            <span class="dt">PID           =</span> <span class="st">&quot;id/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">            <span class="dt">NAME.USE      =</span> <span class="st">&quot;name/use/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">            <span class="dt">NAME.GIVEN    =</span> <span class="st">&quot;name/given/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">            <span class="dt">NAME.FAMILY   =</span> <span class="st">&quot;name/family/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">            <span class="dt">GENDER        =</span> <span class="st">&quot;gender/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">            <span class="dt">BIRTHDAY      =</span> <span class="st">&quot;birthDate/@value&quot;</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">            <span class="dt">PID           =</span> <span class="st">&quot;id&quot;</span>,</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">            <span class="dt">NAME.USE      =</span> <span class="st">&quot;name/use&quot;</span>,</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">            <span class="dt">NAME.GIVEN    =</span> <span class="st">&quot;name/given&quot;</span>,</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">            <span class="dt">NAME.FAMILY   =</span> <span class="st">&quot;name/family&quot;</span>,</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">            <span class="dt">GENDER        =</span> <span class="st">&quot;gender&quot;</span>,</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">            <span class="dt">BIRTHDAY      =</span> <span class="st">&quot;birthDate&quot;</span></a>
 <a class="sourceLine" id="cb5-13" data-line-number="13">        )</a>
 <a class="sourceLine" id="cb5-14" data-line-number="14">    )</a>
 <a class="sourceLine" id="cb5-15" data-line-number="15">)</a>
@@ -477,22 +471,22 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb9-5" data-line-number="5">        <span class="st">&quot;//MedicationStatement&quot;</span>,</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">        <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">            <span class="dt">MS.ID              =</span> <span class="st">&quot;id/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-9" data-line-number="9">            <span class="dt">STATUS.TEXT        =</span> <span class="st">&quot;text/status/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10">            <span class="dt">STATUS             =</span> <span class="st">&quot;status/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">            <span class="dt">MEDICATION.SYSTEM  =</span> <span class="st">&quot;medicationCodeableConcept/coding/system/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-12" data-line-number="12">            <span class="dt">MEDICATION.CODE    =</span> <span class="st">&quot;medicationCodeableConcept/coding/code/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13">            <span class="dt">MEDICATION.DISPLAY =</span> <span class="st">&quot;medicationCodeableConcept/coding/display/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-14" data-line-number="14">            <span class="dt">DOSAGE             =</span> <span class="st">&quot;dosage/text/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-15" data-line-number="15">            <span class="dt">PATIENT            =</span> <span class="st">&quot;subject/reference/@value&quot;</span>,</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">            <span class="dt">LAST.UPDATE        =</span> <span class="st">&quot;meta/lastUpdated/@value&quot;</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">            <span class="dt">MS.ID              =</span> <span class="st">&quot;id&quot;</span>,</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">            <span class="dt">STATUS.TEXT        =</span> <span class="st">&quot;text/status&quot;</span>,</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">            <span class="dt">STATUS             =</span> <span class="st">&quot;status&quot;</span>,</a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">            <span class="dt">MEDICATION.SYSTEM  =</span> <span class="st">&quot;medicationCodeableConcept/coding/system&quot;</span>,</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">            <span class="dt">MEDICATION.CODE    =</span> <span class="st">&quot;medicationCodeableConcept/coding/code&quot;</span>,</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">            <span class="dt">MEDICATION.DISPLAY =</span> <span class="st">&quot;medicationCodeableConcept/coding/display&quot;</span>,</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">            <span class="dt">DOSAGE             =</span> <span class="st">&quot;dosage/text&quot;</span>,</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">            <span class="dt">PATIENT            =</span> <span class="st">&quot;subject/reference&quot;</span>,</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">            <span class="dt">LAST.UPDATE        =</span> <span class="st">&quot;meta/lastUpdated&quot;</span></a>
 <a class="sourceLine" id="cb9-17" data-line-number="17">        )</a>
 <a class="sourceLine" id="cb9-18" data-line-number="18">    ),</a>
 <a class="sourceLine" id="cb9-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb9-20" data-line-number="20">    <span class="dt">Patients =</span> <span class="kw">list</span>(</a>
 <a class="sourceLine" id="cb9-21" data-line-number="21"></a>
 <a class="sourceLine" id="cb9-22" data-line-number="22">        <span class="st">&quot;//Patient&quot;</span>,</a>
-<a class="sourceLine" id="cb9-23" data-line-number="23">        <span class="st">&quot;./*/@value&quot;</span></a>
+<a class="sourceLine" id="cb9-23" data-line-number="23">        <span class="st">&quot;./*&quot;</span></a>
 <a class="sourceLine" id="cb9-24" data-line-number="24">    )</a>
 <a class="sourceLine" id="cb9-25" data-line-number="25">)</a>
 <a class="sourceLine" id="cb9-26" data-line-number="26"></a>
@@ -523,13 +517,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb9-51" data-line-number="51"><span class="co">#&gt; 6 2019-10-11T16:32:05.206+00:00</span></a>
 <a class="sourceLine" id="cb9-52" data-line-number="52"></a>
 <a class="sourceLine" id="cb9-53" data-line-number="53"><span class="kw">head</span>(list_of_tables<span class="op">$</span>Patients)</a>
-<a class="sourceLine" id="cb9-54" data-line-number="54"><span class="co">#&gt;   id.value gender.value birthDate.value</span></a>
-<a class="sourceLine" id="cb9-55" data-line-number="55"><span class="co">#&gt; 1    60096         male      2019-11-13</span></a>
-<a class="sourceLine" id="cb9-56" data-line-number="56"><span class="co">#&gt; 2    49443       female      1970-10-19</span></a>
-<a class="sourceLine" id="cb9-57" data-line-number="57"><span class="co">#&gt; 3    46213       female      2019-10-11</span></a>
-<a class="sourceLine" id="cb9-58" data-line-number="58"><span class="co">#&gt; 4    45735         male      1970-10-11</span></a>
-<a class="sourceLine" id="cb9-59" data-line-number="59"><span class="co">#&gt; 5    42024       female      1979-10-09</span></a>
-<a class="sourceLine" id="cb9-60" data-line-number="60"><span class="co">#&gt; 6    58504         male      2019-11-08</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-54" data-line-number="54"><span class="co">#&gt;      id gender  birthDate</span></a>
+<a class="sourceLine" id="cb9-55" data-line-number="55"><span class="co">#&gt; 1 60096   male 2019-11-13</span></a>
+<a class="sourceLine" id="cb9-56" data-line-number="56"><span class="co">#&gt; 2 49443 female 1970-10-19</span></a>
+<a class="sourceLine" id="cb9-57" data-line-number="57"><span class="co">#&gt; 3 46213 female 2019-10-11</span></a>
+<a class="sourceLine" id="cb9-58" data-line-number="58"><span class="co">#&gt; 4 45735   male 1970-10-11</span></a>
+<a class="sourceLine" id="cb9-59" data-line-number="59"><span class="co">#&gt; 5 42024 female 1979-10-09</span></a>
+<a class="sourceLine" id="cb9-60" data-line-number="60"><span class="co">#&gt; 6 58504   male 2019-11-08</span></a></code></pre></div>
 <p>As you can see, the result now contains two data frames, one for Patient resources and one for MedicationStatement resources.</p>
 </div>
 <div id="example-3-multiple-entries" class="section level3">
@@ -599,14 +593,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb11-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">df1 &lt;-<span class="st"> </span><span class="kw">fhir_crack</span>(bundle_list, design1, <span class="dt">sep =</span> <span class="st">&quot; | &quot;</span>, <span class="dt">verbose =</span> <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb11-6" data-line-number="6">df1<span class="op">$</span>Patients</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;        id.value address.use.value address.city.value address.type.value</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 1           id1              home          Amsterdam           physical</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; 2           id2       home | work   Rome | Stockholm  physical | postal</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; 3 id3.1 | id3.2       home | work    Berlin | London    postal | postal</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;   address.country.value birthDate.value</span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; 1           Netherlands      1992-02-06</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; 2        Italy | Sweden      1980-05-23</span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 3      France | England      1974-12-25</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;              id address.use     address.city      address.type  address.country</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 1           id1        home        Amsterdam          physical      Netherlands</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; 2           id2 home | work Rome | Stockholm physical | postal   Italy | Sweden</span></a>
+<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; 3 id3.1 | id3.2 home | work  Berlin | London   postal | postal France | England</span></a>
+<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="co">#&gt;    birthDate</span></a>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; 1 1992-02-06</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; 2 1980-05-23</span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; 3 1974-12-25</span></a></code></pre></div>
 <p>As you can see, multiple entries for the same attribute (address and id) are pasted together. This works fine for Patient 2, but for Patient 3 you can see a problem with the number of entries that are displayed. The original Patient resource had <em>three</em> (incomplete) <code>address</code> entries, but because the first two of them use complementary elements (<code>use</code> and <code>city</code> vs. <code>type</code> and <code>country</code>), the resulting pasted entries look like there had just been two entries for the <code>address</code> attribute.</p>
 <p>You can counter this problem with the <code>add_indices</code> argument and customize the appearance of the indices with <code>brackets</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">design2 &lt;-<span class="st"> </span><span class="kw">list</span>(</a>
@@ -616,14 +610,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb12-5" data-line-number="5">df2 &lt;-<span class="st"> </span><span class="kw">fhir_crack</span>(bundle_list, design1, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">add_indices =</span> T, </a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">                  <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>), <span class="dt">verbose =</span> <span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7">df2<span class="op">$</span>Patients</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;            id.value   address.use.value       address.city.value</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;                  id         address.use             address.city</span></a>
 <a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; 1            [1]id1           [1.1]home           [1.1]Amsterdam</span></a>
 <a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt; 2            [1]id2 [1.1]home [2.1]work [1.1]Rome [2.1]Stockholm</span></a>
 <a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt; 3 [1]id3.1 [2]id3.2 [1.1]home [3.1]work  [1.1]Berlin [3.1]London</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;          address.type.value    address.country.value birthDate.value</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt; 1             [1.1]physical         [1.1]Netherlands   [1]1992-02-06</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 2 [1.1]physical [2.1]postal   [1.1]Italy [2.1]Sweden   [1]1980-05-23</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; 3   [2.1]postal [3.1]postal [2.1]France [3.1]England   [1]1974-12-25</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;                address.type          address.country     birthDate</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt; 1             [1.1]physical         [1.1]Netherlands [1]1992-02-06</span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 2 [1.1]physical [2.1]postal   [1.1]Italy [2.1]Sweden [1]1980-05-23</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; 3   [2.1]postal [3.1]postal [2.1]France [3.1]England [1]1974-12-25</span></a></code></pre></div>
 <p>Now the indices display the entry the value belongs to. That way you can see that Patient resource 3 had three entries for the attribute <code>address</code> and you can also see which attributes belong to which entry.</p>
 <p>Of course this is a very specific case that only occurs if your resources have multiple entries with complementary elements. In the vast majority of cases multiple entries in one resource will have the same structure, thus making numbering of those entries superfluous.</p>
 </div>
@@ -633,145 +627,137 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="melt-data-frames-with-multiple-entries" class="section level3">
 <h3>Melt data frames with multiple entries</h3>
 <p>If the data frame produced by <code>fhir_crack()</code> contains multiple entries, you’ll probably want to divide these entries into distinct observations at some point. This is where <code>fhir_melt()</code> comes into play. <code>fhir_melt()</code> takes an indexed data frame with multiple entries in one or several <code>columns</code> and spreads (aka melts) these entries over several rows:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">fhir_melt</span>(df2<span class="op">$</span>Patients, <span class="dt">columns =</span> <span class="st">&quot;address.city.value&quot;</span>, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">fhir_melt</span>(df2<span class="op">$</span>Patients, <span class="dt">columns =</span> <span class="st">&quot;address.city&quot;</span>, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
 <a class="sourceLine" id="cb13-2" data-line-number="2">          <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">all_columns =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt;    address.city.value resource_identifier</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; 1        [1]Amsterdam                   1</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 11            [1]Rome                   2</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 2        [1]Stockholm                   2</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 12          [1]Berlin                   3</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 3           [1]London                   3</span></a></code></pre></div>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt;    address.city resource_identifier</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; 1  [1]Amsterdam                   1</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 11      [1]Rome                   2</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 2  [1]Stockholm                   2</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 12    [1]Berlin                   3</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 3     [1]London                   3</span></a></code></pre></div>
 <p>The new variable <code>resource_identifier</code> maps which rows in the created data frame belong to which row (usually equivalent to one resource) in the original data frame. <code>brackets</code> and <code>sep</code> should be given the same character vectors that have been used to build the indices in <code>fhir_melt()</code>. <code>columns</code> is a character vector with the names of the variables you want to melt. You can provide more than one column here but it makes sense to only have variables from the same repeating attribute together in one call to <code>fhir_melt()</code>:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;address.city.value&quot;</span>, <span class="st">&quot;address.use.value&quot;</span>, <span class="st">&quot;address.type.value&quot;</span>, </a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">          <span class="st">&quot;address.country.value&quot;</span>)</a>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;address.city&quot;</span>, <span class="st">&quot;address.use&quot;</span>, <span class="st">&quot;address.type&quot;</span>, </a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">          <span class="st">&quot;address.country&quot;</span>)</a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw">fhir_melt</span>(df2<span class="op">$</span>Patients, <span class="dt">columns =</span> cols, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
 <a class="sourceLine" id="cb14-5" data-line-number="5">          <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">all_columns =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt;    address.city.value address.use.value address.type.value</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 1        [1]Amsterdam           [1]home        [1]physical</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; 11            [1]Rome           [1]home        [1]physical</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; 2        [1]Stockholm           [1]work          [1]postal</span></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; 12          [1]Berlin           [1]home               &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 3           [1]London           [1]work          [1]postal</span></a>
-<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; 21               &lt;NA&gt;              &lt;NA&gt;          [1]postal</span></a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt;    address.country.value resource_identifier</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; 1         [1]Netherlands                   1</span></a>
-<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt; 11              [1]Italy                   2</span></a>
-<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt; 2              [1]Sweden                   2</span></a>
-<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt; 12                  &lt;NA&gt;                   3</span></a>
-<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt; 3             [1]England                   3</span></a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt; 21             [1]France                   3</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt;    address.city address.use address.type address.country resource_identifier</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 1  [1]Amsterdam     [1]home  [1]physical  [1]Netherlands                   1</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; 11      [1]Rome     [1]home  [1]physical        [1]Italy                   2</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; 2  [1]Stockholm     [1]work    [1]postal       [1]Sweden                   2</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; 12    [1]Berlin     [1]home         &lt;NA&gt;            &lt;NA&gt;                   3</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 3     [1]London     [1]work    [1]postal      [1]England                   3</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; 21         &lt;NA&gt;        &lt;NA&gt;    [1]postal       [1]France                   3</span></a></code></pre></div>
 <p>If the names of the variables in your data frame have been generated automatically with <code>fhir_crack()</code> you can find all variable names belonging to the same attribute with <code>fhir_common_columns()</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">fhir_common_columns</span>(df2<span class="op">$</span>Patients, <span class="dt">column_names_prefix =</span> <span class="st">&quot;address&quot;</span>)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2">cols</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; [1] &quot;address.use.value&quot;     &quot;address.city.value&quot;    &quot;address.type.value&quot;   </span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; [4] &quot;address.country.value&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; [1] &quot;address.use&quot;     &quot;address.city&quot;    &quot;address.type&quot;    &quot;address.country&quot;</span></a></code></pre></div>
 <p>With the argument <code>all_columns</code> you can control whether the resulting data frame contains only the molten columns or all columns of the original data frame:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">fhir_melt</span>(df2<span class="op">$</span>Patients, <span class="dt">columns =</span> cols, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">          <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">all_columns =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt;             id.value address.use.value address.city.value address.type.value</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; 1             [1]id1           [1]home       [1]Amsterdam        [1]physical</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; 11            [1]id2           [1]home            [1]Rome        [1]physical</span></a>
-<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; 2             [1]id2           [1]work       [1]Stockholm          [1]postal</span></a>
-<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt; 12 [1]id3.1 [2]id3.2           [1]home          [1]Berlin               &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt; 3  [1]id3.1 [2]id3.2           [1]work          [1]London          [1]postal</span></a>
-<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt; 21 [1]id3.1 [2]id3.2              &lt;NA&gt;               &lt;NA&gt;          [1]postal</span></a>
-<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;    address.country.value birthDate.value resource_identifier</span></a>
-<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt; 1         [1]Netherlands   [1]1992-02-06                   1</span></a>
-<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt; 11              [1]Italy   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt; 2              [1]Sweden   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt; 12                  &lt;NA&gt;   [1]1974-12-25                   3</span></a>
-<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; 3             [1]England   [1]1974-12-25                   3</span></a>
-<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt; 21             [1]France   [1]1974-12-25                   3</span></a></code></pre></div>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="co">#&gt;                   id address.use address.city address.type address.country</span></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; 1             [1]id1     [1]home [1]Amsterdam  [1]physical  [1]Netherlands</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#&gt; 11            [1]id2     [1]home      [1]Rome  [1]physical        [1]Italy</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="co">#&gt; 2             [1]id2     [1]work [1]Stockholm    [1]postal       [1]Sweden</span></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#&gt; 12 [1]id3.1 [2]id3.2     [1]home    [1]Berlin         &lt;NA&gt;            &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co">#&gt; 3  [1]id3.1 [2]id3.2     [1]work    [1]London    [1]postal      [1]England</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="co">#&gt; 21 [1]id3.1 [2]id3.2        &lt;NA&gt;         &lt;NA&gt;    [1]postal       [1]France</span></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#&gt;        birthDate resource_identifier</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co">#&gt; 1  [1]1992-02-06                   1</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="co">#&gt; 11 [1]1980-05-23                   2</span></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#&gt; 2  [1]1980-05-23                   2</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="co">#&gt; 12 [1]1974-12-25                   3</span></a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"><span class="co">#&gt; 3  [1]1974-12-25                   3</span></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="co">#&gt; 21 [1]1974-12-25                   3</span></a></code></pre></div>
 <p>Values on the other variables will just repeat in the newly created rows.</p>
 <p>If you try to melt several variables that don’t belong to the same attribute in one call to <code>fhir_melt()</code>, this will cause problems, because the different attributes won’t be combined correctly:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">c</span>(cols, <span class="st">&quot;id.value&quot;</span>)</a>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">c</span>(cols, <span class="st">&quot;id&quot;</span>)</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw">fhir_melt</span>(df2<span class="op">$</span>Patients, <span class="dt">columns =</span> cols, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
 <a class="sourceLine" id="cb17-3" data-line-number="3">          <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">all_columns =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt;    id.value address.use.value address.city.value address.type.value</span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="co">#&gt; 1     []id1           [1]home       [1]Amsterdam        [1]physical</span></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co">#&gt; 11    []id2           [1]home            [1]Rome        [1]physical</span></a>
-<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="co">#&gt; 2      &lt;NA&gt;           [1]work       [1]Stockholm          [1]postal</span></a>
-<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="co">#&gt; 12  []id3.1           [1]home          [1]Berlin               &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="co">#&gt; 3      &lt;NA&gt;           [1]work          [1]London          [1]postal</span></a>
-<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="co">#&gt; 21  []id3.2              &lt;NA&gt;               &lt;NA&gt;          [1]postal</span></a>
-<a class="sourceLine" id="cb17-11" data-line-number="11"><span class="co">#&gt;    address.country.value birthDate.value resource_identifier</span></a>
-<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; 1         [1]Netherlands   [1]1992-02-06                   1</span></a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; 11              [1]Italy   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="co">#&gt; 2              [1]Sweden   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="co">#&gt; 12                  &lt;NA&gt;   [1]1974-12-25                   3</span></a>
-<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="co">#&gt; 3             [1]England   [1]1974-12-25                   3</span></a>
-<a class="sourceLine" id="cb17-17" data-line-number="17"><span class="co">#&gt; 21             [1]France   [1]1974-12-25                   3</span></a></code></pre></div>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt;         id address.use address.city address.type address.country     birthDate</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="co">#&gt; 1    []id1     [1]home [1]Amsterdam  [1]physical  [1]Netherlands [1]1992-02-06</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co">#&gt; 11   []id2     [1]home      [1]Rome  [1]physical        [1]Italy [1]1980-05-23</span></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="co">#&gt; 2     &lt;NA&gt;     [1]work [1]Stockholm    [1]postal       [1]Sweden [1]1980-05-23</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="co">#&gt; 12 []id3.1     [1]home    [1]Berlin         &lt;NA&gt;            &lt;NA&gt; [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"><span class="co">#&gt; 3     &lt;NA&gt;     [1]work    [1]London    [1]postal      [1]England [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="co">#&gt; 21 []id3.2        &lt;NA&gt;         &lt;NA&gt;    [1]postal       [1]France [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb17-11" data-line-number="11"><span class="co">#&gt;    resource_identifier</span></a>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; 1                    1</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; 11                   2</span></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="co">#&gt; 2                    2</span></a>
+<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="co">#&gt; 12                   3</span></a>
+<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="co">#&gt; 3                    3</span></a>
+<a class="sourceLine" id="cb17-17" data-line-number="17"><span class="co">#&gt; 21                   3</span></a></code></pre></div>
 <p>Instead, melt the attributes one after another:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">cols &lt;-<span class="st"> </span><span class="kw">fhir_common_columns</span>(df2<span class="op">$</span>Patients, <span class="st">&quot;address&quot;</span>)</a>
 <a class="sourceLine" id="cb18-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">molten_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">fhir_melt</span>(df2<span class="op">$</span>Patients, <span class="dt">columns =</span> cols, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
 <a class="sourceLine" id="cb18-4" data-line-number="4">                      <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">all_columns =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb18-5" data-line-number="5">molten_<span class="dv">1</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">#&gt;             id.value address.use.value address.city.value address.type.value</span></a>
-<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="co">#&gt; 1             [1]id1           [1]home       [1]Amsterdam        [1]physical</span></a>
-<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">#&gt; 11            [1]id2           [1]home            [1]Rome        [1]physical</span></a>
-<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="co">#&gt; 2             [1]id2           [1]work       [1]Stockholm          [1]postal</span></a>
-<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="co">#&gt; 12 [1]id3.1 [2]id3.2           [1]home          [1]Berlin               &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">#&gt; 3  [1]id3.1 [2]id3.2           [1]work          [1]London          [1]postal</span></a>
-<a class="sourceLine" id="cb18-12" data-line-number="12"><span class="co">#&gt; 21 [1]id3.1 [2]id3.2              &lt;NA&gt;               &lt;NA&gt;          [1]postal</span></a>
-<a class="sourceLine" id="cb18-13" data-line-number="13"><span class="co">#&gt;    address.country.value birthDate.value resource_identifier</span></a>
-<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="co">#&gt; 1         [1]Netherlands   [1]1992-02-06                   1</span></a>
-<a class="sourceLine" id="cb18-15" data-line-number="15"><span class="co">#&gt; 11              [1]Italy   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb18-16" data-line-number="16"><span class="co">#&gt; 2              [1]Sweden   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb18-17" data-line-number="17"><span class="co">#&gt; 12                  &lt;NA&gt;   [1]1974-12-25                   3</span></a>
-<a class="sourceLine" id="cb18-18" data-line-number="18"><span class="co">#&gt; 3             [1]England   [1]1974-12-25                   3</span></a>
-<a class="sourceLine" id="cb18-19" data-line-number="19"><span class="co">#&gt; 21             [1]France   [1]1974-12-25                   3</span></a>
+<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">#&gt;                   id address.use address.city address.type address.country</span></a>
+<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="co">#&gt; 1             [1]id1     [1]home [1]Amsterdam  [1]physical  [1]Netherlands</span></a>
+<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">#&gt; 11            [1]id2     [1]home      [1]Rome  [1]physical        [1]Italy</span></a>
+<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="co">#&gt; 2             [1]id2     [1]work [1]Stockholm    [1]postal       [1]Sweden</span></a>
+<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="co">#&gt; 12 [1]id3.1 [2]id3.2     [1]home    [1]Berlin         &lt;NA&gt;            &lt;NA&gt;</span></a>
+<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">#&gt; 3  [1]id3.1 [2]id3.2     [1]work    [1]London    [1]postal      [1]England</span></a>
+<a class="sourceLine" id="cb18-12" data-line-number="12"><span class="co">#&gt; 21 [1]id3.1 [2]id3.2        &lt;NA&gt;         &lt;NA&gt;    [1]postal       [1]France</span></a>
+<a class="sourceLine" id="cb18-13" data-line-number="13"><span class="co">#&gt;        birthDate resource_identifier</span></a>
+<a class="sourceLine" id="cb18-14" data-line-number="14"><span class="co">#&gt; 1  [1]1992-02-06                   1</span></a>
+<a class="sourceLine" id="cb18-15" data-line-number="15"><span class="co">#&gt; 11 [1]1980-05-23                   2</span></a>
+<a class="sourceLine" id="cb18-16" data-line-number="16"><span class="co">#&gt; 2  [1]1980-05-23                   2</span></a>
+<a class="sourceLine" id="cb18-17" data-line-number="17"><span class="co">#&gt; 12 [1]1974-12-25                   3</span></a>
+<a class="sourceLine" id="cb18-18" data-line-number="18"><span class="co">#&gt; 3  [1]1974-12-25                   3</span></a>
+<a class="sourceLine" id="cb18-19" data-line-number="19"><span class="co">#&gt; 21 [1]1974-12-25                   3</span></a>
 <a class="sourceLine" id="cb18-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb18-21" data-line-number="21">molten_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">fhir_melt</span>(molten_<span class="dv">1</span>, <span class="dt">columns =</span> <span class="st">&quot;id.value&quot;</span>, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
+<a class="sourceLine" id="cb18-21" data-line-number="21">molten_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">fhir_melt</span>(molten_<span class="dv">1</span>, <span class="dt">columns =</span> <span class="st">&quot;id&quot;</span>, <span class="dt">brackets =</span> <span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), </a>
 <a class="sourceLine" id="cb18-22" data-line-number="22">                      <span class="dt">sep=</span><span class="st">&quot; &quot;</span>, <span class="dt">all_columns =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb18-23" data-line-number="23">molten_<span class="dv">2</span></a>
-<a class="sourceLine" id="cb18-24" data-line-number="24"><span class="co">#&gt;    id.value address.use.value address.city.value address.type.value</span></a>
-<a class="sourceLine" id="cb18-25" data-line-number="25"><span class="co">#&gt; 1     []id1           [1]home       [1]Amsterdam        [1]physical</span></a>
-<a class="sourceLine" id="cb18-26" data-line-number="26"><span class="co">#&gt; 11    []id2           [1]home            [1]Rome        [1]physical</span></a>
-<a class="sourceLine" id="cb18-27" data-line-number="27"><span class="co">#&gt; 12    []id2           [1]work       [1]Stockholm          [1]postal</span></a>
-<a class="sourceLine" id="cb18-28" data-line-number="28"><span class="co">#&gt; 13  []id3.1           [1]home          [1]Berlin               &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb18-29" data-line-number="29"><span class="co">#&gt; 2   []id3.2           [1]home          [1]Berlin               &lt;NA&gt;</span></a>
-<a class="sourceLine" id="cb18-30" data-line-number="30"><span class="co">#&gt; 14  []id3.1           [1]work          [1]London          [1]postal</span></a>
-<a class="sourceLine" id="cb18-31" data-line-number="31"><span class="co">#&gt; 21  []id3.2           [1]work          [1]London          [1]postal</span></a>
-<a class="sourceLine" id="cb18-32" data-line-number="32"><span class="co">#&gt; 15  []id3.1              &lt;NA&gt;               &lt;NA&gt;          [1]postal</span></a>
-<a class="sourceLine" id="cb18-33" data-line-number="33"><span class="co">#&gt; 22  []id3.2              &lt;NA&gt;               &lt;NA&gt;          [1]postal</span></a>
-<a class="sourceLine" id="cb18-34" data-line-number="34"><span class="co">#&gt;    address.country.value birthDate.value resource_identifier</span></a>
-<a class="sourceLine" id="cb18-35" data-line-number="35"><span class="co">#&gt; 1         [1]Netherlands   [1]1992-02-06                   1</span></a>
-<a class="sourceLine" id="cb18-36" data-line-number="36"><span class="co">#&gt; 11              [1]Italy   [1]1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb18-37" data-line-number="37"><span class="co">#&gt; 12             [1]Sweden   [1]1980-05-23                   3</span></a>
-<a class="sourceLine" id="cb18-38" data-line-number="38"><span class="co">#&gt; 13                  &lt;NA&gt;   [1]1974-12-25                   4</span></a>
-<a class="sourceLine" id="cb18-39" data-line-number="39"><span class="co">#&gt; 2                   &lt;NA&gt;   [1]1974-12-25                   4</span></a>
-<a class="sourceLine" id="cb18-40" data-line-number="40"><span class="co">#&gt; 14            [1]England   [1]1974-12-25                   5</span></a>
-<a class="sourceLine" id="cb18-41" data-line-number="41"><span class="co">#&gt; 21            [1]England   [1]1974-12-25                   5</span></a>
-<a class="sourceLine" id="cb18-42" data-line-number="42"><span class="co">#&gt; 15             [1]France   [1]1974-12-25                   6</span></a>
-<a class="sourceLine" id="cb18-43" data-line-number="43"><span class="co">#&gt; 22             [1]France   [1]1974-12-25                   6</span></a></code></pre></div>
+<a class="sourceLine" id="cb18-24" data-line-number="24"><span class="co">#&gt;         id address.use address.city address.type address.country     birthDate</span></a>
+<a class="sourceLine" id="cb18-25" data-line-number="25"><span class="co">#&gt; 1    []id1     [1]home [1]Amsterdam  [1]physical  [1]Netherlands [1]1992-02-06</span></a>
+<a class="sourceLine" id="cb18-26" data-line-number="26"><span class="co">#&gt; 11   []id2     [1]home      [1]Rome  [1]physical        [1]Italy [1]1980-05-23</span></a>
+<a class="sourceLine" id="cb18-27" data-line-number="27"><span class="co">#&gt; 12   []id2     [1]work [1]Stockholm    [1]postal       [1]Sweden [1]1980-05-23</span></a>
+<a class="sourceLine" id="cb18-28" data-line-number="28"><span class="co">#&gt; 13 []id3.1     [1]home    [1]Berlin         &lt;NA&gt;            &lt;NA&gt; [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb18-29" data-line-number="29"><span class="co">#&gt; 2  []id3.2     [1]home    [1]Berlin         &lt;NA&gt;            &lt;NA&gt; [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb18-30" data-line-number="30"><span class="co">#&gt; 14 []id3.1     [1]work    [1]London    [1]postal      [1]England [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb18-31" data-line-number="31"><span class="co">#&gt; 21 []id3.2     [1]work    [1]London    [1]postal      [1]England [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb18-32" data-line-number="32"><span class="co">#&gt; 15 []id3.1        &lt;NA&gt;         &lt;NA&gt;    [1]postal       [1]France [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb18-33" data-line-number="33"><span class="co">#&gt; 22 []id3.2        &lt;NA&gt;         &lt;NA&gt;    [1]postal       [1]France [1]1974-12-25</span></a>
+<a class="sourceLine" id="cb18-34" data-line-number="34"><span class="co">#&gt;    resource_identifier</span></a>
+<a class="sourceLine" id="cb18-35" data-line-number="35"><span class="co">#&gt; 1                    1</span></a>
+<a class="sourceLine" id="cb18-36" data-line-number="36"><span class="co">#&gt; 11                   2</span></a>
+<a class="sourceLine" id="cb18-37" data-line-number="37"><span class="co">#&gt; 12                   3</span></a>
+<a class="sourceLine" id="cb18-38" data-line-number="38"><span class="co">#&gt; 13                   4</span></a>
+<a class="sourceLine" id="cb18-39" data-line-number="39"><span class="co">#&gt; 2                    4</span></a>
+<a class="sourceLine" id="cb18-40" data-line-number="40"><span class="co">#&gt; 14                   5</span></a>
+<a class="sourceLine" id="cb18-41" data-line-number="41"><span class="co">#&gt; 21                   5</span></a>
+<a class="sourceLine" id="cb18-42" data-line-number="42"><span class="co">#&gt; 15                   6</span></a>
+<a class="sourceLine" id="cb18-43" data-line-number="43"><span class="co">#&gt; 22                   6</span></a></code></pre></div>
 <p>This will give you the appropriate cross product of all multiple entries.</p>
 </div>
 <div id="remove-indices" class="section level3">
 <h3>Remove indices</h3>
 <p>Once you have sorted out the multiple entries, you might want to get rid of the indices in your data.frame. This can be achieved using <code>fhir_rm_indices()</code>:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">fhir_rm_indices</span>(molten_<span class="dv">2</span>, <span class="dt">brackets=</span><span class="kw">c</span>(<span class="st">&quot;[&quot;</span>,<span class="st">&quot;]&quot;</span>), <span class="dt">sep=</span><span class="st">&quot; &quot;</span>)</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co">#&gt;    id.value address.use.value address.city.value address.type.value</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co">#&gt; 1       id1              home          Amsterdam           physical</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">#&gt; 11      id2              home               Rome           physical</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt; 12      id2              work          Stockholm             postal</span></a>
-<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; 13    id3.1              home             Berlin                 NA</span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co">#&gt; 2     id3.2              home             Berlin                 NA</span></a>
-<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co">#&gt; 14    id3.1              work             London             postal</span></a>
-<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">#&gt; 21    id3.2              work             London             postal</span></a>
-<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">#&gt; 15    id3.1                NA                 NA             postal</span></a>
-<a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">#&gt; 22    id3.2                NA                 NA             postal</span></a>
-<a class="sourceLine" id="cb19-12" data-line-number="12"><span class="co">#&gt;    address.country.value birthDate.value resource_identifier</span></a>
-<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="co">#&gt; 1            Netherlands      1992-02-06                   1</span></a>
-<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="co">#&gt; 11                 Italy      1980-05-23                   2</span></a>
-<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="co">#&gt; 12                Sweden      1980-05-23                   3</span></a>
-<a class="sourceLine" id="cb19-16" data-line-number="16"><span class="co">#&gt; 13                    NA      1974-12-25                   4</span></a>
-<a class="sourceLine" id="cb19-17" data-line-number="17"><span class="co">#&gt; 2                     NA      1974-12-25                   4</span></a>
-<a class="sourceLine" id="cb19-18" data-line-number="18"><span class="co">#&gt; 14               England      1974-12-25                   5</span></a>
-<a class="sourceLine" id="cb19-19" data-line-number="19"><span class="co">#&gt; 21               England      1974-12-25                   5</span></a>
-<a class="sourceLine" id="cb19-20" data-line-number="20"><span class="co">#&gt; 15                France      1974-12-25                   6</span></a>
-<a class="sourceLine" id="cb19-21" data-line-number="21"><span class="co">#&gt; 22                France      1974-12-25                   6</span></a></code></pre></div>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co">#&gt;       id address.use address.city address.type address.country  birthDate</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co">#&gt; 1    id1        home    Amsterdam     physical     Netherlands 1992-02-06</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">#&gt; 11   id2        home         Rome     physical           Italy 1980-05-23</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt; 12   id2        work    Stockholm       postal          Sweden 1980-05-23</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; 13 id3.1        home       Berlin           NA              NA 1974-12-25</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co">#&gt; 2  id3.2        home       Berlin           NA              NA 1974-12-25</span></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co">#&gt; 14 id3.1        work       London       postal         England 1974-12-25</span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">#&gt; 21 id3.2        work       London       postal         England 1974-12-25</span></a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">#&gt; 15 id3.1          NA           NA       postal          France 1974-12-25</span></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">#&gt; 22 id3.2          NA           NA       postal          France 1974-12-25</span></a>
+<a class="sourceLine" id="cb19-12" data-line-number="12"><span class="co">#&gt;    resource_identifier</span></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="co">#&gt; 1                    1</span></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="co">#&gt; 11                   2</span></a>
+<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="co">#&gt; 12                   3</span></a>
+<a class="sourceLine" id="cb19-16" data-line-number="16"><span class="co">#&gt; 13                   4</span></a>
+<a class="sourceLine" id="cb19-17" data-line-number="17"><span class="co">#&gt; 2                    4</span></a>
+<a class="sourceLine" id="cb19-18" data-line-number="18"><span class="co">#&gt; 14                   5</span></a>
+<a class="sourceLine" id="cb19-19" data-line-number="19"><span class="co">#&gt; 21                   5</span></a>
+<a class="sourceLine" id="cb19-20" data-line-number="20"><span class="co">#&gt; 15                   6</span></a>
+<a class="sourceLine" id="cb19-21" data-line-number="21"><span class="co">#&gt; 22                   6</span></a></code></pre></div>
 <p>Again, <code>brackets</code> and <code>sep</code> should be given the same character vector that was used for <code>fhir_crack()</code> and <code>fhir_melt()</code>respectively.</p>
 </div>
 </div>
@@ -802,10 +788,10 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb23-4" data-line-number="4"><span class="co">#have a look</span></a>
 <a class="sourceLine" id="cb23-5" data-line-number="5"><span class="kw">head</span>(bundles[[<span class="dv">1</span>]])</a>
 <a class="sourceLine" id="cb23-6" data-line-number="6"><span class="co">#&gt; $node</span></a>
-<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="co">#&gt; &lt;pointer: 0x556766fa70f0&gt;</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="co">#&gt; &lt;pointer: 0x5581157bdbe0&gt;</span></a>
 <a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#&gt; $doc</span></a>
-<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="co">#&gt; &lt;pointer: 0x5567667bd460&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="co">#&gt; &lt;pointer: 0x558112679470&gt;</span></a></code></pre></div>
 <p>After unserialization, the pointers are restored and you can continue to work with the bundles. Note that the example bundle <code>medication_bundles</code> that is provided with the <code>fhircrackr</code> package is also provided in its serialized form and has to be unserialized as described on its help page.</p>
 </div>
 <div id="save-and-load-bundles-as-xml-files" class="section level3">
@@ -836,15 +822,25 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb27-5" data-line-number="5">df &lt;-<span class="st"> </span><span class="kw">fhir_crack</span>(medication_bundles, design, <span class="dt">verbose=</span><span class="dv">0</span>)</a>
 <a class="sourceLine" id="cb27-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb27-7" data-line-number="7"><span class="kw">head</span>(df<span class="op">$</span>MedCodes)</a>
-<a class="sourceLine" id="cb27-8" data-line-number="8"><span class="co">#&gt;            system.value code.value    display.value</span></a>
-<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="co">#&gt; 1 http://snomed.info/ct  429374003 simvastatin 40mg</span></a>
-<a class="sourceLine" id="cb27-10" data-line-number="10"><span class="co">#&gt; 2 http://snomed.info/ct  429374003 simvastatin 40mg</span></a>
-<a class="sourceLine" id="cb27-11" data-line-number="11"><span class="co">#&gt; 3 http://snomed.info/ct  429374003 simvastatin 40mg</span></a>
-<a class="sourceLine" id="cb27-12" data-line-number="12"><span class="co">#&gt; 4 http://snomed.info/ct  429374003 simvastatin 40mg</span></a>
-<a class="sourceLine" id="cb27-13" data-line-number="13"><span class="co">#&gt; 5 http://snomed.info/ct  429374003 simvastatin 40mg</span></a>
-<a class="sourceLine" id="cb27-14" data-line-number="14"><span class="co">#&gt; 6 http://snomed.info/ct  429374003 simvastatin 40mg</span></a></code></pre></div>
+<a class="sourceLine" id="cb27-8" data-line-number="8"><span class="co">#&gt;                  system      code          display</span></a>
+<a class="sourceLine" id="cb27-9" data-line-number="9"><span class="co">#&gt; 1 http://snomed.info/ct 429374003 simvastatin 40mg</span></a>
+<a class="sourceLine" id="cb27-10" data-line-number="10"><span class="co">#&gt; 2 http://snomed.info/ct 429374003 simvastatin 40mg</span></a>
+<a class="sourceLine" id="cb27-11" data-line-number="11"><span class="co">#&gt; 3 http://snomed.info/ct 429374003 simvastatin 40mg</span></a>
+<a class="sourceLine" id="cb27-12" data-line-number="12"><span class="co">#&gt; 4 http://snomed.info/ct 429374003 simvastatin 40mg</span></a>
+<a class="sourceLine" id="cb27-13" data-line-number="13"><span class="co">#&gt; 5 http://snomed.info/ct 429374003 simvastatin 40mg</span></a>
+<a class="sourceLine" id="cb27-14" data-line-number="14"><span class="co">#&gt; 6 http://snomed.info/ct 429374003 simvastatin 40mg</span></a></code></pre></div>
 <p>The above example shows that instead of the MedicationStatement resource, we can choose the MedicationCodeableConcept as the root level for our extraction. This can be useful to get a quick and relatively clean overview over the types of codes used on this level of the resource. It is however important to note that this mode of extraction makes it impossible to recognize if each row belongs to one resource or if several of these rows came from the same resource. This of course also means that you cannot link this information to data from other resources because this extraction mode discards of that information.</p>
 </div>
+</div>
+<div id="acknowledgements" class="section level2">
+<h2>Acknowledgements</h2>
+<p>This work was carried out by the SMITH consortium and the cross-consortium use case POLAR_MI; both are part of the German Initiative for Medical Informatics and funded by the German Federal Ministry of Education and Research (BMBF), grant no. 01ZZ1803A , 01ZZ1803C and 01ZZ1910A.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>FHIR is the registered trademark of HL7 and is used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of this product by HL7<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
 </div>
 
 
