@@ -12,88 +12,96 @@ knitr::opts_chunk$set(
 
 ## ---- include=F---------------------------------------------------------------
 library(fhircrackr)
-patient_bundles <- fhir_unserialize(patient_bundles)
+patient_bundles <- fhir_unserialize(fhircrackr::patient_bundles)
 
 ## -----------------------------------------------------------------------------
 length(patient_bundles)
 str(patient_bundles[[1]])
 
 ## -----------------------------------------------------------------------------
-#define which elements of the resources are of interest
+#define design
 design1 <- list(
-  Patients = list(
-    "//Patient"
-  )
+ 
+	 Patients = list(
+   
+	 	resource =  "//Patient"
+	 )
 )
 
 #Convert resources
-list_of_tables <- fhir_crack(patient_bundles, design1, verbose = 0)
+list_of_tables <- fhir_crack(bundles = patient_bundles, design = design1, verbose = 0)
 
 #have look at part of the results
-list_of_tables$Patient[1:5,1:5]
+list_of_tables$Patients[1:5,1:5]
 
 ## -----------------------------------------------------------------------------
-#define which elements of the resources are of interest
+#define design
 design2 <- list(
-  Patients = list(
-    "//Patient",
-    "./*"
-  )
+  
+	Patients = list(
+   
+		resource =  "//Patient",
+    
+		cols = "./*"
+	 )
 )
 
 #Convert resources
-list_of_tables <- fhir_crack(patient_bundles, design2, verbose = 0)
+list_of_tables <- fhir_crack(bundles = patient_bundles, design = design2, verbose = 0)
 
 #have look at the results
 head(list_of_tables$Patients)
 
 ## -----------------------------------------------------------------------------
-#define which elements of the resources are of interest
+#define design
 design3 <- list(
 
 	Patients = list(
-		"//Patient",
-		list(
+		
+		resource = "//Patient",
+		
+		cols = list(
 			PID           = "id",
-			NAME.USE      = "name/use",
-			NAME.GIVEN    = "name/given",
-			NAME.FAMILY   = "name/family",
-			GENDER        = "gender",
-			BIRTHDAY      = "birthDate"
+			use_name      = "name/use",
+			given_name    = "name/given",
+			family_name   = "name/family",
+			gender        = "gender",
+			birthday      = "birthDate"
 		)
 	)
 )
 #Convert resources
-list_of_tables <- fhir_crack(patient_bundles, design3, verbose = 0)
+list_of_tables <- fhir_crack(bundles = patient_bundles, design = design3, verbose = 0)
 
 #have look at the results
 head(list_of_tables$Patients)
 
-## ---- eval=F------------------------------------------------------------------
-#  list(
-#  
-#  #Option 1: extract all attributes
-#    <Name of first data frame> = list(
-#      <XPath to resource type>
-#    ),
-#  
-#  #Option 2: extract attributes from certain level
-#    <Name of second data frame> = list(
-#      <XPath to resource type>,
-#      <XPath indicating attribute level>
-#    ),
-#  
-#  #Option 3: extract specific attributes
-#    <Name of third data frame> = list(
-#      <XPath to resource type>,
-#      list(
-#        <column name 1> = <XPath to attribute>,
-#        <column name 2> = <XPath to attribute>
-#        ...
-#      )
-#    ),
-#    ...
-#  )
+## -----------------------------------------------------------------------------
+design4 <- list(
+
+	Patients = list(
+		
+		resource = "//Patient",
+		
+		cols = list(
+			PID           = "id",
+			use_name      = "name/use",
+			given_name    = "name/given",
+			family_name   = "name/family",
+			gender        = "gender",
+			birthday      = "birthDate"
+		),
+		
+		style = list(
+			sep = "|",
+			brackets = c("[","]"),
+			rm_empty_cols = FALSE
+		)
+	)
+)
+
+## -----------------------------------------------------------------------------
+fhir_canonical_design()
 
 ## -----------------------------------------------------------------------------
 search_request  <- paste0(
@@ -103,7 +111,7 @@ search_request  <- paste0(
   "&_include=MedicationStatement:subject") #include the corresponding Patient resources
 
 ## ---- eval=F------------------------------------------------------------------
-#  medication_bundles <- fhir_search(search_request, max_bundles = 3)
+#  medication_bundles <- fhir_search(request = search_request, max_bundles = 3)
 
 ## ---- include=F---------------------------------------------------------------
 medication_bundles <- fhir_unserialize(medication_bundles)
@@ -113,9 +121,9 @@ design <- list(
 
 	MedicationStatement = list(
 
-		"//MedicationStatement",
+		resource = "//MedicationStatement",
 
-		list(
+		cols = list(
 			MS.ID              = "id",
 			STATUS.TEXT        = "text/status",
 			STATUS             = "status",
@@ -125,25 +133,31 @@ design <- list(
 			DOSAGE             = "dosage/text",
 			PATIENT            = "subject/reference",
 			LAST.UPDATE        = "meta/lastUpdated"
+		),
+		
+		style = list(
+			sep = "|",
+			brackets = NULL, 
+			rm_empty_cols = FALSE
 		)
 	),
 
 	Patients = list(
 
-		"//Patient",
-		"./*"
+		resource = "//Patient",
+		cols = "./*"
 	)
 )
 
-
-list_of_tables <- fhir_crack(medication_bundles, design, verbose = 0)
+## -----------------------------------------------------------------------------
+list_of_tables <- fhir_crack(bundles = medication_bundles, design = design, verbose = 0)
 
 head(list_of_tables$MedicationStatement)
 
 head(list_of_tables$Patients)
 
 ## -----------------------------------------------------------------------------
-bundle<-xml2::read_xml(
+bundle <- xml2::read_xml(
 	"<Bundle>
 
 		<Patient>
@@ -197,35 +211,68 @@ bundle<-xml2::read_xml(
 	</Bundle>"
 )
 
-bundle_list<-list(bundle)
+bundle_list <- list(bundle)
 
 ## -----------------------------------------------------------------------------
 design1 <- list(
-	Patients = list("//Patient")
+	Patients = list(
+		resource = "//Patient",
+		cols = NULL, 
+		style = list(
+			sep = " | ",
+			brackets  = NULL,
+			rm_empty_cols = TRUE
+		)
+	)
 )
 
-df1 <- fhir_crack(bundle_list, design1, sep = " | ", verbose = 0)
+df1 <- fhir_crack(bundles = bundle_list, design = design1, verbose = 0)
 df1$Patients
 
 ## -----------------------------------------------------------------------------
 design2 <- list(
-	Patients = list("//Patient")
+	Patients = list(
+		resource = "//Patient",
+		cols = NULL, 
+		style = list(
+			sep = " | ",
+			brackets  = c("[", "]"),
+			rm_empty_cols = TRUE
+		)
+	)
 )
 
-df2 <- fhir_crack(bundle_list, design1, sep = " ", add_indices = T, 
-				  brackets = c("[", "]"), verbose = 0)
+df2 <- fhir_crack(bundles = bundle_list, design = design2, verbose = 0)
 df2$Patients
 
 ## -----------------------------------------------------------------------------
+design3 <- list(
+	Patients = list(
+		resource = "//Patient"
+	)
+)
+
+df3 <- fhir_crack(bundles = bundle_list, 
+				  design = design3, 
+				  sep = " | ", 
+				  brackets = c("[", "]"))
+
+
+df3$Patients
+
+
+fhir_canonical_design()
+
+## -----------------------------------------------------------------------------
 fhir_melt(df2$Patients, columns = "address.city", brackets = c("[","]"), 
-		  sep=" ", all_columns = FALSE)
+		  sep=" | ", all_columns = FALSE)
 
 ## -----------------------------------------------------------------------------
 cols <- c("address.city", "address.use", "address.type", 
 		  "address.country")
 
 fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"), 
-		  sep=" ", all_columns = FALSE)
+		  sep=" | ", all_columns = FALSE)
 
 ## -----------------------------------------------------------------------------
 cols <- fhir_common_columns(df2$Patients, column_names_prefix = "address")
@@ -233,27 +280,27 @@ cols
 
 ## -----------------------------------------------------------------------------
 fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"), 
-		  sep=" ", all_columns = TRUE)
+		  sep=" | ", all_columns = TRUE)
 
 ## -----------------------------------------------------------------------------
 cols <- c(cols, "id")
 fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"), 
-		  sep=" ", all_columns = TRUE)
+		  sep=" | ", all_columns = TRUE)
 
 
 ## -----------------------------------------------------------------------------
 cols <- fhir_common_columns(df2$Patients, "address")
 
 molten_1 <- fhir_melt(df2$Patients, columns = cols, brackets = c("[","]"), 
-					  sep=" ", all_columns = TRUE)
+					  sep=" | ", all_columns = TRUE)
 molten_1
 
 molten_2 <- fhir_melt(molten_1, columns = "id", brackets = c("[","]"), 
-					  sep=" ", all_columns = TRUE)
+					  sep=" | ", all_columns = TRUE)
 molten_2
 
 ## -----------------------------------------------------------------------------
-fhir_rm_indices(molten_2, brackets=c("[","]"), sep=" ")
+fhir_rm_indices(molten_2, brackets=c("[","]"))
 
 ## -----------------------------------------------------------------------------
 #serialize bundles
@@ -262,17 +309,17 @@ serialized_bundles <- fhir_serialize(patient_bundles)
 #have a look at them
 head(serialized_bundles[[1]])
 
-## ---- eval=F------------------------------------------------------------------
-#  #create temporary directory for saving
-#  temp_dir <- tempdir()
-#  
-#  #save
-#  save(serialized_bundles, file=paste0(temp_dir, "\\bundles.rda"))
-#  
+## -----------------------------------------------------------------------------
+#create temporary directory for saving
+temp_dir <- tempdir()
 
-## ---- eval=F------------------------------------------------------------------
-#  #load bundles
-#  load(paste0(temp_dir, "\\bundles.rda"))
+#save
+save(serialized_bundles, file=paste0(temp_dir, "/bundles.rda"))
+
+
+## -----------------------------------------------------------------------------
+#load bundles
+load(paste0(temp_dir, "/bundles.rda"))
 
 ## -----------------------------------------------------------------------------
 #unserialize
@@ -281,23 +328,73 @@ bundles <- fhir_unserialize(serialized_bundles)
 #have a look
 head(bundles[[1]])
 
-## ---- eval=F------------------------------------------------------------------
-#  #save bundles as xml files
-#  fhir_save(patient_bundles, directory=temp_dir)
+## -----------------------------------------------------------------------------
+#save bundles as xml files
+fhir_save(patient_bundles, directory=temp_dir)
+
+## -----------------------------------------------------------------------------
+bundles <- fhir_load(temp_dir)
+
+## -----------------------------------------------------------------------------
+fhir_save_design(design1, file = paste0(temp_dir,"/design.xml"))
+
+## -----------------------------------------------------------------------------
+fhir_load_design(paste0(temp_dir,"/design.xml"))
 
 ## ---- eval=F------------------------------------------------------------------
-#  bundles <- fhir_load(temp_dir)
+#  fhir_search("http://hapi.fhir.org/baseR4/Patient", max_bundles = 10,
+#  			save_to_disc=TRUE, directory = paste0(temp_dir, "/downloadedBundles"))
+
+## ---- include=F---------------------------------------------------------------
+assign(x = "last_next_link", value = "http://hapi.fhir.org/baseR4?_getpages=0be4d713-a4db-4c27-b384-b772deabcbc4&_getpagesoffset=200&_count=20&_pretty=true&_bundletype=searchset", envir = fhircrackr:::fhircrackr_env)
+
+
+## -----------------------------------------------------------------------------
+fhir_next_bundle_url()
+
+## -----------------------------------------------------------------------------
+strsplit(fhir_next_bundle_url(), "&")
+
+## ---- eval=F------------------------------------------------------------------
+#  #Starting fhir search request
+#  url <- "http://hapi.fhir.org/baseR4/Observation?_count=500"
+#  
+#  #count <- 0
+#  
+#  while(!is.null(url)){
+#  	
+#  	#load 10 bundles
+#  	bundles <- fhir_search(url, max_bundles = 10)
+#  	
+#  	#crack bundles
+#  	dfs <- fhir_crack(bundles, list(Obs=list(resource = "//Observation")))
+#  	
+#  	#save cracked bundle to RData-file (can be exchanged by other data type)
+#  	save(tables, file = paste0(temp_dir,"/table_", count, ".RData"))
+#  	
+#  	#retrieve starting point for next 10 bundles
+#  	url <- fhir_next_bundle_url()
+#  	
+#  	#count <- count + 1
+#  	#if(count >= 20) {break}
+#  }
+#  
 
 ## ---- eval=F------------------------------------------------------------------
 #  cap <- fhir_capability_statement("http://hapi.fhir.org/baseR4/", verbose = 0)
 
 ## -----------------------------------------------------------------------------
 design <- list(
-	MedCodes=list("//medicationCodeableConcept/coding")
+	MedCodes=list(resource = "//medicationCodeableConcept/coding")
 )
 
 df <- fhir_crack(medication_bundles, design, verbose=0)
 
 head(df$MedCodes)
 
+
+## ---- include=F---------------------------------------------------------------
+file.remove(paste0(temp_dir,
+				   c("/bundles.rda", "/design.xml", "/1.xml", "/2.xml"))
+)
 

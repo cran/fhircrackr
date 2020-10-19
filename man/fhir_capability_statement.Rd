@@ -6,26 +6,34 @@
 \usage{
 fhir_capability_statement(
   url = "https://hapi.fhir.org/baseR4",
+  username = NULL,
+  password = NULL,
   sep = " ",
   remove_empty_columns = TRUE,
-  add_indices = TRUE,
-  brackets = c("<", ">"),
-  verbose = 2
+  brackets = NULL,
+  verbose = 2,
+  add_indices
 )
 }
 \arguments{
 \item{url}{The URL of the FHIR server endpoint.}
 
+\item{username}{A string containing the username for basic authentication. Defaults to NULL, meaning no authentication.}
+
+\item{password}{A string containing the password for basic authentication. Defaults to NULL, meaning no authentication.}
+
 \item{sep}{A string to separate pasted multiple entries}
 
 \item{remove_empty_columns}{Logical scalar. Remove empty columns?}
 
-\item{add_indices}{A logical scalar.}
-
-\item{brackets}{A vector of strings defining the Brackets surrounding the indices. e.g. c( "<", ">")}
+\item{brackets}{A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. \code{c( "<", ">")}.
+If \code{NULL}, no indices will be added to multiple entries. \code{NULL} means \code{brackets} is looked up in design, if it is \code{NULL} there too, no indices are added.}
 
 \item{verbose}{An integer Scalar.  If 0, nothings is printed, if 1, only finishing message is printed, if > 1,
 downloading/extraction progress will be printed. Defaults to 2.}
+
+\item{add_indices}{Deprecated. This argument was used to control adding of indices for multiple entries. This is now
+done via the brackets argument. If brackets is \code{NULL}, no indices are added, if brackets is not \code{NULL}, indices are added to multiple entries.}
 }
 \value{
 A list of data frames containing the information from the statement

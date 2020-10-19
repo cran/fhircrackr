@@ -1,8 +1,8 @@
 Package: fhircrackr
 Type: Package
 Title: Handling HL7 FHIR Resources in R
-Version: 0.1.1
-Date: 2020-07-01
+Version: 0.2.0
+Date: 2020-10-19
 Authors@R: c(
     person( given = "Thomas", 
             family = "Peschel", 
@@ -31,16 +31,16 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
-Imports: xml2, stringr, httr, utils, dplyr
+Imports: xml2, stringr, httr, utils, dplyr, plyr, data.table
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
 NeedsCompilation: no
-Packaged: 2020-07-22 12:16:12 UTC; tpeschel
+Packaged: 2020-10-19 10:41:52 UTC; tpeschel
 Author: Thomas Peschel [aut, cre],
   Julia Gantner [aut] (<https://orcid.org/0000-0003-1568-5893>),
   Jens Przybilla [aut],
   Frank Meineke [aut] (<https://orcid.org/0000-0002-9256-7543>)
 Maintainer: Thomas Peschel <tpeschel@imise.uni-leipzig.de>
 Repository: CRAN
-Date/Publication: 2020-07-22 12:40:03 UTC
+Date/Publication: 2020-10-19 10:50:02 UTC
