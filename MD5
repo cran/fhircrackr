@@ -1,9 +1,9 @@
-ca1ccfe2df6a40db97ec9f3f1f8090f0 *DESCRIPTION
+2cdc64a832aef3239f5f11690a94bb15 *DESCRIPTION
 a913863f6aa1f457f6e87240f0d49ceb *NAMESPACE
-1dc3015cbcc017d6dd07613d8b371f2f *NEWS.md
-d3cd54fa7bdcefdf032afaf70400327a *R/design.R
-5430ee2496ffb5154f4b82c38b45c6a6 *R/fhircrack.R
-da04b3a66143b98b6633d2c3167b06c2 *R/helpers.R
+23fe849ae25bdd00fbfa381f647baf66 *NEWS.md
+ec0dc4bfe1e2c63967cbfb56f8e36b5c *R/design.R
+17ff553b914c3a6588d80fa1ecce46af *R/fhircrack.R
+d06dfa412045f20d3969d1c819a6f207 *R/helpers.R
 eba8402fc42f78b60e59daafbd705c2d *build/vignette.rds
 c95c0b7a445e5ccf50ea3c535bfb4718 *data/medication_bundles.rda
 53c7d25d95d77e49925d2cbc83360cd4 *data/patient_bundles.rda
@@ -17,7 +17,7 @@ d932b451a5f912a518984a952aaae914 *man/fhir_common_columns.Rd
 f53f319f4d09c18a07ab95f48796b922 *man/fhir_crack.Rd
 4f0020a9c9d4fb0892918f4e9b33356c *man/fhir_load.Rd
 dbaae78def265e5d00fb19dfb2e3bc19 *man/fhir_load_design.Rd
-5ef03d55711a9f23b33b0f49e16e520b *man/fhir_melt.Rd
+4d6e4c8818256d064e31359734913dbb *man/fhir_melt.Rd
 7b30d3a9251f47d02ce70fc026d38cc9 *man/fhir_next_bundle_url.Rd
 f3061501964574644adc39bfaa901524 *man/fhir_rm_indices.Rd
 6bb94ee211ff0dbd41789ab098c9cf99 *man/fhir_save.Rd
@@ -34,4 +34,4 @@ d7b9031b8601a167a1156d928cc1e73e *man/patient_bundles.Rd
 3381299bc64b5ee4b69c9ac52238fb0c *tests/testthat/test_001.R
 baab54f95c1d46418437d6744b20bfab *tests/testthat/test_002.R
 b4be2c111b4e690e352bfe758343c69b *vignettes/fhircrackr.Rmd
-065e8000d69b9fc43ac0cd20c717e644 *vignettes/fhircrackr.html
+04a5e5d47b68f38ee687dcf1ef69cc9b *vignettes/fhircrackr.html
