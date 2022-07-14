@@ -5,17 +5,19 @@
 \alias{fhir_style-class}
 \title{An S4 class to represent a design for cracking FHIR resources}
 \description{
-An S4 class to represent a design for cracking FHIR resources
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\linkS4class{fhir_style} is now deprecated, the information that used to be coded here has been moved to the \linkS4class{fhir_table_description}.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{sep}}{A string to separate pasted multiple entries. Defaults to \code{" "}.}
+\item{\code{sep}}{A string to separate pasted multiple entries. Defaults to \code{":::"}.}
 
 \item{\code{brackets}}{A character vector of length two defining the brackets surrounding indices for multiple entries,
-e.g. \code{c( "<", ">")}. If this is empty (i.e. character of length 0, the default), no indices will be added to multiple entries.
+e.g. \code{c("<|", "|>")}. If this is empty (i.e. character of length 0, the default), no indices will be added to multiple entries.
 Empty strings (\code{""}) are not allowed.}
 
 \item{\code{rm_empty_cols}}{Logical scalar. Remove empty columns? Defaults to FALSE.}
 }}
 
+\keyword{internal}

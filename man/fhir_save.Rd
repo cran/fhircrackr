@@ -4,7 +4,7 @@
 \alias{fhir_save}
 \title{Save FHIR bundles as xml-files}
 \usage{
-fhir_save(bundles, directory = "result")
+fhir_save(bundles, directory)
 }
 \arguments{
 \item{bundles}{A list of xml objects representing the FHIR bundles.}
@@ -18,6 +18,9 @@ Writes a list of FHIR bundles as numbered xml files into a directory.
 #unserialize example bundle
 bundles <- fhir_unserialize(medication_bundles)
 
-#save to temporary directory
+#save all bundles to temporary directory
 fhir_save(bundles, directory = tempdir())
+
+#save only two bundles (the second and the third) to temporary directory
+fhir_save(bundles[c(2,3)], directory = tempdir())
 }

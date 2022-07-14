@@ -29,6 +29,14 @@
 #' 2. Token Authentication: Provide a token in the argument `token`, either as a character vector of length one or as as an object of class
 #' [httr::Token-class]. You can use the function [fhir_authenticate()] to create this object.
 #'
+#' ## HTML removal
+#' FHIR resources can contain a considerable amount of html code (e.g. in a [narrative](https://www.hl7.org/fhir/narrative.html#xhtml) object),
+#' which is often created by the server for example to provide a human-readable summary of the resource.
+#' This data is usually not the aim of structured statistical analysis, so in the default setting [fhir_search()] will remove the html
+#' parts immediately after download to reduce memory usage (on a hapi server typically by around 30%, see [fhir_rm_div()]).
+#' The memory gain is payed with a runtime increase of 10%-20%. The html removal can be disabled by setting `rm_tag = NULL`
+#' to increase speed at the cost of increased memory usage.
+#'
 #' @param request An object of class [fhir_url-class] or a character vector of length one containing the full FHIR search request. It is
 #' recommended to explicitly create the request via [fhir_url()] as this will do some validity checks and format the url properly.
 #' Defaults to [fhir_current_request()]
@@ -42,22 +50,27 @@
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
 #' @param max_bundles Maximal number of bundles to get. Defaults to Inf meaning all available bundles are downloaded.
-#' @param verbose An integer vector of length one. If 0, nothings is printed, if 1, only finishing message is printed, if > 1,
-#' downloading progress will be printed. Defaults to 2.
-#' @param max_attempts A numeric vector of length one. The maximal number of attempts to send a request, defaults to 5.
-#' @param delay_between_attempts A numeric vector of length one specifying the delay in seconds between two attempts. Defaults to 10.
+#' @param verbose An integer vector of length one. If 0, nothing is printed, if 1, only finishing message is printed, if > 1,
+#' downloading progress will be printed. Defaults to 1.
+#' @param max_attempts `r lifecycle::badge("deprecated")` The number of maximal attempts is now determined by the length of `delay_between_attempts`
+#' @param delay_between_attempts A numeric vector specifying the delay in seconds between attempts of reaching the server
+#' that `fhir_search()` will make. The length of this vector determines the number of attempts that will be made before stopping with an error.
+#' Defaults to `c(1,3,9,27,81)`.
 #' @param log_errors Either `NULL` or a character vector of length one indicating the name of a file in which to save the http errors.
-#' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to `NULL`
+#' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to `NULL`.
+#' Regardless of the value of `log_errors` the most recent http error message within the current R session is saved internally and can
+#' be accessed with [fhir_recent_http_error()].
 #' @param save_to_disc Either `NULL` or a character vector of length one indicating the name of a directory in which to save the bundles.
 #' If a directory name is provided, the bundles are saved as numerated xml-files into the directory specified
 #' and not returned as a bundle list in the R session. This is useful when a lot of bundles are to be downloaded and keeping them all
 #' in one R session might overburden working memory. When the download is complete, the bundles can be loaded into R using [fhir_load()].
 #' Defaults to `NULL`, i.e. bundles are returned as a list within the R session.
-#' @param directory Deprecated. Please specify the directory directly in the `save_to_disc` argument.
 #' @param delay_between_bundles A numeric scalar specifying a time in seconds to wait between pages of the search result,
 #' i.e. between downloading the current bundle and the next bundle. This can be used to avoid choking a weak server with
 #' too many requests to quickly. Defaults to zero.
-#'
+#' @param rm_tag Character vector of length 1 defining an xml tag of elements that will removed from the bundle automatically.
+#' Defaults to `"div"`,leading to the removal of all html parts (see Details). Set to `NULL` to keep the bundles untouched.
+#' See [fhir_rm_div()] and [fhir_rm_tag()] for more info.
 #' @return A [fhir_bundle_list-class] when `save_to_disc = NULL` (the default),  else `NULL`.
 #' @export
 #'
@@ -66,7 +79,7 @@
 #' - OAuth2 Authentication: [fhir_authenticate()]
 #' - Saving/reading bundles from disc: [fhir_save()] and [fhir_load()]
 #' - Flattening the bundles: [fhir_crack()]
-#'
+#' @importFrom lifecycle deprecated
 #' @examples
 #' \donttest{
 #' #Search with GET
@@ -90,43 +103,28 @@
 #' }
 
 fhir_search <- function(
-	request = fhir_current_request(),
-	body = NULL,
-	username = NULL,
-	password = NULL,
-	token = NULL,
-	max_bundles = Inf,
-	verbose = 1,
-	max_attempts = 5,
-	delay_between_attempts = 10,
-	log_errors = NULL,
-	save_to_disc = NULL,
-	delay_between_bundles = 0,
-	directory = paste0("FHIR_bundles_", gsub("-| |:", "", Sys.time()))) {
-
-	####remove at some point####
-	if(is.logical(save_to_disc)) {
-		warning(
-			"The use of TRUE/FALSE in the argument save_to_disc in combination with the argument directory is ",
-			"deprecated. Please specify the directory name in the save_to_disc argument directly (see ?fhir_search)."
+	request                = fhir_current_request(),
+	body                   = NULL,
+	username               = NULL,
+	password               = NULL,
+	token                  = NULL,
+	max_bundles            = Inf,
+	verbose                = 1,
+	delay_between_attempts = c(1, 3, 9, 27, 81),
+	log_errors             = NULL,
+	save_to_disc           = NULL,
+	delay_between_bundles  = 0,
+	rm_tag                 = "div",
+	max_attempts           = deprecated()
+) {
+	if(lifecycle::is_present(max_attempts)) {
+		lifecycle::deprecate_warn(
+			when = "2.0.0",
+			what = "fhir_search(max_attempts)",
+			details = "The number of maximal attempts is now controlled by the length of the argument delay_between_attempts."
 		)
-		if(save_to_disc) {
-			message("Setting save_to_disc to '", directory, "'.")
-			save_to_disc <- directory
-		}
 	}
 
-	if(is.numeric(log_errors)) {
-		warning("The use of numbers in log_errors is deprecated. Please specify a file name if you want to log erros and NULL if you don't.\n")
-		if(0 < log_errors) {
-			message("Setting log_errors to 'http_error_fhir_search.xml'.")
-			log_errors <- "http_error_fhir_search.xml"
-		} else {
-			log_errors <- NULL
-		}
-	}
-
-	#######################################################
 	if(is.null(request)) {
 		stop(
 			"You have not provided a FHIR search request and there is no ",
@@ -134,9 +132,12 @@ fhir_search <- function(
 			"for fhir_current_request()"
 		)
 	}
-	#prepare body
+
+	#Extract base URL
+	base <- stringr::str_match(request, ".*:\\/\\/.*?\\/")
+
+	#preparation for POST vs. GET
 	if(!is.null(body)) {
-		if(0 < verbose) {message("Initializing search via POST.\n")}
 		#filter out bad urls
 		if(grepl("\\?", request)) {
 			stop(
@@ -158,71 +159,64 @@ fhir_search <- function(
 		} else {
 			stop("The body must be either of type character or of class fhir_body")
 		}
-	}
-	#prepare token authorization
-	if(!is.null(token)) {
-		if(!is.null(username) || is.null(password)) {
-			warning(
-				"You provided username and password as well as a token for authentication.\n",
-				"Ignoring username and password, trying to authorize with token."
-			)
-			username <- NULL
-			password <- NULL
-		}
-		if(is(token, "Token")) {
-			token <- token$credentials$access_token
-		}
-		if(1 < length(token)) {stop("token must be of length one.")}
-		bearerToken <- paste0("Bearer ", token)
-	} else {
-		bearerToken <- NULL
-	}
-	bundles <- list()
-	addr <- fhir_url(url = request)
-	#starting message
-	if(0 < verbose) {
-		message(
-			paste0(
-				"Starting download of ",
-				if(max_bundles < Inf) {max_bundles} else {"ALL!"},
-				" bundles of resource type ",
-				gsub("(^.+/)(.+)(\\?).*$", "\\2", request, perl = TRUE),
-				" from FHIR base URL ",
-				gsub("(^.+)(/.+\\?).*$", "\\1", request, perl = TRUE),
+
+		#startup message
+		if(0 < verbose) {
+			message(
+				"Initializing search via POST from FHIR base URL ",
+				base,
 				".\n"
 			)
+		}
+	} else if(0 < verbose) {
+		message(
+			"Starting download of ",
+			if(max_bundles < Inf) {max_bundles} else {"all"},
+			" bundles of resource type ",
+			stringr::str_extract(request, "(?<=/)([^/\\?]*)(?=\\?|$)"),
+			" from FHIR base URL ",
+			base,
+			".\n"
 		)
 		if(9 < max_bundles) {message("This may take a while...")}
 	}
+
+	bundles <- list()
+	addr <- fhir_url(url = request)
+
 	#download bundles
 	cnt <- 0
 	repeat {
 		cnt <- cnt + 1
-		if(1 < verbose) {cat(paste0("bundle[", cnt, "]"))}
+		if(1 < verbose) {message("bundle[", cnt, "]", appendLF = FALSE)}
+
 		bundle <- get_bundle(
 			request = addr,
 			body = body,
 			username = username,
 			password = password,
-			token = bearerToken,
+			token = token,
 			verbose = verbose,
 			max_attempts = max_attempts,
 			delay_between_attempts = delay_between_attempts,
-			log_errors = log_errors
+			log_errors = log_errors,
+			rm_tag = rm_tag
 		)
+
 		if(is.null(bundle)) {
 			if(0 < verbose) {
-				message("Download interrupted.\n")
+				message("Download interrupted.")
 			}
 			break
 		}
+
 		if(!is.null(save_to_disc)) {
 			if (!dir.exists(save_to_disc)) {
 				dir.create(path = save_to_disc, recursive = TRUE)
 			}
 			xml2::write_xml(
-				x = bundle,
-				file = paste_paths(save_to_disc, paste0(cnt, ".xml"))
+				x    = bundle,
+				file = pastep(save_to_disc, cnt, ext = ".xml")
 			)
 		} else {
 			bundles[[length(bundles) + 1]] <- bundle
@@ -233,34 +227,42 @@ fhir_search <- function(
 					message(
 						"\nDownload completed. Number of downloaded bundles was limited to ",
 						cnt,
-						" bundles, this is less than the total number of bundles available.\n"
+						" bundles, this is less than the total number of bundles available."
 					)
 					assign(x = "last_next_link", value = bundle@next_link, envir = fhircrackr_env)
-				}
-				else {
-					message("\nDownload completed. All available bundles were downloaded.\n")
+				} else {
+					message("\nDownload completed. All available bundles were downloaded.")
 				}
 			}
 			break
 		} else { #finished because there are no more bundles
 			assign(x = "last_next_link", value = new("fhir_url"), envir = fhircrackr_env)
 		}
+
 		if(length(bundle@next_link) == 0) {
 			if(0 < verbose) {
-				message("\nDownload completed. All available bundles were downloaded.\n")
+				message("\nDownload completed. All available bundles were downloaded.")
 			}
 			break
 		}
-		addr <- bundle@next_link
-		if(0 < delay_between_bundles) {Sys.sleep(delay_between_bundles)}
+
+		if(grepl("^/", bundle@next_link)){#when next links are relative
+			addr <- paste0(base,
+						   stringr::str_sub(bundle@next_link, start = 2))
+		}else{
+			addr <- bundle@next_link
+		}
+
+
+
+		if(0 < delay_between_bundles) {
+			Sys.sleep(delay_between_bundles)
+		}
 	}
+
 	fhircrackr_env$current_request <- request
 
-	return(
-		if(is.null(save_to_disc)) {
-			fhir_bundle_list(bundles)
-		} else {NULL} #brauchts eigentlich auch nicht
-	)
+	if(is.null(save_to_disc)) {fhir_bundle_list(bundles)} else {NULL} #brauchts eigentlich auch nicht
 }
 
 
@@ -343,6 +345,27 @@ fhir_current_request <- function() {
 	fhircrackr_env$current_request
 }
 
+
+#' Return most recent http error from [fhir_search()]
+#'
+#' Whenever a call to [fhir_search()] produces any http error, the error information is saved internally
+#' until the next http error occurs (or the R session ends). The error information can be accessed with `fhir_recent_http_error`.
+#' If you want to log that information outside of your R session, set the argument `log_errors` of [fhir_search()] .
+#' @return A string containing the error message
+#'
+#' @examples
+#' \dontrun{
+#' fhir_search("https://server.fire.ly/Medicatio", max_bundles = 1)
+#' cat(fhir_recent_http_error())
+#' }
+#'
+#' @seealso [fhir_search()]
+#' @export
+
+fhir_recent_http_error <- function() {
+	fhircrackr_env$recent_http_error
+}
+
 #' Get capability statement
 #' @description Get the capability statement of a FHIR server.
 #'
@@ -361,28 +384,30 @@ fhir_current_request <- function() {
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
 #' @param sep A character vector of length one to separate pasted multiple entries
-#' @param brackets A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. `c( "<", ">")`. Defaults to `NULL`.
+#' @param brackets A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. `c( "[", "]")`. Defaults to `NULL`.
 #' If `NULL`, no indices will be added to multiple entries.
 #' @param log_errors Either `NULL` or a character vector of length one indicating the name of a file in which to save the http errors.
 #' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to `NULL`
-#' @param verbose An integer Scalar.  If 0, nothing is printed, if 1, only finishing message is printed, if > 1,
-#' extraction progress will be printed. Defaults to 2.
+#' @param verbose `r lifecycle::badge("deprecated")`
 #' @return A list of data frames containing the information from the statement
 #' @export
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' #without indices
-#' cap <- fhir_capability_statement("https://server.fire.ly")
+#' cap <- fhir_capability_statement(url = "https://server.fire.ly")
 #'
 #' #with indices
-#' cap <- fhir_capability_statement("https://server.fire.ly", brackets = c("[","]"))
+#' cap <- fhir_capability_statement(url = "https://server.fire.ly",
+#'                                  brackets = c("[","]"),
+#'                                  sep = " || ")
 #'
 #' #melt searchInclude variable
 #' resources <- fhir_melt(cap$Resources,
 #'                        columns = "searchInclude",
-#'                        brackets = c("[", "]"), sep = " || ",
-#'                        all_columns = TRUE)
+#'                        brackets = c("[", "]"),
+#'                        sep = " || ",
+#'                        all_columns = FALSE)
 #'
 #' #remove indices
 #' resources <- fhir_rm_indices(resources, brackets = c("[", "]"))
@@ -396,22 +421,33 @@ fhir_capability_statement <- function(
 	password = NULL,
 	token = NULL,
 	brackets = NULL,
-	sep = " || ",
+	sep = " ::: ",
 	log_errors = NULL,
-	verbose = 2) {
+	verbose = deprecated()) {
 
-	auth <- if (!is.null(username) && !is.null(password)) {
-		httr::authenticate(username, password)
+	if(lifecycle::is_present(verbose)){
+		lifecycle::deprecate_warn(when = "2.0.0", what = "fhir_capability_statement(verbose)")
 	}
 
-	response <- httr::GET(
-		url = paste_paths(url, "/metadata?"),
+	resource <- NULL #To stop "no visible binding" NOTE in check()
+
+	use_indices <- FALSE
+	if(!is.null(brackets)) {
+		bra <- brackets[1]
+		ket <- brackets[2]
+		use_indices <- TRUE
+	}
+
+	auth <- auth_helper(username = username, password = password, token = token)
+
+	response <- try(httr::GET(
+		url = pastep(url, "metadata?"),
 		config = httr::add_headers(
 			Accept = "application/fhir+xml",
-			Authorization = token
+			Authorization = auth$token
 		),
-		auth
-	)
+		auth$basicAuth
+	), silent = TRUE)
 
 	#check for http errors
 	check_response(response = response, log_errors = log_errors)
@@ -419,62 +455,83 @@ fhir_capability_statement <- function(
 	#extract payload
 	payload <- httr::content(x = response, as = "text", encoding = "UTF-8")
 	xml <- xml2::read_xml(x = payload)
-	xml2::xml_ns_strip(x = xml)
+	xml <- fhir_ns_strip(xml)
 
 	xml_meta <- xml2::xml_new_root(.value = xml, .copy = TRUE)
 	xml2::xml_remove(.x = xml2::xml_find_all(x = xml_meta, xpath = "/CapabilityStatement/rest"))
+
 	xml_rest <- xml2::xml_new_root(.value = xml, .copy = TRUE)
-	xml_rest <- xml2::xml_find_all(x = xml_rest, xpath = "/CapabilityStatement/rest")
 	xml2::xml_remove(.x = xml2::xml_find_all(x = xml_rest, xpath = "/CapabilityStatement/rest/resource"))
-	xml_resource <- xml2::xml_find_all(x = xml, xpath = "/CapabilityStatement/rest/resource")
 
-	suppressWarnings({
-		Meta <- fhir_table_description(resource = "/CapabilityStatement")
-		Rest <- fhir_table_description(resource = "rest")
-		Resources <- fhir_table_description(resource = "resource")
-	})
 
-	META <- fhir_crack(
-		bundles = list(xml_meta),
-		design = fhir_design(Meta),
-		sep = sep,
-		brackets = brackets,
-		verbose = verbose
+	#### META ####
+	META <- data.table(
+		node   = xml2::xml_find_all(
+			xml_meta,
+			'//@*'
+		)
 	)
-
-	restBrackets <- if(is.null(brackets)) {c("[", "]")} else {brackets}
-
-	REST <- fhir_crack(
-		bundles = list(xml_rest),
-		design = fhir_design(Rest),
-		sep = sep,
-		brackets = restBrackets,
-		verbose = verbose
+	(META[, path     := xml2::xml_path(node) |> busg('/CapabilityStatement/', '')|> busg('([^]])/', '\\1[1]/')] # add missing indices
+		[, value    := xml2::xml_text(node)] # get value
+		[, path     := path |> busg('@.*', '')] # remove attribute from path
+		#[, spath    := path |> busg('^[^/]+/[^/]+/[^/]+/','')] # remove 'Bundle/entry/resource' from paths
+		[, xpath    := path |> busg('\\[[0-9]+]*/', '/') |> busg('\\/$', '')]
+		[, column   := xpath |> busg('/', '.')]
 	)
+	if(use_indices) {
+		META <- (META[, id := path |> busg('[^0-9]+', '.') |> busg('(^\\.)|(\\.$)', '')][, paste0(bra, id, ket, value, collapse = sep), by='column'] |>
+				 	 data.table::transpose(make.names = 'column'))
+	} else {
+		META <- (META[, paste0(value, collapse = sep), by='column'] |> data.table::transpose(make.names = 'column'))
+	}
+	###########
 
-	rest <- fhir_melt(
-		indexed_data_frame = REST$Rest,
-		brackets = restBrackets,
-		sep = " || ",
-		columns = fhir_common_columns(
-			data_frame = REST$Rest,
-			column_names_prefix = "operation"
-		),
-		all_columns = TRUE
+	#### REST ####
+	REST <- data.table(
+		node   = xml2::xml_find_all(
+			xml_rest,
+			'/CapabilityStatement/rest//@*'
+		)
 	)
-
-	rest$resource_identifier <- NULL
-	if(is.null(brackets)) {rest <- fhir_rm_indices(indexed_data_frame = rest, brackets = restBrackets)}
-
-	RESOURCE <- fhir_crack(
-		bundles = list(xml_resource),
-		design = fhir_design(Resources),
-		sep = sep,
-		brackets = brackets,
-		verbose = verbose
+	(REST[, path     := xml2::xml_path(node) |> busg('/CapabilityStatement/', '')|> busg('([^]])/', '\\1[1]/')] # add missing indices
+		[, value    := xml2::xml_text(node)] # get value
+		[, path     := path |> busg('@.*', '')] # remove attribute from path
+		[, spath    := path |> busg('^[^/]+/','')] # remove 'rest' from paths
+		[, xpath    := spath |> busg('\\[[0-9]+]*/', '/') |> busg('\\/$', '')]
+		[, column   := xpath |> busg('/', '.')]
 	)
+	if(use_indices) {
+		REST<- (REST[, id := spath |> busg('[^0-9]+', '.') |> busg('(^\\.)|(\\.$)', '')][, paste0(bra, id, ket, value, collapse = sep), by='column'] |>
+					 data.table::transpose(make.names = 'column'))
+	} else {
+		REST <- (REST[, paste0(value, collapse = sep), by='column'] |>  data.table::transpose(make.names = 'column'))
+	}
+	#########
 
-	list(Meta = META$Meta, Rest = unique(rest), Resources = RESOURCE$Resources)
+	#### RECOURCE ####
+	RESOURCE <- data.table(
+		node   = xml2::xml_find_all(
+			xml,
+			'/CapabilityStatement/rest/resource//@*'
+		)
+	)
+	(RESOURCE[, path     := xml2::xml_path(node) |> busg('/CapabilityStatement/', '')|> busg('([^]])/', '\\1[1]/')] # add missing indices
+		[, value    := xml2::xml_text(node)] # get value
+		[, path     := path |> busg('@.*', '')] # remove attribute from path
+		[, path     := path |> busg('rest\\[([0-9]+)]/', '')] #remove rest[1] from path
+		[, resource    := path |> busg('resource\\[([0-9]+)].*', '\\1') |> as.integer()] # enumerate resource
+		[, spath    := path |> busg('^[^/]+/','')] # remove 'rest/resource' from paths
+		[, xpath    := spath |> busg('\\[[0-9]+]*/', '/') |> busg('\\/$', '')]
+		[, column   := xpath |> busg('/', '.')]
+	)
+	if(use_indices) {
+		RESOURCE<- (RESOURCE[, id := spath |> busg('[^0-9]+', '.') |> busg('(^\\.)|(\\.$)', '')][, paste0(bra, id, ket, value, collapse = sep), by=c('resource', 'column')] |>
+					dcast(resource ~ column, value.var = 'V1'))[,-c('resource')]
+	} else {
+		RESOURCE <- (RESOURCE[, paste0(value, collapse = sep), by=c('resource', 'column')] |> dcast(resource ~ column, value.var = 'V1'))[,-c('resource')]
+	}
+
+	list(Meta = META, Rest = REST, Resources = RESOURCE)
 }
 
 ####Saving Bundles####
@@ -484,28 +541,35 @@ fhir_capability_statement <- function(
 #'
 #' @param bundles A list of xml objects representing the FHIR bundles.
 #' @param directory A character vector of length one containing the path to the folder to store the data in.
-
 #' @export
 #'
 #' @examples
 #' #unserialize example bundle
 #' bundles <- fhir_unserialize(medication_bundles)
 #'
-#' #save to temporary directory
+#' #save all bundles to temporary directory
 #' fhir_save(bundles, directory = tempdir())
+#'
+#' #save only two bundles (the second and the third) to temporary directory
+#' fhir_save(bundles[c(2,3)], directory = tempdir())
 
-
-fhir_save <- function(bundles, directory = "result") {
+fhir_save <- function(bundles, directory) {
 
 	w <- 1 + floor(log10(length(bundles)))
-	if(!dir.exists(directory)) {dir.create(directory, recursive = TRUE)}
+
+	if(!dir.exists(directory)) {
+
+		dir.create(path = directory, recursive = TRUE)
+	}
 
 	for(n in seq_len(length(bundles))) {
+
 		xml2::write_xml(
-			x = bundles[[n]],
-			file = paste_paths(
+			x    = bundles[[n]],
+			file = pastep(
 				directory,
-				paste0(stringr::str_pad(n, width = w, pad = "0"), ".xml")
+				stringr::str_pad(n, width = w, pad = "0"),
+				ext =  ".xml"
 			)
 		)
 	}
@@ -517,41 +581,72 @@ fhir_save <- function(bundles, directory = "result") {
 #' @description Reads all bundles stored as xml files from a directory.
 #'
 #' @param directory A character vector of length one containing the path to the folder were the files are stored.
-#'
+#' @param indices A numeric vector of integers indicating which bundles from the specified directory should be loaded. Defaults to NULL meaning all bundles from the directory are loaded.
 #' @return A [fhir_bundle_list-class].
 #' @export
 #'
 #' @examples
 #' #unserialize example bundle
 #' bundles <- fhir_unserialize(medication_bundles)
+#' length(bundles)
 #'
 #' #save to temporary directory
-#' fhir_save(bundles, directory = tempdir())
+#' dir <- tempdir()
+#' fhir_save(bundles, directory = dir)
 #'
 #' #load from temporary directory
-#' loaded_bundles <- fhir_load(tempdir())
+#' loaded_bundles <- fhir_load(dir)
+#' length(loaded_bundles)
+#'
+#' #load only two, the second and the third bundle
+#' loaded_bundles <- fhir_load(dir, indices = c(2,3))
+#' length(loaded_bundles)
 
-fhir_load <- function(directory) {
-	if(!dir.exists(directory)) {stop("Cannot find the specified directory.")}
-	xml.files <- dir(directory, "*.xml")
-	if(length(xml.files)==0){stop("Cannot find any xml-files in the specified directory.")}
+fhir_load <- function(directory, indices = NULL) {
 
-	list_ <- lapply(
-		lst(xml.files),
-		function(x) xml2::read_xml(paste_paths(directory, x))
+	if(!dir.exists(directory)) {
+
+		warning("Cannot find the specified directory.")
+
+		return(fhir_bundle_list(list()))
+	}
+
+	files <- grep('^[0-9]+\\.xml$', dir(directory), value = T)
+
+	if(is.null(indices)) {
+
+		indices <- seq_along(files)
+	}
+
+	if(any(indices > length(files))){stop("Indices are greater than number of files available in the directory")}
+
+	chosen.files <- files[indices]
+
+	if(length(chosen.files) < 1) {
+
+		warning("Cannot find any xml-files in the specified directory.")
+
+		return(fhir_bundle_list(list()))
+	}
+
+	fhir_bundle_list(
+		bundles = lapply(
+			lst(chosen.files),
+			function(x) {
+				xml2::read_xml(pastep(directory, x))
+			}
+		)
 	)
-
-	fhir_bundle_list(bundles = list_)
 }
 
 
 
-#' Serialize a [fhir_bundle-class] or [fhir_bundle_list-class]
+#' Serialize a [fhir_bundle-class], [fhir_bundle_list-class] or [fhir_resource-class]
 #'
-#' @description Serializes FHIR bundles to allow for saving in .rda or .RData format without losing integrity of pointers
-#' i.e. it turns a [fhir_bundle_xml-class] object into an [fhir_bundle_serialized-class] object.
-#' @param bundles A [fhir_bundle-class] or [fhir_bundle_list-class] object.
-#' @return A  [fhir_bundle_xml-class] or [fhir_bundle_list-class] object.
+#' @description Serializes FHIR bundles or resources to allow for saving in .rda or .RData format without losing integrity of pointers
+#' i.e. it turns a [fhir_bundle_xml-class]/[fhir_resource_xml-class] object into an [fhir_bundle_serialized-class]/[fhir_resource_serialized-class] object.
+#' @param bundles A [fhir_bundle-class], [fhir_bundle_list-class] or [fhir_resource-class] object.
+#' @return A  [fhir_bundle_xml-class], [fhir_bundle_list-class] or [fhir_resource_xml-class]  object.
 #' @export
 #' @docType methods
 #' @rdname fhir_serialize-methods
@@ -565,6 +660,7 @@ fhir_load <- function(directory) {
 #'
 #' #works also on single bundles
 #' fhir_serialize(bundles[[1]])
+#'
 #'
 
 setGeneric(
@@ -614,13 +710,32 @@ setMethod(
 	}
 )
 
+#' @rdname fhir_serialize-methods
+#' @aliases fhir_serialize,fhir_resource_xml-method
+setMethod(
+	f = "fhir_serialize",
+	signature = c(bundles = "fhir_resource_xml"),
+	definition = function(bundles) {
+		fhir_resource_serialized(resource = xml2::xml_serialize(object = bundles, connection = NULL))
+	}
+)
 
-#' Unserialize a [fhir_bundle-class] or [fhir_bundle_list-class]
+#' @rdname fhir_serialize-methods
+#' @aliases fhir_serialize,fhir_resource_serialized-method
+setMethod(
+	f = "fhir_serialize",
+	signature = c(bundles = "fhir_resource_serialized"),
+	definition = function(bundles) {
+		bundles
+	}
+)
+
+#' Unserialize a [fhir_bundle-class], [fhir_bundle_list-class] or [fhir_resource-class]
 #'
-#' @description Unserializes FHIR bundles that have been serialized to allow for saving in .rda or .RData format,
-#' i.e. it turns a [fhir_bundle_serialized-class] object into an [fhir_bundle_xml-class] object.
-#' @param bundles A [fhir_bundle-class] or [fhir_bundle_list-class] object.
-#' @return A  [fhir_bundle_serialized-class] or [fhir_bundle_list-class] object.
+#' @description Unserializes FHIR resources or bundles that have been serialized to allow for saving in .rda or .RData format,
+#' i.e. it turns a [fhir_bundle_serialized-class]/[fhir_resource_serialized-class] object into an [fhir_bundle_xml-class]/[fhir_resource_xml-class] object.
+#' @param bundles A [fhir_bundle-class], [fhir_bundle_list-class] or [fhir_resource-class] object.
+#' @return A  [fhir_bundle_serialized-class], [fhir_bundle_list-class] or [fhir_resource_serialized-class]object.
 #' @export
 #' @docType methods
 #' @rdname fhir_unserialize-methods
@@ -660,6 +775,27 @@ setMethod(
 	definition = function(bundles) {
 		b <- xml2::xml_unserialize(connection = bundles)
 		fhir_bundle_xml(bundle = b)
+	}
+)
+
+#' @rdname fhir_unserialize-methods
+#' @aliases fhir_unserialize,fhir_resource_xml-method
+setMethod(
+	f = "fhir_unserialize",
+	signature = c(bundles = "fhir_resource_xml"),
+	definition = function(bundles) {
+		bundles
+	}
+)
+
+#' @rdname fhir_unserialize-methods
+#' @aliases fhir_unserialize,fhir_resource_serialized-method
+setMethod(
+	f = "fhir_unserialize",
+	signature = c(bundles = "fhir_resource_serialized"),
+	definition = function(bundles) {
+		b <- xml2::xml_unserialize(connection = bundles)
+		fhir_resource_xml(b)
 	}
 )
 
@@ -724,7 +860,7 @@ fhir_authenticate <- function(
 		endpoint = endpoint,
 		app = app,
 		client_credentials = TRUE,
-		cache = TRUE,
+		cache = FALSE,
 		query_authorize_extra = query_authorize_extra
 	)
 	if(names(t_$credentials)[1] == "error") {
@@ -747,10 +883,12 @@ fhir_authenticate <- function(
 #' @param request An object of class [fhir_search_url-class] or character vector of length one containing the full FHIR search request.
 #' @param username A character vector of length one containing the username for basic authentication. Defaults to NULL, meaning no authentication.
 #' @param password A character vector of length one containing the password for basic authentication. Defaults to NULL, meaning no authentication.
-#' @param token A bearer token as a character vector of length one or NULL.
-#' @param max_attempts A numeric scalar. The maximal number of attempts to send a request, defaults to 5.
+#' @param token The token for token based auth, either a string or a httr token object
+#' @param max_attempts Deprecated. The number of maximal attempts is determined by the length of `delay_between_attempts`
 #' @param verbose An integer scalar. If > 1,  Downloading progress is printed. Defaults to 2.
-#' @param delay_between_attempts A numeric scalar specifying the delay in seconds between two attempts. Defaults to 10.
+#' @param delay_between_attempts A numeric vector specifying the delay in seconds between attempts of reaching the server
+#' that `fhir_search()` will make. The length of this vector determines the number of attempts that will be made before stopping with an error.
+#' Defaults to `c(1,3,9,27,81)`.
 #' @param log_errors Either `NULL` or a character vector of length one indicating the name of a file in which to save the http errors.
 #' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to `NULL`
 #'
@@ -770,52 +908,56 @@ get_bundle <- function(
 	password = NULL,
 	token = NULL,
 	verbose = 2,
-	max_attempts = 5,
-	delay_between_attempts = 10,
-	log_errors = NULL) {
+	max_attempts = NULL,
+	delay_between_attempts = c(1,3,9,27,81),
+	log_errors = NULL,
+	rm_tag = "div") {
 
 	#download response
-	for(n in seq_len(max_attempts)) {
-		if(1 < verbose) {cat(paste0("(", n, "): ", request, "\n"))}
-		auth <- if(!is.null(username) && !is.null(password)) {
-			httr::authenticate(user = username, password = password)
-		}
+	for(n in seq_along(delay_between_attempts)) {
+		if(1 < verbose) {message("(", n, "): ", request)}
+
+		auth <- auth_helper(username = username, password = password, token = token)
+
 		#paging is implemented differently for Hapi/Vonk When initial request is POST
 		#VonK: Next-Links have to be POSTed, Hapi: Next-Links have to be GETed
 		#search via POST
 		if(grepl("_search", request)) {
-			response <- httr::POST(
+			response <- try(httr::POST(
 				url = request,
 				config = httr::add_headers(
 					Accept = "application/fhir+xml",
-					Authorization = token
+					Authorization = auth$token
 				),
 				httr::content_type(type = body@type),
-				auth,
+				auth$basicAuth,
 				body = body@content
-			)
+			), silent = TRUE)
 
 		} else {#search via GET
-			response <- httr::GET(
+			response <- try(httr::GET(
 				url = request,
 				config = httr::add_headers(
 					Accept = "application/fhir+xml",
-					Authorization = token
+					Authorization = auth$token
 				),
-				auth
-			)
+				auth$basicAuth
+			), silent = TRUE)
 		}
-		#check for http errors
+		#check for errors
 		check_response(response = response, log_errors = log_errors)
+
 		#extract payload
 		payload <- try(httr::content(x = response, as = "text", encoding = "UTF-8"), silent = TRUE)
 		if(class(payload)[1] != "try-error") {
 			xml <- try(xml2::read_xml(x = payload), silent = TRUE)
 			if(class(xml)[1] != "try-error") {
-				return(fhir_bundle_xml(bundle = xml))
+				bundle <- fhir_bundle_xml(bundle = xml)
+				if(!is.null(rm_tag)){bundle <- fhir_rm_tag(x = bundle, tag = rm_tag)}
+				return(bundle)
 			}
 		}
-		Sys.sleep(delay_between_attempts)
+		Sys.sleep(delay_between_attempts[n])
 	}
 	NULL
 }
@@ -824,12 +966,12 @@ get_bundle <- function(
 #'
 #' @param response A http response
 #' @param log_errors A character vector of length one indicating the name of a file in which to save the http errors.
+#' @param append Append to existing file?
 #' @noRd
 #'
-error_to_file <- function(response, log_errors) {
+error_to_file <- function(response, log_errors, append) {
 	payload <- httr::content(x = response, as = "text", encoding = "UTF-8")
-	xml <- xml2::read_xml(x = payload)
-	xml2::write_xml(x = xml, file = log_errors)
+	write(x = payload, file = log_errors, append = append)
 }
 #' Check http response
 #'
@@ -838,24 +980,41 @@ error_to_file <- function(response, log_errors) {
 #' @param response A http response
 #' @param log_errors Either `NULL` or a character vector of length one indicating the name of a file in which to save the http errors.
 #' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file.
+#' @param append Append message to existing file? Defaults to FALSE
 #' @noRd
 #'
 #'
-check_response <- function(response, log_errors) {
+check_response <- function(response, log_errors, append = FALSE) {
+
+	#Error in curl
+	if(is(response, "try-error")){
+		if(!is.null(log_errors)){
+			write(x = response, file = log_errors)
+			stop("The server could not be reached:\n", response, ".\n",
+				 "This has been logged in the generated error file.")
+		}else{
+			stop("The server could not be reached:\n", response, ".\n")
+		}
+	}
+
+	#http error
 	code <- response$status_code
-	if(code != 200 && !is.null(log_errors)) {
-		error_to_file(response = response, log_errors = log_errors)
+	if(code >= 400){
+		fhircrackr_env$recent_http_error <- httr::content(x = response, as = "text", encoding = "UTF-8")
+	}
+	if(code >= 400 && !is.null(log_errors)) {
+		error_to_file(response = response, log_errors = log_errors, append = append)
 	}
 	if(code == 400) {
 		if (!is.null(log_errors)) {
 			stop(
-				"HTTP code 400 - This can be caused by an invalid FHIR search request or a server issue. ",
+				"HTTP code 400 - This can be caused by an invalid request or a server issue. ",
 				"For more information see the generated error file."
 			)
 		} else {
 			stop(
-				"HTTP code 400 - This can be caused by an invalid FHIR search request or a server issue. ",
-				"To print more detailed error information to a file, set argument log_errors to a filename and rerun fhir_search()."
+				"HTTP code 400 - This can be caused by an invalid request or a server issue. ",
+				"To print more detailed error information, run fhir_recent_http_error() or set argument log_errors to a filename and rerun you request."
 			)
 		}
 	}
@@ -864,8 +1023,8 @@ check_response <- function(response, log_errors) {
 			stop("HTTP code 401 - Authentication needed. For more information see the generated error file.")
 		} else {
 			stop(
-				"HTTP code 401 - Authentication needed. To print more detailed error information to a file, ",
-				"set argument log_errors to a filename and rerun fhir_search()."
+				"HTTP code 401 - Authentication needed. To print more detailed error information,",
+				"run fhir_recent_http_error() or set argument log_errors to a filename and rerun you request."
 			)
 		}
 	}
@@ -874,8 +1033,8 @@ check_response <- function(response, log_errors) {
 			stop("HTTP code 404 - Not found. Did you misspell the resource? For more information see the generated error file.")
 		} else {
 			stop(
-				"HTTP code 404 - Not found. Did you misspell the resource? To print more detailed error information to a file, ",
-				"set argument log_errors to a filename and rerun fhir_search()."
+				"HTTP code 404 - Not found. Did you misspell the resource? To print more detailed error information, ",
+				"run fhir_recent_http_error() or set argument log_errors to a filename and rerun you request."
 			)
 		}
 	}
@@ -890,8 +1049,7 @@ check_response <- function(response, log_errors) {
 			warning(
 				"Your request generated a HTTP code ",
 				code,
-				". To print more detailed information to a file, set argument log_errors to a filename and rerun fhir_search()."
-			)
+				". To print more detailed error information, run fhir_recent_http_error() or set argument log_errors to a filename and rerun you request.")
 		}
 	}
 	if(400 <= code && code < 500) {
@@ -905,7 +1063,7 @@ check_response <- function(response, log_errors) {
 			stop(
 				"Your request generated a client error, HTTP code ",
 				code,
-				". To print more detailed information to a file, set argument log_errors to a filename and rerun fhir_search()."
+				". To print more detailed error information, run fhir_recent_http_error() or set argument log_errors to a filename and rerun you request."
 			)
 		}
 	}
@@ -920,7 +1078,7 @@ check_response <- function(response, log_errors) {
 			stop(
 				"Your request generated a server error, HTTP code ",
 				code,
-				". To print more detailed error information to a file, set argument log_errors to a filename and rerun fhir_search()."
+				". To print more detailed error information, run fhir_recent_http_error() or set argument log_errors to a filename and rerun you request."
 			)
 		}
 	}

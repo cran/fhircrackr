@@ -4,12 +4,12 @@
 \alias{fhir_style}
 \title{Create fhir_style object}
 \usage{
-fhir_style(sep = " ", brackets = character(), rm_empty_cols = FALSE)
+fhir_style(sep = ":::", brackets = character(), rm_empty_cols = FALSE)
 }
 \arguments{
-\item{sep}{A character vector of length one to separate pasted multiple entries. Defaults to \code{" "}}
+\item{sep}{A character vector of length one to separate pasted multiple entries. Defaults to \code{":::"}}
 
-\item{brackets}{A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. \code{c( "<", ">")}.
+\item{brackets}{A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. \code{c("<|", "|>")}.
 If this is empty (i.e. character of length zero, the default) or 'NULL', no indices will be added to multiple entries. If it is a character
 vector of length one, it will be recycled to length two, i.e. \code{"|"} will become \code{c("|", "|")}.
 Empty strings (\code{""}) are not allowed.}
@@ -20,8 +20,9 @@ Empty strings (\code{""}) are not allowed.}
 A fhir_style object
 }
 \description{
-This function creates an object of class \code{fhir_style}.
-It contains the three elements \code{sep}, \code{brackets} and \code{rm_empty_cols}. See Details.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+This function was used to create an object of class \code{fhir_style} in fhircrackr < 2.0.0.
+It is now deprecated, the information that used to be coded in \code{fhir_style} has been moved to the \linkS4class{fhir_table_description}.
 }
 \details{
 A \code{fhir_style} object is part of a \linkS4class{fhir_table_description} which in turn is part of a \linkS4class{fhir_design} and
@@ -29,20 +30,36 @@ ultimately used in \code{\link[=fhir_crack]{fhir_crack()}}. A \code{fhir_style} 
 \itemize{
 \item \code{sep}: A string defining the separator used to separate multiple entries for the same element in a FHIR resource,
 e.g. multiple \code{address/city} elements in a Patient resource.
-\item \code{brackets}: A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. \code{c( "<", ">")}.
+\item \code{brackets}: A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. \code{c("<|", "|>")}.
 If this is empty (i.e. character of length 0, the default), no indices will be added to multiple entries.
 Empty strings (\code{""}) are not allowed.
 \item \code{rm_empty_cols}: A logical scalar defining whether or not to remove empty columns after cracking. Empty columns arise when you
 try to extract an element that doesn't appear in any of the resources.
 A \code{fhir_style} object looks for example like this:
-}\preformatted{sep: ' '
-brackets: '[' ']'
-rm_empty_cols: FALSE
 }
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{sep: ':::'
+brackets: '<|' '|>'
+rm_empty_cols: FALSE
+}\if{html}{\out{</div>}}
 }
 \examples{
-fhir_style(sep = " ",
-           brackets = c("[", "]"),
-           rm_empty_cols = TRUE)
+
+#instead of this:
+
+style <- fhir_style(sep           = ":::",
+                    brackets      = c("<|", "|>"),
+                    rm_empty_cols = TRUE)
+
+table_description <- fhir_table_description(
+                        resource = "Patient",
+                        style = style)
+#use this:
+table_description <- fhir_table_description(
+                        resource       = "Patient",
+                        sep            = ":::",
+                        brackets       = c("<|", "|>"),
+                         rm_empty_cols = TRUE)
 
 }
+\keyword{internal}

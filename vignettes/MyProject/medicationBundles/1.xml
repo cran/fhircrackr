@@ -1,0 +1,2403 @@
+<Bundle>
+  <id value="cba61288-e44a-4e5d-8246-dd4657d9bd9e"/>
+  <meta>
+    <lastUpdated value="2022-06-23T13:45:15.138+00:00"/>
+  </meta>
+  <type value="searchset"/>
+  <link>
+    <relation value="self"/>
+    <url value="http://hapi.fhir.org/baseR4/MedicationStatement?_include=MedicationStatement%3Asubject&amp;code=http%3A%2F%2Fsnomed.info%2Fct%7C429374003"/>
+  </link>
+  <link>
+    <relation value="next"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=cba61288-e44a-4e5d-8246-dd4657d9bd9e&amp;_getpagesoffset=20&amp;_count=20&amp;_pretty=true&amp;_include=MedicationStatement%3Asubject&amp;_bundletype=searchset"/>
+  </link>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/30233"/>
+    <resource>
+      <MedicationStatement>
+        <id value="30233"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2019-09-26T14:34:44.543+00:00"/>
+          <source value="#96ac2faff6bf1f28"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/30163"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/42091"/>
+    <resource>
+      <MedicationStatement>
+        <id value="42091"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2019-10-09T22:44:05.728+00:00"/>
+          <source value="#5f9892f03e43e754"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/42024"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/45724"/>
+    <resource>
+      <MedicationStatement>
+        <id value="45724"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2019-10-11T16:30:24.411+00:00"/>
+          <source value="#d688c24e6b9f7889"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/45657"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/59597"/>
+    <resource>
+      <MedicationStatement>
+        <id value="59597"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2019-11-12T14:27:00.098+00:00"/>
+          <source value="#xbWt8DMUQbi9IYRR"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/59530"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/69117"/>
+    <resource>
+      <MedicationStatement>
+        <id value="69117"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2019-11-16T16:51:50.759+00:00"/>
+          <source value="#FfLXDm2osqLZ8uHo"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/69050"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/591941"/>
+    <resource>
+      <MedicationStatement>
+        <id value="591941"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-01-22T12:53:40.539+00:00"/>
+          <source value="#YVOmV6ZNUAMjjoBS"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/591874"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/632776"/>
+    <resource>
+      <MedicationStatement>
+        <id value="632776"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-02-29T18:47:48.754+00:00"/>
+          <source value="#dM9HGNXA1F2Yo6lM"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/632758"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/633744"/>
+    <resource>
+      <MedicationStatement>
+        <id value="633744"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T09:04:34.200+00:00"/>
+          <source value="#g9lugKv58sNYDsss"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/633726"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/634120"/>
+    <resource>
+      <MedicationStatement>
+        <id value="634120"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T10:43:58.614+00:00"/>
+          <source value="#uTFlWjr2fcHf62Xy"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/634102"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/634200"/>
+    <resource>
+      <MedicationStatement>
+        <id value="634200"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T15:40:13.769+00:00"/>
+          <source value="#godYClk6ebjUt6t9"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/634182"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/634225"/>
+    <resource>
+      <MedicationStatement>
+        <id value="634225"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T16:47:40.727+00:00"/>
+          <source value="#2E9ykK0dOTT7SGeW"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/634207"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/634509"/>
+    <resource>
+      <MedicationStatement>
+        <id value="634509"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-03T09:46:19.627+00:00"/>
+          <source value="#9vOVLQlhf4CpW4T4"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/634491"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/636244"/>
+    <resource>
+      <MedicationStatement>
+        <id value="636244"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-04T07:48:04.171+00:00"/>
+          <source value="#zQK1HhDgSQFBnN3C"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/636226"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/641821"/>
+    <resource>
+      <MedicationStatement>
+        <id value="641821"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-13T13:55:28.380+00:00"/>
+          <source value="#YpdVAMSM5KRqPvG9"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/641754"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/697805"/>
+    <resource>
+      <MedicationStatement>
+        <id value="697805"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-23T16:12:37.301+00:00"/>
+          <source value="#tsloeHAXwUdVYDjP"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/697738"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/698001"/>
+    <resource>
+      <MedicationStatement>
+        <id value="698001"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-24T06:19:27.686+00:00"/>
+          <source value="#E6HYFZqA2SwjQINi"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/697934"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/921076"/>
+    <resource>
+      <MedicationStatement>
+        <id value="921076"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-25T11:06:29.751+00:00"/>
+          <source value="#r8lnCVkEU0jLA1No"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/921009"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1162765"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1162765"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-07T20:45:23.573+00:00"/>
+          <source value="#z8C6eFjbmCJ2eRTJ"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1162698"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1162846"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1162846"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-08T01:19:25.919+00:00"/>
+          <source value="#j4vYUBlsR7xDWnYk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1162779"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1163753"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1163753"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-10T11:17:31.607+00:00"/>
+          <source value="#eEQsK8HbEsukifFm"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1163686"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/697738"/>
+    <resource>
+      <Patient>
+        <id value="697738"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-23T16:12:33.294+00:00"/>
+          <source value="#LUrUNxAhdZrFHftu"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Xavier Cooper"/>
+          <family value="Cooper"/>
+          <given value="Xavier"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-03-23"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/697934"/>
+    <resource>
+      <Patient>
+        <id value="697934"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-24T06:19:22.991+00:00"/>
+          <source value="#F6KTacg6zpZSnNLM"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Harry Hay"/>
+          <family value="Hay"/>
+          <given value="Harry"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-03-24"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/42024"/>
+    <resource>
+      <Patient>
+        <id value="42024"/>
+        <meta>
+          <versionId value="3"/>
+          <lastUpdated value="2020-08-07T14:25:55.860+00:00"/>
+          <source value="#S9uv5jD2iAAi5WFP"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Pippa Walker"/>
+          <family value="Walker"/>
+          <given value="Pippa"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="1979-10-08"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/59530"/>
+    <resource>
+      <Patient>
+        <id value="59530"/>
+        <meta>
+          <versionId value="6"/>
+          <lastUpdated value="2021-07-13T08:44:06.580+00:00"/>
+          <source value="#qWzI8wftDtgcB3LC"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <family value="Singh2"/>
+          <given value="Anna "/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2019-11-10"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1162779"/>
+    <resource>
+      <Patient>
+        <id value="1162779"/>
+        <meta>
+          <versionId value="10"/>
+          <lastUpdated value="2022-04-07T13:15:59.046+00:00"/>
+          <source value="#ZZINzpuBCLcTFrEr"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="John Doe"/>
+          <family value="Doe"/>
+          <given value="John"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1970-01-10"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/636226"/>
+    <resource>
+      <Patient>
+        <id value="636226"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-04T07:48:04.171+00:00"/>
+          <source value="#zQK1HhDgSQFBnN3C"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="http://www.interopx.com"/>
+          <value value="411669"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/636228"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/636227"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/591874"/>
+    <resource>
+      <Patient>
+        <id value="591874"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-01-22T12:53:35.396+00:00"/>
+          <source value="#ES36FUomo51ql2f4"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="11111111111111"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Willow Green"/>
+          <family value="Green"/>
+          <given value="Willow"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2020-01-22"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/634182"/>
+    <resource>
+      <Patient>
+        <id value="634182"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T15:40:13.769+00:00"/>
+          <source value="#godYClk6ebjUt6t9"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="https://github.com/synthetichealth/synthea"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/634184"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/634183"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/634491"/>
+    <resource>
+      <Patient>
+        <id value="634491"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-03T09:46:19.627+00:00"/>
+          <source value="#9vOVLQlhf4CpW4T4"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="https://github.com/synthetichealth/synthea"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/634493"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/634492"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/30163"/>
+    <resource>
+      <Patient>
+        <id value="30163"/>
+        <meta>
+          <versionId value="2"/>
+          <lastUpdated value="2020-08-06T18:06:59.963+00:00"/>
+          <source value="#dgyisjnBL3ddbPCh"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="12222"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Michael Anderson"/>
+          <family value="Anderson"/>
+          <given value="Michael"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2010-09-25"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/641754"/>
+    <resource>
+      <Patient>
+        <id value="641754"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-13T13:55:22.464+00:00"/>
+          <source value="#UWVpdL2Jz3YO6AoW"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Brooklyn Li"/>
+          <family value="Li"/>
+          <given value="Brooklyn"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="1990-03-13"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/634207"/>
+    <resource>
+      <Patient>
+        <id value="634207"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T16:47:40.727+00:00"/>
+          <source value="#2E9ykK0dOTT7SGeW"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="https://github.com/synthetichealth/synthea"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/634209"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/634208"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1163686"/>
+    <resource>
+      <Patient>
+        <id value="1163686"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-10T11:17:25.579+00:00"/>
+          <source value="#pIrjJhteJZivkhWC"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Hugo Harris"/>
+          <family value="Harris"/>
+          <given value="Hugo"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2000-05-10"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/633726"/>
+    <resource>
+      <Patient>
+        <id value="633726"/>
+        <meta>
+          <versionId value="11"/>
+          <lastUpdated value="2022-03-24T23:57:01.060+00:00"/>
+          <source value="#W1HGHv9dcsC9JF9y"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="https://github.com/synthetichealth/synthea"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/633728"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/633727"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/45657"/>
+    <resource>
+      <Patient>
+        <id value="45657"/>
+        <meta>
+          <versionId value="2"/>
+          <lastUpdated value="2020-01-28T10:59:09.322+00:00"/>
+          <source value="#35lfo9hGpqxnb9bC"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Madeleine Morris"/>
+          <family value="Morris"/>
+          <given value="Madeleine"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1962-10-11"/>
+        <managingOrganization>
+          <reference value="Organization/358"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1162698"/>
+    <resource>
+      <Patient>
+        <id value="1162698"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-07T20:45:19.062+00:00"/>
+          <source value="#akkNQ2TLqlhvnwaR"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Jay Sean"/>
+          <family value="Sean"/>
+          <given value="Jay"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1989-02-14"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/69050"/>
+    <resource>
+      <Patient>
+        <id value="69050"/>
+        <meta>
+          <versionId value="2"/>
+          <lastUpdated value="2020-08-07T19:08:20.198+00:00"/>
+          <source value="#Icgsc3EljTzwcKti"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="Amia3"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Basanta Hoffmann"/>
+          <family value="Hoffmann"/>
+          <given value="Basanta"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2000-11-20"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/634102"/>
+    <resource>
+      <Patient>
+        <id value="634102"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-03-02T10:43:58.614+00:00"/>
+          <source value="#uTFlWjr2fcHf62Xy"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="https://github.com/synthetichealth/synthea"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/634104"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/634103"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/632758"/>
+    <resource>
+      <Patient>
+        <id value="632758"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-02-29T18:47:48.754+00:00"/>
+          <source value="#dM9HGNXA1F2Yo6lM"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-race">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2106-3"/>
+              <display value="White"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="White"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity">
+          <extension url="ombCategory">
+            <valueCoding>
+              <system value="urn:oid:2.16.840.1.113883.6.238"/>
+              <code value="2186-5"/>
+              <display value="Not Hispanic or Latino"/>
+            </valueCoding>
+          </extension>
+          <extension url="text">
+            <valueString value="Not Hispanic or Latino"/>
+          </extension>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName">
+          <valueString value="Kristyn560 Lesch175"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex">
+          <valueCode value="M"/>
+        </extension>
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthPlace">
+          <valueAddress>
+            <city value="Boston"/>
+            <state value="Massachusetts"/>
+            <country value="US"/>
+          </valueAddress>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/disability-adjusted-life-years">
+          <valueDecimal value="4.160702818392717"/>
+        </extension>
+        <extension url="http://synthetichealth.github.io/synthea/quality-adjusted-life-years">
+          <valueDecimal value="67.83929718160728"/>
+        </extension>
+        <identifier>
+          <system value="https://github.com/synthetichealth/synthea"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="MR"/>
+              <display value="Medical Record Number"/>
+            </coding>
+            <text value="Medical Record Number"/>
+          </type>
+          <system value="http://hospital.smarthealthit.org"/>
+          <value value="41166989-975d-4d17-b9de-17f94cb3eec1"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="SS"/>
+              <display value="Social Security Number"/>
+            </coding>
+            <text value="Social Security Number"/>
+          </type>
+          <system value="http://hl7.org/fhir/sid/us-ssn"/>
+          <value value="999-17-8717"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="DL"/>
+              <display value="Driver's License"/>
+            </coding>
+            <text value="Driver's License"/>
+          </type>
+          <system value="urn:oid:2.16.840.1.113883.4.3.25"/>
+          <value value="S99933732"/>
+        </identifier>
+        <identifier>
+          <type>
+            <coding>
+              <system value="http://terminology.hl7.org/CodeSystem/v2-0203"/>
+              <code value="PPN"/>
+              <display value="Passport Number"/>
+            </coding>
+            <text value="Passport Number"/>
+          </type>
+          <system value="http://standardhealthrecord.org/fhir/StructureDefinition/passportNumber"/>
+          <value value="X75257608X"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stiedemann542"/>
+          <given value="Aaron697"/>
+          <prefix value="Mr."/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="555-213-2064"/>
+          <use value="home"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1946-03-29"/>
+        <address>
+          <extension url="http://hl7.org/fhir/StructureDefinition/geolocation">
+            <extension url="latitude">
+              <valueDecimal value="42.58942256332994"/>
+            </extension>
+            <extension url="longitude">
+              <valueDecimal value="-71.3827654850569"/>
+            </extension>
+          </extension>
+          <line value="378 Krajcik Lodge"/>
+          <city value="Westford"/>
+          <state value="Massachusetts"/>
+          <country value="US"/>
+        </address>
+        <maritalStatus>
+          <coding>
+            <system value="http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"/>
+            <code value="M"/>
+            <display value="M"/>
+          </coding>
+          <text value="M"/>
+        </maritalStatus>
+        <multipleBirthBoolean value="false"/>
+        <communication>
+          <language>
+            <coding>
+              <system value="urn:ietf:bcp:47"/>
+              <code value="en-US"/>
+              <display value="English"/>
+            </coding>
+            <text value="English"/>
+          </language>
+        </communication>
+        <generalPractitioner>
+          <reference value="Practitioner/632760"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/632759"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/921009"/>
+    <resource>
+      <Patient>
+        <id value="921009"/>
+        <meta>
+          <versionId value="3"/>
+          <lastUpdated value="2020-04-01T13:01:17.522+00:00"/>
+          <source value="#WYbX5i8RxFerjmgY"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Edward Melonseed"/>
+          <family value="Melonseed"/>
+          <given value="Edward"/>
+        </name>
+        <name>
+          <use value="usual"/>
+          <text value="Ed Melonseed"/>
+          <family value="Melonseed"/>
+          <given value="Ed"/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="(08)97654321"/>
+          <use value="mobile"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1988-03-25"/>
+        <address>
+          <use value="work"/>
+          <type value="postal"/>
+          <text value="88/20 Tiwanon Road, Talad Kwan, Muang, Nonthaburi, 11000, Thailand"/>
+          <line value="88/20 Tiwanon Road"/>
+          <city value="Talad Kwan"/>
+          <district value="Muang"/>
+          <state value="Nonthaburi"/>
+          <postalCode value="11000"/>
+          <country value="TH"/>
+        </address>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+</Bundle>

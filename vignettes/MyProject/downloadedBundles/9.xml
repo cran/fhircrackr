@@ -1,0 +1,979 @@
+<Bundle>
+  <id value="58cafde2-e613-4f02-8459-659e4bfd31e5"/>
+  <meta>
+    <lastUpdated value="2022-06-23T13:47:26.020+00:00"/>
+  </meta>
+  <type value="searchset"/>
+  <link>
+    <relation value="self"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=58cafde2-e613-4f02-8459-659e4bfd31e5&amp;_getpagesoffset=160&amp;_count=20&amp;_pretty=true&amp;_bundletype=searchset"/>
+  </link>
+  <link>
+    <relation value="next"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=58cafde2-e613-4f02-8459-659e4bfd31e5&amp;_getpagesoffset=180&amp;_count=20&amp;_pretty=true&amp;_bundletype=searchset"/>
+  </link>
+  <link>
+    <relation value="previous"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=58cafde2-e613-4f02-8459-659e4bfd31e5&amp;_getpagesoffset=140&amp;_count=20&amp;_pretty=true&amp;_bundletype=searchset"/>
+  </link>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024687"/>
+    <resource>
+      <Patient>
+        <id value="3024687"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.582+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="948"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Kessler"/>
+          <given value="Florencio"/>
+        </name>
+        <telecom>
+          <system value="sms"/>
+          <value value="(280) 477-4604"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1991-02-03"/>
+        <address>
+          <use value="home"/>
+          <line value="Lang Trafficway"/>
+          <city value="New Illamouth"/>
+          <state value="Connecticut"/>
+          <postalCode value="64547"/>
+          <country value="Denmark"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024688"/>
+    <resource>
+      <Patient>
+        <id value="3024688"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.635+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="404"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Franecki"/>
+          <given value="Richie"/>
+        </name>
+        <telecom>
+          <system value="sms"/>
+          <value value="1-675-059-7330"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1993-08-04"/>
+        <address>
+          <use value="home"/>
+          <line value="Buckridge Common"/>
+          <city value="Port Annamariaview"/>
+          <state value="Louisiana"/>
+          <postalCode value="52982-4494"/>
+          <country value="South Georgia and the South Sandwich Islands"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024689"/>
+    <resource>
+      <Patient>
+        <id value="3024689"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.692+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="975"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Dibbert"/>
+          <given value="Leslie"/>
+        </name>
+        <telecom>
+          <system value="other"/>
+          <value value="243.021.7523"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1960-07-04"/>
+        <address>
+          <use value="home"/>
+          <line value="Ahmad Street"/>
+          <city value="Ottoburgh"/>
+          <state value="Washington"/>
+          <postalCode value="76096-2324"/>
+          <country value="Nigeria"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024690"/>
+    <resource>
+      <Patient>
+        <id value="3024690"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.747+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="945"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Pollich"/>
+          <given value="Vicenta"/>
+        </name>
+        <telecom>
+          <system value="email"/>
+          <value value="011-617-2176"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1986-11-10"/>
+        <address>
+          <use value="home"/>
+          <line value="Kilback Mount"/>
+          <city value="Gleichnerchester"/>
+          <state value="Louisiana"/>
+          <postalCode value="84387"/>
+          <country value="China"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024423"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024691"/>
+    <resource>
+      <Patient>
+        <id value="3024691"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.811+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="554"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Schmeler"/>
+          <given value="Percy"/>
+        </name>
+        <telecom>
+          <system value="other"/>
+          <value value="154-422-3105"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1968-02-18"/>
+        <address>
+          <use value="home"/>
+          <line value="Cleveland Mountains"/>
+          <city value="Port Jonnastad"/>
+          <state value="New Hampshire"/>
+          <postalCode value="79688"/>
+          <country value="Bahamas"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024692"/>
+    <resource>
+      <Patient>
+        <id value="3024692"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.880+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="776"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Kozey"/>
+          <given value="Georgine"/>
+        </name>
+        <telecom>
+          <system value="email"/>
+          <value value="1-498-170-3612"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1961-02-27"/>
+        <address>
+          <use value="home"/>
+          <line value="Maria Unions"/>
+          <city value="Hesselshire"/>
+          <state value="Arizona"/>
+          <postalCode value="58048"/>
+          <country value="Belize"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024423"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024693"/>
+    <resource>
+      <Patient>
+        <id value="3024693"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:18.937+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="131"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Nikolaus"/>
+          <given value="Sammie"/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="1-377-487-4492"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1966-02-24"/>
+        <address>
+          <use value="home"/>
+          <line value="Bernhard Path"/>
+          <city value="Port Evita"/>
+          <state value="Colorado"/>
+          <postalCode value="50306"/>
+          <country value="Slovenia"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024694"/>
+    <resource>
+      <Patient>
+        <id value="3024694"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.001+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="446"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Schimmel"/>
+          <given value="Norine"/>
+        </name>
+        <telecom>
+          <system value="sms"/>
+          <value value="1-329-638-4626"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1970-04-17"/>
+        <address>
+          <use value="home"/>
+          <line value="Easter Common"/>
+          <city value="South Rickiefurt"/>
+          <state value="Alabama"/>
+          <postalCode value="25202-3264"/>
+          <country value="Palestinian Territory"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024423"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024695"/>
+    <resource>
+      <Patient>
+        <id value="3024695"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.085+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="802"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Gorczany"/>
+          <given value="Rosanne"/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="1-255-600-2386"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1966-04-26"/>
+        <address>
+          <use value="home"/>
+          <line value="Willian Curve"/>
+          <city value="New Laverneport"/>
+          <state value="Texas"/>
+          <postalCode value="07452-8159"/>
+          <country value="Saint Lucia"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024696"/>
+    <resource>
+      <Patient>
+        <id value="3024696"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.152+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="916"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Kris"/>
+          <given value="Keisha"/>
+        </name>
+        <telecom>
+          <system value="other"/>
+          <value value="(892) 127-1807"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1971-06-11"/>
+        <address>
+          <use value="home"/>
+          <line value="Schmidt Springs"/>
+          <city value="Beckyside"/>
+          <state value="New Hampshire"/>
+          <postalCode value="96487-6485"/>
+          <country value="Aruba"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024423"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024697"/>
+    <resource>
+      <Patient>
+        <id value="3024697"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.217+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="544"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Stark"/>
+          <given value="Zofia"/>
+        </name>
+        <telecom>
+          <system value="email"/>
+          <value value="(488) 150-6856"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1983-01-09"/>
+        <address>
+          <use value="home"/>
+          <line value="Sebastian Land"/>
+          <city value="Gulgowskifort"/>
+          <state value="Indiana"/>
+          <postalCode value="54453-5785"/>
+          <country value="Liechtenstein"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024698"/>
+    <resource>
+      <Patient>
+        <id value="3024698"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.285+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="388"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Blanda"/>
+          <given value="Phillis"/>
+        </name>
+        <telecom>
+          <system value="email"/>
+          <value value="(801) 999-9902"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1961-09-12"/>
+        <address>
+          <use value="home"/>
+          <line value="Tod Springs"/>
+          <city value="Carieland"/>
+          <state value="Utah"/>
+          <postalCode value="65723"/>
+          <country value="Nigeria"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024699"/>
+    <resource>
+      <Patient>
+        <id value="3024699"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.356+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="987"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Legros"/>
+          <given value="Grant"/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="168-020-4848"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1998-05-12"/>
+        <address>
+          <use value="home"/>
+          <line value="Anabel Dale"/>
+          <city value="Duncanport"/>
+          <state value="Colorado"/>
+          <postalCode value="79342"/>
+          <country value="Italy"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024423"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024700"/>
+    <resource>
+      <Patient>
+        <id value="3024700"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.419+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="350"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Cassin"/>
+          <given value="Loren"/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="(334) 245-2438"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1974-02-01"/>
+        <address>
+          <use value="home"/>
+          <line value="Kulas Common"/>
+          <city value="East Tobiemouth"/>
+          <state value="Connecticut"/>
+          <postalCode value="13550"/>
+          <country value="El Salvador"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024701"/>
+    <resource>
+      <Patient>
+        <id value="3024701"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.498+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="131"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="McLaughlin"/>
+          <given value="Tiffiny"/>
+        </name>
+        <telecom>
+          <system value="other"/>
+          <value value="1-369-484-5690"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1975-05-04"/>
+        <address>
+          <use value="home"/>
+          <line value="Aufderhar Alley"/>
+          <city value="West Katharinechester"/>
+          <state value="Idaho"/>
+          <postalCode value="07102"/>
+          <country value="Suriname"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024702"/>
+    <resource>
+      <Patient>
+        <id value="3024702"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.569+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="467"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Ziemann"/>
+          <given value="Kerry"/>
+        </name>
+        <telecom>
+          <system value="email"/>
+          <value value="1-449-200-1102"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1989-04-28"/>
+        <address>
+          <use value="home"/>
+          <line value="Jacobi Shores"/>
+          <city value="Port Kum"/>
+          <state value="Minnesota"/>
+          <postalCode value="98808"/>
+          <country value="Bahamas"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024703"/>
+    <resource>
+      <Patient>
+        <id value="3024703"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.631+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="648"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Cole"/>
+          <given value="Stefan"/>
+        </name>
+        <telecom>
+          <system value="email"/>
+          <value value="1-660-685-1513"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1998-04-17"/>
+        <address>
+          <use value="home"/>
+          <line value="Russ Expressway"/>
+          <city value="Schillermouth"/>
+          <state value="Washington"/>
+          <postalCode value="19488-9412"/>
+          <country value="Burkina Faso"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024424"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024704"/>
+    <resource>
+      <Patient>
+        <id value="3024704"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.685+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="827"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Walter"/>
+          <given value="Latesha"/>
+        </name>
+        <telecom>
+          <system value="other"/>
+          <value value="040-519-1306"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="2001-07-06"/>
+        <address>
+          <use value="home"/>
+          <line value="Leuschke Heights"/>
+          <city value="Ronaldhaven"/>
+          <state value="Montana"/>
+          <postalCode value="35988-8362"/>
+          <country value="Spain"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024705"/>
+    <resource>
+      <Patient>
+        <id value="3024705"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.740+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="725"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="Berge"/>
+          <given value="Jessie"/>
+        </name>
+        <telecom>
+          <system value="phone"/>
+          <value value="776-623-0159"/>
+        </telecom>
+        <gender value="female"/>
+        <birthDate value="1963-04-12"/>
+        <address>
+          <use value="home"/>
+          <line value="Hegmann Junction"/>
+          <city value="New Joanbury"/>
+          <state value="North Carolina"/>
+          <postalCode value="66469"/>
+          <country value="Benin"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024422"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024420"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/3024706"/>
+    <resource>
+      <Patient>
+        <id value="3024706"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2022-05-26T06:17:19.792+00:00"/>
+          <source value="#MPNysBPERU2LNIWk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://ns.electronichealth.net.au/id/hi/ihi/1.0"/>
+          <value value="182"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <family value="McKenzie"/>
+          <given value="Dion"/>
+        </name>
+        <telecom>
+          <system value="sms"/>
+          <value value="233-456-9722"/>
+        </telecom>
+        <gender value="male"/>
+        <birthDate value="1982-07-15"/>
+        <address>
+          <use value="home"/>
+          <line value="Sauer Ranch"/>
+          <city value="South Giovanni"/>
+          <state value="Rhode Island"/>
+          <postalCode value="90244-9455"/>
+          <country value="Latvia"/>
+        </address>
+        <generalPractitioner>
+          <reference value="Practitioner/3024423"/>
+        </generalPractitioner>
+        <managingOrganization>
+          <reference value="Organization/3024421"/>
+        </managingOrganization>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+</Bundle>

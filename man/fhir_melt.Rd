@@ -31,7 +31,7 @@ It is advisable to only melt columns simultaneously that belong to the same (rep
 A data.frame/data.table where each entry from the variables in \code{columns} appears in a separate row.
 }
 \description{
-This function divides multiple entries in an indexed data frame as produced by \code{\link[=fhir_crack]{fhir_crack()}}.
+This function divides multiple entries in an indexed data frame as produced by \code{\link[=fhir_crack]{fhir_crack()}}
 into separate rows.
 }
 \details{
@@ -49,9 +49,12 @@ For a more detailed description on how to use this function please see the corre
 bundles <- fhir_unserialize(bundles = example_bundles1)
 
 #crack fhir resources
-table_desc <- fhir_table_description(resource = "Patient",
-                                     style = fhir_style(brackets = c("[","]"),
-                                                        sep = " "))
+table_desc <- fhir_table_description(
+    resource = "Patient",
+    brackets = c("[", "]"),
+    sep = " "
+)
+
 df <- fhir_crack(bundles = bundles, design = table_desc)
 
 #find all column names associated with attribute address
@@ -61,8 +64,12 @@ col_names <- fhir_common_columns(df, "address")
 df
 
 #only keep address columns
-fhir_melt(indexed_data_frame = df, columns = col_names,
-          brackets = c("[","]"), sep = " ")
+fhir_melt(
+     indexed_data_frame = df,
+     columns            = col_names,
+     brackets           = c("[", "]"),
+     sep = " "
+ )
 
 #keep all columns
 fhir_melt(indexed_data_frame = df, columns = col_names,

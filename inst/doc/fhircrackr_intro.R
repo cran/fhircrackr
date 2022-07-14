@@ -95,10 +95,12 @@ table_description <- fhir_table_description(
 		gender      = "gender",
 		birthday    = "birthDate"
 	),
-	style    = fhir_style(
-		sep           = "|",
-		brackets      = c("[", "]"),
-		rm_empty_cols = FALSE))
+	sep           = " ~ ",
+	brackets      = c("<<", ">>"),
+	rm_empty_cols = FALSE,
+	format        = 'compact',
+	keep_attr     = FALSE
+)
 
 #have a look
 table_description
@@ -138,10 +140,12 @@ MedicationStatements <- fhir_table_description(
 		PATIENT            = "subject/reference",
 		LAST.UPDATE        = "meta/lastUpdated"
 	),
-	style    = fhir_style(
-		sep           = "|",
-		brackets      = NULL, 
-		rm_empty_cols = FALSE))
+	sep           = "|",
+	brackets      = NULL,
+	rm_empty_cols = FALSE,
+	format        = "compact",
+	keep_attr     = FALSE
+)
 
 Patients <- fhir_table_description(resource = "Patient")
 
@@ -156,7 +160,7 @@ list_of_tables <- fhir_crack(bundles = medication_bundles, design = design, verb
 
 list_of_tables$MedicationStatements[1:5,]
 
-list_of_tables$Patients[1:5,]
+list_of_tables$Patients[18:20,]
 
 ## -----------------------------------------------------------------------------
 bundles <- fhir_unserialize(bundles = example_bundles1)
@@ -164,10 +168,12 @@ bundles <- fhir_unserialize(bundles = example_bundles1)
 ## -----------------------------------------------------------------------------
 table_description <- fhir_table_description(
 	resource = "Patient",
-	style    = fhir_style(
-		brackets      = c("[", "]"),
-		sep           = " | ",
-		rm_empty_cols = FALSE))
+	brackets      = c("[", "]"),
+	sep           = " | ",
+	rm_empty_cols = FALSE,
+	format        = 'compact',
+	keep_attr     = FALSE
+)
 
 df <- fhir_crack(bundles = bundles, design = table_description, verbose = 0)
 
@@ -179,7 +185,8 @@ fhir_melt(
 	columns            = "address.city",
 	brackets           = c("[", "]"),
 	sep                = " | ",
-	all_columns        = FALSE)
+	all_columns        = FALSE
+)
 
 ## -----------------------------------------------------------------------------
 cols <- c("address.city", "address.use", "address.type", "address.country")
@@ -189,7 +196,8 @@ fhir_melt(
 	columns            = cols,
 	brackets           = c("[", "]"),
 	sep                = " | ",
-	all_columns        = FALSE)
+	all_columns        = FALSE
+)
 
 ## -----------------------------------------------------------------------------
 molten <- fhir_melt(
@@ -197,7 +205,8 @@ molten <- fhir_melt(
 	columns            = cols,
 	brackets           = c("[", "]"),
 	sep                = " | ",
-	all_columns        = TRUE)
+	all_columns        = TRUE
+)
 
 molten
 
@@ -216,16 +225,16 @@ head(serialized_bundles[[1]])
 temp_dir <- tempdir()
 
 #save
-save(serialized_bundles, file = paste0(temp_dir, "/bundles.rda"))
+saveRDS(serialized_bundles, file = paste0(temp_dir, "/bundles.rda"))
 
 
 ## -----------------------------------------------------------------------------
 #load bundles
-load(paste0(temp_dir, "/bundles.rda"))
+serialized_bundles_reloaded <- readRDS(paste0(temp_dir, "/bundles.rda"))
 
 ## ----results='hide'-----------------------------------------------------------
 #unserialize
-bundles <- fhir_unserialize(bundles = serialized_bundles)
+bundles <- fhir_unserialize(bundles = serialized_bundles_reloaded)
 
 #have a look
 bundles
@@ -301,5 +310,12 @@ bundles <- fhir_load(directory = temp_dir)
 file.remove(
 	paste0(
 		temp_dir,
-		c("/bundles.rda", "/design.xml", "/1.xml", "/2.xml")))
+		c(
+			"/bundles.rda",
+			"/design.xml",
+			"/1.xml",
+			"/2.xml"
+		)
+	)
+)
 

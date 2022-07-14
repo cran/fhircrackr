@@ -1,0 +1,1463 @@
+<Bundle>
+  <id value="cba61288-e44a-4e5d-8246-dd4657d9bd9e"/>
+  <meta>
+    <lastUpdated value="2022-06-23T13:45:15.138+00:00"/>
+  </meta>
+  <type value="searchset"/>
+  <link>
+    <relation value="self"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=cba61288-e44a-4e5d-8246-dd4657d9bd9e&amp;_getpagesoffset=40&amp;_count=20&amp;_pretty=true&amp;_include=MedicationStatement%3Asubject&amp;_bundletype=searchset"/>
+  </link>
+  <link>
+    <relation value="next"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=cba61288-e44a-4e5d-8246-dd4657d9bd9e&amp;_getpagesoffset=60&amp;_count=20&amp;_pretty=true&amp;_include=MedicationStatement%3Asubject&amp;_bundletype=searchset"/>
+  </link>
+  <link>
+    <relation value="previous"/>
+    <url value="http://hapi.fhir.org/baseR4?_getpages=cba61288-e44a-4e5d-8246-dd4657d9bd9e&amp;_getpagesoffset=20&amp;_count=20&amp;_pretty=true&amp;_include=MedicationStatement%3Asubject&amp;_bundletype=searchset"/>
+  </link>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1171729"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1171729"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-22T19:18:36.413+00:00"/>
+          <source value="#BAAtBE7ypFhhE4BU"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1171662"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1172474"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1172474"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-25T11:43:50.897+00:00"/>
+          <source value="#m9Mzo4HiMQZzWktB"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1172407"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1172861"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1172861"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-25T23:35:13.519+00:00"/>
+          <source value="#xH3UWall39lq4uft"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1172794"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1173121"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1173121"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-26T07:57:31.349+00:00"/>
+          <source value="#thyvJHujVtrdvwnr"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1173054"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1173444"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1173444"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-26T12:58:41.469+00:00"/>
+          <source value="#QMc34778pj5uVZBe"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1173377"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1173867"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1173867"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-26T22:30:47.071+00:00"/>
+          <source value="#Vy9Sj4PMP3NXV8uJ"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1173800"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1173947"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1173947"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-27T01:00:17.134+00:00"/>
+          <source value="#LMCSs7Imq8wcAg3y"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1173880"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174096"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174096"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-27T07:23:17.484+00:00"/>
+          <source value="#yik5Ts09dVmkdTXh"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174029"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174176"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174176"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-27T07:40:34.395+00:00"/>
+          <source value="#FlU0m4l0Hw3xyrGL"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174109"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174585"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174585"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T16:50:21.798+00:00"/>
+          <source value="#Qi2ZKtfpySZ6Bv0H"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174518"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174665"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174665"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T18:01:45.823+00:00"/>
+          <source value="#4a2hxQAnaGiQl5UU"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174598"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174771"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174771"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T21:05:48.388+00:00"/>
+          <source value="#dOmp4R0lhsMaRzYu"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174704"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174851"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174851"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T22:44:33.702+00:00"/>
+          <source value="#QY94EREOlpRGXbyH"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174784"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1174945"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1174945"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T01:13:10.445+00:00"/>
+          <source value="#bHu9uUn6tFoEE7gU"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1174878"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1175264"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1175264"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T11:43:19.683+00:00"/>
+          <source value="#ixo8JcEICFVZbrsY"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1175196"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1175494"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1175494"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T20:29:03.410+00:00"/>
+          <source value="#HG80GPvFLxizDoIJ"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1175427"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1175578"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1175578"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T21:12:50.042+00:00"/>
+          <source value="#rFd5Z4H9GzfcI6LW"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1175511"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1175686"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1175686"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T22:42:17.200+00:00"/>
+          <source value="#TINpsTXKqcrWWjKy"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1175619"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1175827"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1175827"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-30T05:32:33.117+00:00"/>
+          <source value="#wSJpBh50FgnnpkG0"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1175760"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/MedicationStatement/1175905"/>
+    <resource>
+      <MedicationStatement>
+        <id value="1175905"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-30T05:33:14.810+00:00"/>
+          <source value="#ssbglEi1aZVW3yoq"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <status value="active"/>
+        <medicationCodeableConcept>
+          <coding>
+            <system value="http://snomed.info/ct"/>
+            <code value="429374003"/>
+            <display value="simvastatin 40mg"/>
+          </coding>
+          <text value="simvastatin 40mg"/>
+        </medicationCodeableConcept>
+        <subject>
+          <reference value="Patient/1175838"/>
+        </subject>
+        <dosage>
+          <text value="1 tab once daily"/>
+          <timing>
+            <repeat>
+              <frequency value="1"/>
+              <period value="1"/>
+              <periodUnit value="d"/>
+            </repeat>
+          </timing>
+          <asNeededBoolean value="true"/>
+        </dosage>
+      </MedicationStatement>
+    </resource>
+    <search>
+      <mode value="match"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1175760"/>
+    <resource>
+      <Patient>
+        <id value="1175760"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-30T05:32:28.551+00:00"/>
+          <source value="#j270AxwU5lvx6ZIl"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Zara Thompson"/>
+          <family value="Thompson"/>
+          <given value="Zara"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2000-05-30"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174704"/>
+    <resource>
+      <Patient>
+        <id value="1174704"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T21:05:44.590+00:00"/>
+          <source value="#m9fEu5LRgbvtD71Q"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="1234567890"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Aria Martin"/>
+          <family value="Martin"/>
+          <given value="Aria"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2020-05-28"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1172407"/>
+    <resource>
+      <Patient>
+        <id value="1172407"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-25T11:43:46.313+00:00"/>
+          <source value="#gzuueCz4w7vUAMTd"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="123456789"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="KKKKK BBBBB"/>
+          <family value="BBBBB"/>
+          <given value="KKKKK"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1984-05-20"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1175511"/>
+    <resource>
+      <Patient>
+        <id value="1175511"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T21:12:45.663+00:00"/>
+          <source value="#3Uu2SndLopO27g1T"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Alexis Kumar"/>
+          <family value="Kumar"/>
+          <given value="Alexis"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2020-05-07"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174518"/>
+    <resource>
+      <Patient>
+        <id value="1174518"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T16:50:17.840+00:00"/>
+          <source value="#Y6AR6Zha9fxqE0br"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="0001"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Archie Thompson"/>
+          <family value="Thompson"/>
+          <given value="Archie"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="2020-05-28"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1173880"/>
+    <resource>
+      <Patient>
+        <id value="1173880"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-27T01:00:12.486+00:00"/>
+          <source value="#Ug7sxYnX1sMO2OnF"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="123456"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="mahmod mosa"/>
+          <family value="mosa"/>
+          <given value="mahmod"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1988-02-10"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1172794"/>
+    <resource>
+      <Patient>
+        <id value="1172794"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-25T23:35:08.054+00:00"/>
+          <source value="#YpgslAi882az8KJO"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="HN67890"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Himanshu Negi"/>
+          <family value="Negi"/>
+          <given value="Himanshu"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-26"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174109"/>
+    <resource>
+      <Patient>
+        <id value="1174109"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-27T07:40:25.061+00:00"/>
+          <source value="#l6XGd5bi4Jskl3xO"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="q"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Joshua Davies"/>
+          <family value="Davies"/>
+          <given value="Joshua"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-04-26"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1175196"/>
+    <resource>
+      <Patient>
+        <id value="1175196"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T11:43:12.497+00:00"/>
+          <source value="#MJHj4AHb0XKKiswB"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="ronald"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Ronald Trindade"/>
+          <family value="Trindade"/>
+          <given value="Ronald"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1980-12-02"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1173054"/>
+    <resource>
+      <Patient>
+        <id value="1173054"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-26T07:57:27.037+00:00"/>
+          <source value="#PRAg0qcZbz5usTlR"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="112233"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Alexander Johnson"/>
+          <family value="Johnson"/>
+          <given value="Alexander"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-26"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1175838"/>
+    <resource>
+      <Patient>
+        <id value="1175838"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-30T05:33:10.673+00:00"/>
+          <source value="#ut1jTdzRKKesNp9k"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Cameron Hughes"/>
+          <family value="Hughes"/>
+          <given value="Cameron"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-30"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174878"/>
+    <resource>
+      <Patient>
+        <id value="1174878"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T01:13:04.031+00:00"/>
+          <source value="#UtLsgjcrKSNfD1XC"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="jpventura"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="João Batista Ventura"/>
+          <family value="Ventura"/>
+          <given value="João Batista"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1957-06-23"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1173377"/>
+    <resource>
+      <Patient>
+        <id value="1173377"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-26T12:58:35.514+00:00"/>
+          <source value="#pzAGp9VWtPjPcuI2"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="15287582"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Álvaro Torres"/>
+          <family value="Torres"/>
+          <given value="Álvaro"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1982-02-25"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174784"/>
+    <resource>
+      <Patient>
+        <id value="1174784"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T22:44:30.611+00:00"/>
+          <source value="#eJIz3AXcAgQVfJUd"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <name>
+          <use value="official"/>
+          <text value="Samuel Thompson"/>
+          <family value="Thompson"/>
+          <given value="Samuel"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-28"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1175619"/>
+    <resource>
+      <Patient>
+        <id value="1175619"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T22:42:11.828+00:00"/>
+          <source value="#7rCfaYMvqF2oX7wj"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="k@rina_araujo"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Karina Araújo"/>
+          <family value="Araújo"/>
+          <given value="Karina"/>
+        </name>
+        <gender value="female"/>
+        <birthDate value="1994-02-24"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1175427"/>
+    <resource>
+      <Patient>
+        <id value="1175427"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-29T20:28:58.345+00:00"/>
+          <source value="#MbGAEsjR61pb5yPk"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="123"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Patrick Wang"/>
+          <family value="Wang"/>
+          <given value="Patrick"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-29"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174598"/>
+    <resource>
+      <Patient>
+        <id value="1174598"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-28T18:01:41.615+00:00"/>
+          <source value="#OrWYTJLhK2nxDLrI"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="98765"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Blake Brown"/>
+          <family value="Brown"/>
+          <given value="Blake"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-28"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1173800"/>
+    <resource>
+      <Patient>
+        <id value="1173800"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-26T22:30:42.872+00:00"/>
+          <source value="#WnfVAP7ixeb8vlX0"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="1234555555555"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Alexander Jones"/>
+          <family value="Jones"/>
+          <given value="Alexander"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-26"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1174029"/>
+    <resource>
+      <Patient>
+        <id value="1174029"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-27T07:23:07.430+00:00"/>
+          <source value="#d90yAZ19PGoJRhJe"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="ww"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Theodore Thomas"/>
+          <family value="Thomas"/>
+          <given value="Theodore"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="2020-05-27"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+  <entry>
+    <fullUrl value="http://hapi.fhir.org/baseR4/Patient/1171662"/>
+    <resource>
+      <Patient>
+        <id value="1171662"/>
+        <meta>
+          <versionId value="1"/>
+          <lastUpdated value="2020-05-22T19:18:24.856+00:00"/>
+          <source value="#bQ4usMFGxWX1WAi6"/>
+        </meta>
+        <text>
+          <status value="generated"/>
+        </text>
+        <identifier>
+          <system value="http://clinfhir.com/fhir/NamingSystem/identifier"/>
+          <value value="FHIR_FUN_2020_1"/>
+        </identifier>
+        <name>
+          <use value="official"/>
+          <text value="Abebe Kebede"/>
+          <family value="Kebede"/>
+          <given value="Abebe"/>
+        </name>
+        <gender value="male"/>
+        <birthDate value="1982-05-22"/>
+      </Patient>
+    </resource>
+    <search>
+      <mode value="include"/>
+    </search>
+  </entry>
+</Bundle>

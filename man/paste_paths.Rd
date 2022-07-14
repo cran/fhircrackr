@@ -2,7 +2,7 @@
 % Please edit documentation in R/miscellaneous.R
 \name{paste_paths}
 \alias{paste_paths}
-\title{Concatenate paths}
+\title{Concatenate two paths}
 \usage{
 paste_paths(path1 = "w", path2 = "d", os = "LiNuX")
 }

@@ -12,12 +12,12 @@ fhir_search(
   token = NULL,
   max_bundles = Inf,
   verbose = 1,
-  max_attempts = 5,
-  delay_between_attempts = 10,
+  delay_between_attempts = c(1, 3, 9, 27, 81),
   log_errors = NULL,
   save_to_disc = NULL,
   delay_between_bundles = 0,
-  directory = paste0("FHIR_bundles_", gsub("-| |:", "", Sys.time()))
+  rm_tag = "div",
+  max_attempts = deprecated()
 )
 }
 \arguments{
@@ -40,15 +40,17 @@ for how to create this.}
 
 \item{max_bundles}{Maximal number of bundles to get. Defaults to Inf meaning all available bundles are downloaded.}
 
-\item{verbose}{An integer vector of length one. If 0, nothings is printed, if 1, only finishing message is printed, if > 1,
-downloading progress will be printed. Defaults to 2.}
+\item{verbose}{An integer vector of length one. If 0, nothing is printed, if 1, only finishing message is printed, if > 1,
+downloading progress will be printed. Defaults to 1.}
 
-\item{max_attempts}{A numeric vector of length one. The maximal number of attempts to send a request, defaults to 5.}
-
-\item{delay_between_attempts}{A numeric vector of length one specifying the delay in seconds between two attempts. Defaults to 10.}
+\item{delay_between_attempts}{A numeric vector specifying the delay in seconds between attempts of reaching the server
+that \code{fhir_search()} will make. The length of this vector determines the number of attempts that will be made before stopping with an error.
+Defaults to \code{c(1,3,9,27,81)}.}
 
 \item{log_errors}{Either \code{NULL} or a character vector of length one indicating the name of a file in which to save the http errors.
-\code{NULL} means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to \code{NULL}}
+\code{NULL} means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to \code{NULL}.
+Regardless of the value of \code{log_errors} the most recent http error message within the current R session is saved internally and can
+be accessed with \code{\link[=fhir_recent_http_error]{fhir_recent_http_error()}}.}
 
 \item{save_to_disc}{Either \code{NULL} or a character vector of length one indicating the name of a directory in which to save the bundles.
 If a directory name is provided, the bundles are saved as numerated xml-files into the directory specified
@@ -60,7 +62,11 @@ Defaults to \code{NULL}, i.e. bundles are returned as a list within the R sessio
 i.e. between downloading the current bundle and the next bundle. This can be used to avoid choking a weak server with
 too many requests to quickly. Defaults to zero.}
 
-\item{directory}{Deprecated. Please specify the directory directly in the \code{save_to_disc} argument.}
+\item{rm_tag}{Character vector of length 1 defining an xml tag of elements that will removed from the bundle automatically.
+Defaults to \code{"div"},leading to the removal of all html parts (see Details). Set to \code{NULL} to keep the bundles untouched.
+See \code{\link[=fhir_rm_div]{fhir_rm_div()}} and \code{\link[=fhir_rm_tag]{fhir_rm_tag()}} for more info.}
+
+\item{max_attempts}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} The number of maximal attempts is now determined by the length of \code{delay_between_attempts}}
 }
 \value{
 A \linkS4class{fhir_bundle_list} when \code{save_to_disc = NULL} (the default),  else \code{NULL}.
@@ -97,6 +103,16 @@ just leave the arguments described in the following at their default values of \
 \item Token Authentication: Provide a token in the argument \code{token}, either as a character vector of length one or as as an object of class
 \link[httr:Token-class]{httr::Token}. You can use the function \code{\link[=fhir_authenticate]{fhir_authenticate()}} to create this object.
 }
+}
+
+\subsection{HTML removal}{
+
+FHIR resources can contain a considerable amount of html code (e.g. in a \href{https://www.hl7.org/fhir/narrative.html#xhtml}{narrative} object),
+which is often created by the server for example to provide a human-readable summary of the resource.
+This data is usually not the aim of structured statistical analysis, so in the default setting \code{\link[=fhir_search]{fhir_search()}} will remove the html
+parts immediately after download to reduce memory usage (on a hapi server typically by around 30\%, see \code{\link[=fhir_rm_div]{fhir_rm_div()}}).
+The memory gain is payed with a runtime increase of 10\%-20\%. The html removal can be disabled by setting \code{rm_tag = NULL}
+to increase speed at the cost of increased memory usage.
 }
 }
 \examples{
