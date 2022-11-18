@@ -11,29 +11,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2022-07-13" />
+<meta name="date" content="2022-11-18" />
 
 <title>fhircrackr: Flatten FHIR resources</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -51,55 +64,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -108,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -126,7 +145,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -139,44 +338,80 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <h1 class="title toc-ignore">fhircrackr: Flatten FHIR resources</h1>
-<h4 class="date">2022-07-13</h4>
+<h4 class="date">2022-11-18</h4>
 
 
 <div id="TOC">
 <ul>
-<li><a href="#preparation">Preparation</a></li>
-<li><a href="#extracting-one-resource-type">Extracting one resource type</a>
+<li><a href="#preparation" id="toc-preparation">Preparation</a></li>
+<li><a href="#extracting-one-resource-type" id="toc-extracting-one-resource-type">Extracting one resource type</a>
 <ul>
-<li><a href="#the-table_description">The table_description</a></li>
-<li><a href="#examples">Examples</a></li>
+<li><a href="#the-table_description" id="toc-the-table_description">The
+table_description</a></li>
+<li><a href="#examples" id="toc-examples">Examples</a></li>
 </ul></li>
-<li><a href="#extracting-more-than-one-resource-type">Extracting more than one resource type</a></li>
-<li><a href="#saving-and-reading-designs">Saving and reading designs</a></li>
-<li><a href="#multiple-entries">Multiple entries</a></li>
-<li><a href="#process-tables-with-multiple-entries">Process tables with multiple entries</a>
+<li><a href="#extracting-more-than-one-resource-type" id="toc-extracting-more-than-one-resource-type">Extracting more than one
+resource type</a></li>
+<li><a href="#saving-and-reading-designs" id="toc-saving-and-reading-designs">Saving and reading designs</a></li>
+<li><a href="#multiple-entries" id="toc-multiple-entries">Multiple
+entries</a></li>
+<li><a href="#process-tables-with-multiple-entries" id="toc-process-tables-with-multiple-entries">Process tables with
+multiple entries</a>
 <ul>
-<li><a href="#melt-tables-with-multiple-entries">Melt tables with multiple entries</a></li>
-<li><a href="#remove-indices">Remove indices</a></li>
-<li><a href="#cast-tables-with-multiple-entries">Cast tables with multiple entries</a></li>
+<li><a href="#melt-tables-with-multiple-entries" id="toc-melt-tables-with-multiple-entries">Melt tables with multiple
+entries</a></li>
+<li><a href="#remove-indices" id="toc-remove-indices">Remove
+indices</a></li>
+<li><a href="#cast-tables-with-multiple-entries" id="toc-cast-tables-with-multiple-entries">Cast tables with multiple
+entries</a></li>
 </ul></li>
 </ul>
 </div>
 
-<p>This vignette covers all topics concerned with flattening FHIR resources in some depth. If you are interested in a quick overview, please have a look at the fhircrackr:intro vignette.</p>
-<p>Before running any of the following code, you need to load the <code>fhircrackr</code> package:</p>
+<p>This vignette covers all topics concerned with flattening FHIR
+resources in some depth. If you are interested in a quick overview,
+please have a look at the fhircrackr:intro vignette.</p>
+<p>Before running any of the following code, you need to load the
+<code>fhircrackr</code> package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fhircrackr)</span></code></pre></div>
 <div id="preparation" class="section level2">
 <h2>Preparation</h2>
-<p>In the vignette <code>fhircrackr: Download FHIR resources</code> you saw how to download FHIR resources into R. Now we’ll have a look at how to flatten them into data.frames/data.tables. For the rest of the vignette, we’ll work with the two example data sets from <code>fhircrackr</code>, which can be made accessible like this:</p>
+<p>In the vignette <code>fhircrackr: Download FHIR resources</code> you
+saw how to download FHIR resources into R. Now we’ll have a look at how
+to flatten them into data.frames/data.tables. For the rest of the
+vignette, we’ll work with the two example data sets from
+<code>fhircrackr</code>, which can be made accessible like this:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pat_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(<span class="at">bundles =</span> patient_bundles)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>med_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(<span class="at">bundles =</span> medication_bundles)</span></code></pre></div>
-<p>See <code>?patient_bundles</code> and <code>?medication_bundles</code> for the FHIR search requests that generated them.</p>
-<p>There are two extraction scenarios when you want to flatten FHIR bundles: Either you want to extract just one resource type, or you want to extract several resource types. Because the structure of different resource types is quite dissimilar, it makes sense to create one table per resource type. Therefore the result of the flattening process in <code>fhircrackr</code> can be either a single table (when extracting just one resource type) or a list of tables (when extracting more than one resource type). Both scenarios are realized with a call to <code>fhir_crack()</code>. We will now explain the two scenarios individually.</p>
+<p>See <code>?patient_bundles</code> and
+<code>?medication_bundles</code> for the FHIR search requests that
+generated them.</p>
+<p>There are two extraction scenarios when you want to flatten FHIR
+bundles: Either you want to extract just one resource type, or you want
+to extract several resource types. Because the structure of different
+resource types is quite dissimilar, it makes sense to create one table
+per resource type. Therefore the result of the flattening process in
+<code>fhircrackr</code> can be either a single table (when extracting
+just one resource type) or a list of tables (when extracting more than
+one resource type). Both scenarios are realized with a call to
+<code>fhir_crack()</code>. We will now explain the two scenarios
+individually.</p>
 </div>
 <div id="extracting-one-resource-type" class="section level2">
 <h2>Extracting one resource type</h2>
-<p>We’ll start with <code>pat_bundles</code>, which only contains Patient resources. To transform them into a table, we will use <code>fhir_crack()</code>. The most important argument <code>fhir_crack()</code> takes is <code>bundles</code>, an object of class <code>fhir_bundle_list</code> that is returned by <code>fhir_search()</code>. The second important argument is <code>design</code>, which tells the function which data to extract from the bundle. When we want to extract just one resource type, we can use a <code>fhir_table_description</code> in the argument <code>design</code>. <code>fhir_crack()</code> then returns a single data.frame or data.table (if argument <code>data.table = TRUE</code>).</p>
-<p>We’ll show you an example of how it works first and then go on to explain the <code>fhir_table_description</code> in more detail.</p>
+<p>We’ll start with <code>pat_bundles</code>, which only contains
+Patient resources. To transform them into a table, we will use
+<code>fhir_crack()</code>. The most important argument
+<code>fhir_crack()</code> takes is <code>bundles</code>, an object of
+class <code>fhir_bundle_list</code> that is returned by
+<code>fhir_search()</code>. The second important argument is
+<code>design</code>, which tells the function which data to extract from
+the bundle. When we want to extract just one resource type, we can use a
+<code>fhir_table_description</code> in the argument <code>design</code>.
+<code>fhir_crack()</code> then returns a single data.frame or data.table
+(if argument <code>data.table = TRUE</code>).</p>
+<p>We’ll show you an example of how it works first and then go on to
+explain the <code>fhir_table_description</code> in more detail.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pat_table_description <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols     =</span> <span class="fu">list</span>(</span>
@@ -203,10 +438,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 2431759   male                XYZ       Phoenix</span></span></code></pre></div>
 <div id="the-table_description" class="section level3">
 <h3>The table_description</h3>
-<p>A <code>fhir_table_description</code> holds all the information <code>fhir_crack()</code> needs to create a table from resources of a certain type. It is created with <code>fhir_table_description()</code> by providing the following arguments:</p>
+<p>A <code>fhir_table_description</code> holds all the information
+<code>fhir_crack()</code> needs to create a table from resources of a
+certain type. It is created with <code>fhir_table_description()</code>
+by providing the following arguments:</p>
 <div id="the-resource-argument" class="section level4">
 <h4>The <code>resource</code> argument</h4>
-<p>This is basically a string that defines the resource type (e.g. Patient or Observation) to extract. It is the only argument that you must provide and you set it like this:</p>
+<p>This is basically a string that defines the resource type
+(e.g. Patient or Observation) to extract. It is the only argument that
+you must provide and you set it like this:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_table_description with the following elements: </span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
@@ -220,12 +460,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># rm_empty_cols: FALSE</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># format:        &#39;compact&#39;</span></span>
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># keep_attr:     FALSE</span></span></code></pre></div>
-<p>Internally, <code>fhir_table_description()</code> calls <code>fhir_resource_type()</code> which checks the type you provided against list of all currently available resource types which can be found at <a href="https://hl7.org/FHIR/resourcelist.html" target="_blank">https://hl7.org/FHIR/resourcelist.html</a>. Case errors are corrected automatically and the function throws a warning if the resource type doesn’t match the list under hl7.org.</p>
-<p>As you can see in the above output, there are more elements in a <code>fhir_table_description</code> which are filled automatically by <code>fhir_table_description()</code>.</p>
+<p>Internally, <code>fhir_table_description()</code> calls
+<code>fhir_resource_type()</code> which checks the type you provided
+against list of all currently available resource types which can be
+found at
+<a href="https://hl7.org/FHIR/resourcelist.html" target="_blank">https://hl7.org/FHIR/resourcelist.html</a>.
+Case errors are corrected automatically and the function throws a
+warning if the resource type doesn’t match the list under hl7.org.</p>
+<p>As you can see in the above output, there are more elements in a
+<code>fhir_table_description</code> which are filled automatically by
+<code>fhir_table_description()</code>.</p>
 </div>
 <div id="the-cols-argument" class="section level4">
 <h4>The cols argument</h4>
-<p>The <code>cols</code> argument takes the column names and XPath (1.0) expressions defining the columns to create from the FHIR resources. The XPath expression has to be built relatively to the root of the resource tree. If the <code>cols</code> element is empty, <code>fhir_crack()</code> will extract all available elements of the resource and name the columns automatically. To explicitly define columns, you can provide a (named) character or a (named) list with XPath expressions like this:</p>
+<p>The <code>cols</code> argument takes the column names and XPath (1.0)
+expressions defining the columns to create from the FHIR resources. The
+XPath expression has to be built relatively to the root of the resource
+tree. If the <code>cols</code> element is empty,
+<code>fhir_crack()</code> will extract all available elements of the
+resource and name the columns automatically. To explicitly define
+columns, you can provide a (named) character or a (named) list with
+XPath expressions like this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_table_description</span>(</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols     =</span> <span class="fu">list</span>(</span>
@@ -252,8 +507,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># rm_empty_cols: FALSE</span></span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># format:        &#39;compact&#39;</span></span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># keep_attr:     FALSE</span></span></code></pre></div>
-<p>In this case a table with three columns called gender, name and city will be created. They will be filled with the element that can be found under the respective xpath expression in the resource. The element will be extracted regardless of the attribute that is used (in FHIR this is mostly <code>@value</code> but can also be <code>@id</code> or <code>@url</code> in rare cases). If you are interested in keeping the attribute information, you can set <code>keep_attr = TRUE</code>, in which case the attribute will be attached to the column name.</p>
-<p>Internally, <code>fhir_table_description()</code> calls <code>fhir_columns()</code> to check the validity of the XPath expressions and assign column names. You can provide the XPath expressions in a named or unnamed character vector or a named or unnamed list. If you choose the unnamed version, the names will be set automatically and reflect the respective XPath expression:</p>
+<p>In this case a table with three columns called gender, name and city
+will be created. They will be filled with the element that can be found
+under the respective xpath expression in the resource. The element will
+be extracted regardless of the attribute that is used (in FHIR this is
+mostly <code>@value</code> but can also be <code>@id</code> or
+<code>@url</code> in rare cases). If you are interested in keeping the
+attribute information, you can set <code>keep_attr = TRUE</code>, in
+which case the attribute will be attached to the column name.</p>
+<p>Internally, <code>fhir_table_description()</code> calls
+<code>fhir_columns()</code> to check the validity of the XPath
+expressions and assign column names. You can provide the XPath
+expressions in a named or unnamed character vector or a named or unnamed
+list. If you choose the unnamed version, the names will be set
+automatically and reflect the respective XPath expression:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#custom column names</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_columns</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">xpaths =</span> <span class="fu">c</span>(</span>
@@ -278,22 +545,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># name.family  | name/family</span></span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># address.city | address/city</span></span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------- -----------------</span></span></code></pre></div>
-<p>A <code>fhir_columns</code> object that is created explicitly like this can of course also be used in the <code>columns</code> argument of <code>fhir_table_description</code>. We strongly advise to only use fully specified relative XPath expressions here, e.g. <code>&quot;ingredient/strength/numerator/code&quot;</code> and not search paths like <code>&quot;//code&quot;</code>, as those can generate unexpected results especially if the searched element appears on different levels of the resource.</p>
+<p>A <code>fhir_columns</code> object that is created explicitly like
+this can of course also be used in the <code>columns</code> argument of
+<code>fhir_table_description</code>. We strongly advise to only use
+fully specified relative XPath expressions here,
+e.g. <code>&quot;ingredient/strength/numerator/code&quot;</code> and not search
+paths like <code>&quot;//code&quot;</code>, as those can generate unexpected
+results especially if the searched element appears on different levels
+of the resource.</p>
 </div>
 <div id="other-arguments" class="section level4">
 <h4>Other arguments</h4>
-<p>While the <code>resource</code> and <code>cols</code> control <em>what</em> is extracted from the bundles, the remaining elements of a <code>fhir_table_description</code> control <em>how</em> the resulting table looks. These elements for example control how <code>fhir_crack()</code> deals with multiple entries for the same element and with columns that are completely empty, i.e. have only <code>NA</code> values. Furthermore you can select the shape of the output tables and how column names are generated:</p>
+<p>While the <code>resource</code> and <code>cols</code> control
+<em>what</em> is extracted from the bundles, the remaining elements of a
+<code>fhir_table_description</code> control <em>how</em> the resulting
+table looks. These elements for example control how
+<code>fhir_crack()</code> deals with multiple entries for the same
+element and with columns that are completely empty, i.e. have only
+<code>NA</code> values. Furthermore you can select the shape of the
+output tables and how column names are generated:</p>
 <ul>
-<li>The <code>sep</code> element is a string defining the separator used when multiple entries to the same attribute are pasted together. This could for example happen if there is more than one address entry in a Patient resource. Examples of this are shown further down under the heading <strong>Multiple entries</strong>.</li>
-<li>The <code>brackets</code> element is either an empty character vector (of length 0) or a character vector of length 2. If it is empty, multiple entries will be pasted together without indices. If it is of length 2, the two strings provided here are used as brackets for automatically generated indices to sort out multiple entries (see paragraph Multiple Entries). <code>brackets = c(&quot;[&quot;, &quot;]&quot;)</code> e.g. will lead to indices like <code>[1.1]</code>.<br />
+<li>The <code>sep</code> element is a string defining the separator used
+when multiple entries to the same attribute are pasted together. This
+could for example happen if there is more than one address entry in a
+Patient resource. Examples of this are shown further down under the
+heading <strong>Multiple entries</strong>.</li>
+<li>The <code>brackets</code> element is either an empty character
+vector (of length 0) or a character vector of length 2. If it is empty,
+multiple entries will be pasted together without indices. If it is of
+length 2, the two strings provided here are used as brackets for
+automatically generated indices to sort out multiple entries (see
+paragraph Multiple Entries). <code>brackets = c(&quot;[&quot;, &quot;]&quot;)</code>
+e.g. will lead to indices like <code>[1.1]</code>.<br />
 </li>
-<li>The <code>rm_empty_cols</code> flag can be <code>TRUE</code> or <code>FALSE</code>. If <code>TRUE</code>, columns containing only <code>NA</code> values will be removed, if <code>FALSE</code>, these columns will be kept.<br />
+<li>The <code>rm_empty_cols</code> flag can be <code>TRUE</code> or
+<code>FALSE</code>. If <code>TRUE</code>, columns containing only
+<code>NA</code> values will be removed, if <code>FALSE</code>, these
+columns will be kept.<br />
 </li>
-<li>The <code>format</code> element takes values <code>compact</code> or <code>wide</code> that specify the shape of the output table. In a <code>compact</code> table multiple entries are written into the same cell/column separated by <code>sep</code>. In a <code>wide</code> table multiple entries are spread over several indexed columns. See the paragraph on multiple entries for more information.</li>
-<li>The <code>keep_attr</code> flag controls whether the xml tag attributes of the FHIR element should be attached to the end of the column name or not. For the column extracted by <code>name/given</code>, the name would result in <code>name.given</code> if <code>keep_attr = FALSE</code> and <code>name.given@value</code> if <code>keep_attr = TRUE</code>.</li>
+<li>The <code>format</code> element takes values <code>compact</code> or
+<code>wide</code> that specify the shape of the output table. In a
+<code>compact</code> table multiple entries are written into the same
+cell/column separated by <code>sep</code>. In a <code>wide</code> table
+multiple entries are spread over several indexed columns. See the
+paragraph on multiple entries for more information.</li>
+<li>The <code>keep_attr</code> flag controls whether the xml tag
+attributes of the FHIR element should be attached to the end of the
+column name or not. For the column extracted by <code>name/given</code>,
+the name would result in <code>name.given</code> if
+<code>keep_attr = FALSE</code> and <code>name.given@value</code> if
+<code>keep_attr = TRUE</code>.</li>
 </ul>
-<p>All five style elements can also be controlled directly by the <code>fhir_crack()</code> arguments <code>sep</code>, <code>brackets</code>, <code>remove_empty_columns</code>, <code>format</code> and <code>keep_attr</code>. If the function arguments are <code>NULL</code> (their default), the values provided in <code>fhir_table_description</code> are used, if they are not NULL, they will overwrite any values in <code>fhir_table_description</code>.</p>
-<p>A fully defined set of a <code>Patient</code> table description would be like this:</p>
+<p>All five style elements can also be controlled directly by the
+<code>fhir_crack()</code> arguments <code>sep</code>,
+<code>brackets</code>, <code>remove_empty_columns</code>,
+<code>format</code> and <code>keep_attr</code>. If the function
+arguments are <code>NULL</code> (their default), the values provided in
+<code>fhir_table_description</code> are used, if they are not NULL, they
+will overwrite any values in <code>fhir_table_description</code>.</p>
+<p>A fully defined set of a <code>Patient</code> table description would
+be like this:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>table_description <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols     =</span> <span class="fu">list</span>(</span>
@@ -307,14 +618,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">format        =</span> <span class="st">&quot;compact&quot;</span>,</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">keep_attr     =</span> <span class="cn">FALSE</span></span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>We will now work through examples using <code>fhir_table_descriptions</code> of different complexity.</p>
+<p>We will now work through examples using
+<code>fhir_table_descriptions</code> of different complexity.</p>
 </div>
 </div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
 <div id="extract-all-available-attributes" class="section level4">
 <h4>Extract all available attributes</h4>
-<p>Lets start with an example where we only provide the (mandatory) <code>resource</code> component of the table_description. In this case, <code>fhir_crack()</code> will extract all available attributes and use default values for the other elements:</p>
+<p>Lets start with an example where we only provide the (mandatory)
+<code>resource</code> component of the table_description. In this case,
+<code>fhir_crack()</code> will extract all available attributes and use
+default values for the other elements:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#define a table_description</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>table_description1 <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -333,11 +648,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#see the fill result with:</span></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#View(table)</span></span></code></pre></div>
-<p>As you can see, this can easily become a rather wide and sparse data frame. This is due to the fact that every every element appearing in at least one of the resources will be turned into a variable (i.e. column), even if none of the other resources contain this element. For those resources, the value on that element will be set to <code>NA</code>. Depending on the variability of the resources, the resulting table can contain a lot of <code>NA</code> values. If a resource has multiple entries for an element (e.g. several addresses in a Patient resource), these entries will pasted together using the string provided in <code>sep</code> as a separator. The column names in this option are automatically generated by pasting together the path to the respective element, e.g. <code>name.given</code>.</p>
+<p>As you can see, this can easily become a rather wide and sparse data
+frame. This is due to the fact that every every element appearing in at
+least one of the resources will be turned into a variable (i.e. column),
+even if none of the other resources contain this element. For those
+resources, the value on that element will be set to <code>NA</code>.
+Depending on the variability of the resources, the resulting table can
+contain a lot of <code>NA</code> values. If a resource has multiple
+entries for an element (e.g. several addresses in a Patient resource),
+these entries will pasted together using the string provided in
+<code>sep</code> as a separator. The column names in this option are
+automatically generated by pasting together the path to the respective
+element, e.g. <code>name.given</code>.</p>
 </div>
 <div id="extract-specific-elements" class="section level4">
 <h4>Extract specific elements</h4>
-<p>If we know which elements we want to extract, we can specify them in a named list and provide it in the <code>cols</code> component of the table description:</p>
+<p>If we know which elements we want to extract, we can specify them in
+a named list and provide it in the <code>cols</code> component of the
+table description:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#define a table_description</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>table_description2 <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
@@ -370,9 +698,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 4            Malekar   male 1996-02-07</span></span>
 <span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 5             murali   male       &lt;NA&gt;</span></span>
 <span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 6                XYZ   male 1998-01-03</span></span></code></pre></div>
-<p>This option will return more tidy and clear data frames, because you have full control over the extracted columns including their name in the resulting table. You should always extract the resource id, because this is used to link to other resources you might also extract.</p>
-<p>If you are not sure which elements are available or where they are located in the resource, it can be helpful to start by extracting all available elements. If you are more comfortable with xml, you can also use <code>xml2::xml_structure</code> on one of the bundles from your bundle list, this will print the complete xml structure into your console. Then you can get an overview over the available element and their location and continue by doing a second, more targeted extraction to get your final table.</p>
-<p>If you want to have a look at how the design looked that was actually used in the last call to <code>fhir_crack()</code> you can retrieve it with <code>fhir_canonical_design()</code>.</p>
+<p>This option will return more tidy and clear data frames, because you
+have full control over the extracted columns including their name in the
+resulting table. You should always extract the resource id, because this
+is used to link to other resources you might also extract.</p>
+<p>If you are not sure which elements are available or where they are
+located in the resource, it can be helpful to start by extracting all
+available elements. If you are more comfortable with xml, you can also
+use <code>xml2::xml_structure</code> on one of the bundles from your
+bundle list, this will print the complete xml structure into your
+console. Then you can get an overview over the available element and
+their location and continue by doing a second, more targeted extraction
+to get your final table.</p>
+<p>If you want to have a look at how the design looked that was actually
+used in the last call to <code>fhir_crack()</code> you can retrieve it
+with <code>fhir_canonical_design()</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_canonical_design</span>()</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_table_description with the following elements: </span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
@@ -400,7 +740,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="extracting-more-than-one-resource-type" class="section level2">
 <h2>Extracting more than one resource type</h2>
-<p>Of course the previous example is using just one resource type. If you are interested in several types of resources, you need one <code>fhir_table_description</code> per resource type. You can bundle a bunch of <code>fhir_table_descriptions</code> in a <code>fhir_design</code>. This is basically a named list of <code>fhir_table_descriptions</code>, and when you pass it to <code>fhir_crack()</code>, the result will be a named list of tables with the same names as the design. Consider an example where we have downloaded MedicationStatements referring to a certain medication as well as the Patient resources these MedicationStatements are linked to.</p>
+<p>Of course the previous example is using just one resource type. If
+you are interested in several types of resources, you need one
+<code>fhir_table_description</code> per resource type. You can bundle a
+bunch of <code>fhir_table_descriptions</code> in a
+<code>fhir_design</code>. This is basically a named list of
+<code>fhir_table_descriptions</code>, and when you pass it to
+<code>fhir_crack()</code>, the result will be a named list of tables
+with the same names as the design. Consider an example where we have
+downloaded MedicationStatements referring to a certain medication as
+well as the Patient resources these MedicationStatements are linked
+to.</p>
 <p>The design to extract both resource types could look like this:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>meds <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;MedicationStatement&quot;</span>,</span>
@@ -425,7 +775,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>pat <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">fhir_design</span>(meds, pat)</span></code></pre></div>
-<p>In this example, we have spelled out the table_description MedicationStatement completely, while we have used a short form for Patients. It looks like this:</p>
+<p>In this example, we have spelled out the table_description
+MedicationStatement completely, while we have used a short form for
+Patients. It looks like this:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>design</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_design with 2 table descriptions:</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_table_description with the following elements: </span></span>
@@ -464,7 +816,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co"># rm_empty_cols: FALSE</span></span>
 <span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co"># format:        &#39;compact&#39;</span></span>
 <span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co"># keep_attr:     FALSE</span></span></code></pre></div>
-<p>As you can see, each table_description is identified by a name, which will also be the name of the corresponding table in the result of <code>fhir_crack()</code>.</p>
+<p>As you can see, each table_description is identified by a name, which
+will also be the name of the corresponding table in the result of
+<code>fhir_crack()</code>.</p>
 <p>You can assign the names explicitly, if you prefer:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">fhir_design</span>(<span class="at">Medications =</span> meds, <span class="at">Patients =</span> pat)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -729,7 +1083,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a><span class="co"># 4     &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;   generated</span></span>
 <span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="co"># 5 official           &lt;NA&gt;        &lt;NA&gt;          &lt;NA&gt;   generated</span></span>
 <span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 official          phone        home  555-213-2064   generated</span></span></code></pre></div>
-<p>As you can see, the result is a list of tables, one for Patient resources and one for MedicationStatement resources. When you use <code>fhir_crack()</code> with a <code>fhir_desgn()</code> instead of a <code>fhir_table_description</code>, the result is an object of class <code>fhir_df_list</code> or <code>fhir_dt_list</code> that also has the design attached. You can extract the design from a list like this using <code>fhir_design()</code>:</p>
+<p>As you can see, the result is a list of tables, one for Patient
+resources and one for MedicationStatement resources. When you use
+<code>fhir_crack()</code> with a <code>fhir_desgn()</code> instead of a
+<code>fhir_table_description</code>, the result is an object of class
+<code>fhir_df_list</code> or <code>fhir_dt_list</code> that also has the
+design attached. You can extract the design from a list like this using
+<code>fhir_design()</code>:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_design</span>(list_of_tables)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_design with 2 table descriptions:</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_table_description with the following elements: </span></span>
@@ -768,14 +1128,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="co"># rm_empty_cols: FALSE</span></span>
 <span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="co"># format:        &#39;compact&#39;</span></span>
 <span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="co"># keep_attr:     FALSE</span></span></code></pre></div>
-<p>Note that this doesn’t work on single tables created with a <code>fhir_table_description</code>.</p>
+<p>Note that this doesn’t work on single tables created with a
+<code>fhir_table_description</code>.</p>
 </div>
 <div id="saving-and-reading-designs" class="section level2">
 <h2>Saving and reading designs</h2>
-<p>If you want to save a design for later or to share with others, you can do so using the <code>fhir_save_design()</code>. This function takes a design and saves it as an xml file:</p>
+<p>If you want to save a design for later or to share with others, you
+can do so using the <code>fhir_save_design()</code>. This function takes
+a design and saves it as an xml file:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>temp_dir <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_save_design</span>(<span class="at">design =</span> design, <span class="at">file =</span> <span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/design.xml&quot;</span>))</span></code></pre></div>
-<p>To read the design back into R, you can use <code>fhir_load_design()</code>:</p>
+<p>To read the design back into R, you can use
+<code>fhir_load_design()</code>:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_load_design</span>(<span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/design.xml&quot;</span>))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_design with 2 table descriptions:</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_table_description with the following elements: </span></span>
@@ -817,8 +1181,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="multiple-entries" class="section level2">
 <h2>Multiple entries</h2>
-<p>A particularly complicated problem in flattening FHIR resources is caused by the fact that there can be multiple entries to an element. The profile according to which your FHIR resources have been built defines how often a particular element can appear in a resource. This is called the <em>cardinality</em> of the element. For example the Patient resource defined <a href="https://www.hl7.org/fhir/patient.html#resource" target="_blank">here</a> can have zero or one birth dates but arbitrarily many addresses. In the default setting, <code>fhir_crack()</code> will paste multiple entries for the same element together in the table, using the separator provided by the <code>sep</code> argument. In most cases this will work just fine, but there are some special cases that require a little more attention.</p>
-<p>Let’s have a look at an example bundle containing just three Patient resources. You can make it available in your workspace like this:</p>
+<p>A particularly complicated problem in flattening FHIR resources is
+caused by the fact that there can be multiple entries to an element. The
+profile according to which your FHIR resources have been built defines
+how often a particular element can appear in a resource. This is called
+the <em>cardinality</em> of the element. For example the Patient
+resource defined
+<a href="https://www.hl7.org/fhir/patient.html#resource" target="_blank">here</a>
+can have zero or one birth dates but arbitrarily many addresses. In the
+default setting, <code>fhir_crack()</code> will paste multiple entries
+for the same element together in the table, using the separator provided
+by the <code>sep</code> argument. In most cases this will work just
+fine, but there are some special cases that require a little more
+attention.</p>
+<p>Let’s have a look at an example bundle containing just three Patient
+resources. You can make it available in your workspace like this:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(example_bundles2)</span></code></pre></div>
 <p>This is how the xml looks:</p>
 <pre><code>&lt;Bundle&gt;
@@ -892,7 +1269,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   &lt;/entry&gt;
 
 &lt;/Bundle&gt;</code></pre>
-<p>This bundle contains three Patient resources. The first resource has just one entry for the address attribute. The second Patient resource has two entries containing the same elements for the address attribute. The third Patient resource has a rather messy address attribute, with three entries containing different elements and also two entries for the name attribute.</p>
+<p>This bundle contains three Patient resources. The first resource has
+just one entry for the address attribute. The second Patient resource
+has two entries containing the same elements for the address attribute.
+The third Patient resource has a rather messy address attribute, with
+three entries containing different elements and also two entries for the
+name attribute.</p>
 <p>Let’s see what happens if we extract all attributes:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>desc1 <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>, <span class="at">sep =</span> <span class="st">&quot; | &quot;</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -907,7 +1289,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 1       Marie</span></span>
 <span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 2       Susie</span></span>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 Frank | Max</span></span></code></pre></div>
-<p>As you can see, multiple entries for the same attribute (address and name) are pasted together. This works fine for Patient 2, but for Patient 3 you can see a problem with the number of entries that are displayed. The original Patient resource had <em>three</em> (incomplete) <code>address</code> entries, but because the first two of them use complementary elements (<code>use</code> and <code>city</code> vs. <code>type</code> and <code>country</code>), the resulting pasted entries look like there had just been two entries for the <code>address</code> attribute.</p>
+<p>As you can see, multiple entries for the same attribute (address and
+name) are pasted together. This works fine for Patient 2, but for
+Patient 3 you can see a problem with the number of entries that are
+displayed. The original Patient resource had <em>three</em> (incomplete)
+<code>address</code> entries, but because the first two of them use
+complementary elements (<code>use</code> and <code>city</code>
+vs. <code>type</code> and <code>country</code>), the resulting pasted
+entries look like there had just been two entries for the
+<code>address</code> attribute.</p>
 <p>You can counter this problem by setting <code>brackets</code>:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>desc2 <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
@@ -930,8 +1320,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 1            [1.1]Marie</span></span>
 <span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 2            [1.1]Susie</span></span>
 <span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 [1.1]Frank | [2.1]Max</span></span></code></pre></div>
-<p>Now the indices display the entry the value belongs to. That way you can see that Patient resource 3 had three entries for the attribute <code>address</code> and you can also see which attributes belong to which entry.</p>
-<p>If you set the <code>format</code> argument to <code>wide</code>, the entries are spread over multiple columns and the indices are attached to column name:</p>
+<p>Now the indices display the entry the value belongs to. That way you
+can see that Patient resource 3 had three entries for the attribute
+<code>address</code> and you can also see which attributes belong to
+which entry.</p>
+<p>If you set the <code>format</code> argument to <code>wide</code>, the
+entries are spread over multiple columns and the indices are attached to
+column name:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundle, <span class="at">design =</span> desc2, <span class="at">format =</span> <span class="st">&quot;wide&quot;</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>df3</span>
@@ -951,14 +1346,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 1           Marie            &lt;NA&gt;</span></span>
 <span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 2           Susie            &lt;NA&gt;</span></span>
 <span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 3           Frank             Max</span></span></code></pre></div>
-<p>Of course the above example is a very specific case that only occurs if your resources have multiple entries with complementary elements. In the majority of cases multiple entries in one resource will have the same structure, thus making numbering of those entries superfluous. But the indices also help to disentangle those entries and put them in separate rows, as you’ll see in the next paragraph.</p>
+<p>Of course the above example is a very specific case that only occurs
+if your resources have multiple entries with complementary elements. In
+the majority of cases multiple entries in one resource will have the
+same structure, thus making numbering of those entries superfluous. But
+the indices also help to disentangle those entries and put them in
+separate rows, as you’ll see in the next paragraph.</p>
 </div>
 <div id="process-tables-with-multiple-entries" class="section level2">
 <h2>Process tables with multiple entries</h2>
-<p>If the table produced by <code>fhir_crack()</code> contains multiple entries, you’ll probably want to divide these entries into distinct observations at some point. Apart from directly spreading those values over multiple columns by using a <code>wide</code> cracking format, the fhircrackr gives you two options to get from a compact table to either a long or a wide format: <code>fhir_melt()</code> and <code>fhir_cast()</code>. The former spreads the entries across rows, creating a long format, the latter spreads them across columns, creating a wide format.</p>
+<p>If the table produced by <code>fhir_crack()</code> contains multiple
+entries, you’ll probably want to divide these entries into distinct
+observations at some point. Apart from directly spreading those values
+over multiple columns by using a <code>wide</code> cracking format, the
+fhircrackr gives you two options to get from a compact table to either a
+long or a wide format: <code>fhir_melt()</code> and
+<code>fhir_cast()</code>. The former spreads the entries across rows,
+creating a long format, the latter spreads them across columns, creating
+a wide format.</p>
 <div id="melt-tables-with-multiple-entries" class="section level3">
 <h3>Melt tables with multiple entries</h3>
-<p><code>fhir_melt()</code> takes an indexed data frame with multiple entries in one or several <code>columns</code> and spreads (aka melts) the entries in <code>columns</code> over several rows:</p>
+<p><code>fhir_melt()</code> takes an indexed data frame with multiple
+entries in one or several <code>columns</code> and spreads (aka melts)
+the entries in <code>columns</code> over several rows:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">fhir_melt</span>(</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">indexed_data_frame =</span> df2,</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns            =</span> <span class="st">&quot;address.city&quot;</span>,</span>
@@ -980,7 +1390,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 [1.1]home | [3.1]work [1]id3 [1.1]Frank | [2.1]Max                   3</span></span>
 <span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 5 [1.1]home | [3.1]work [1]id3 [1.1]Frank | [2.1]Max                   3</span></span>
 <span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 [1.1]home | [3.1]work [1]id3 [1.1]Frank | [2.1]Max                   3</span></span></code></pre></div>
-<p>The new variable <code>resource_identifier</code> records which rows in the created data frame belong to which row (usually equivalent to one resource) in the original data frame. <code>brackets</code> and <code>sep</code> should be given the same character vectors that have been used to build the indices in <code>fhir_crack()</code>. <code>columns</code> is a character vector with the names of the variables you want to melt. You can provide more than one column here but it makes sense to only have variables from the same repeating attribute together in one call to <code>fhir_melt()</code>:</p>
+<p>The new variable <code>resource_identifier</code> records which rows
+in the created data frame belong to which row (usually equivalent to one
+resource) in the original data frame. <code>brackets</code> and
+<code>sep</code> should be given the same character vectors that have
+been used to build the indices in <code>fhir_crack()</code>.
+<code>columns</code> is a character vector with the names of the
+variables you want to melt. You can provide more than one column here
+but it makes sense to only have variables from the same repeating
+attribute together in one call to <code>fhir_melt()</code>:</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;address.city&quot;</span>, <span class="st">&quot;address.use&quot;</span>, <span class="st">&quot;address.type&quot;</span>, <span class="st">&quot;address.country&quot;</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> </span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_melt</span>(</span>
@@ -1004,11 +1422,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 [1.1]Frank | [2.1]Max                   3</span></span>
 <span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 5 [1.1]Frank | [2.1]Max                   3</span></span>
 <span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 [1.1]Frank | [2.1]Max                   3</span></span></code></pre></div>
-<p>If the names of the variables in your data frame have been generated automatically with <code>fhir_crack()</code> you can find all variable names belonging to the same attribute with <code>fhir_common_columns()</code>:</p>
+<p>If the names of the variables in your data frame have been generated
+automatically with <code>fhir_crack()</code> you can find all variable
+names belonging to the same attribute with
+<code>fhir_common_columns()</code>:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">fhir_common_columns</span>(<span class="at">data_frame =</span> df2, <span class="at">column_names_prefix =</span> <span class="st">&quot;address&quot;</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>cols</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;address.city&quot;    &quot;address.country&quot; &quot;address.type&quot;    &quot;address.use&quot;</span></span></code></pre></div>
-<p>With the argument <code>all_columns</code> you can control whether the resulting data frame contains only the molten columns or all columns of the original data frame:</p>
+<p>With the argument <code>all_columns</code> you can control whether
+the resulting data frame contains only the molten columns or all columns
+of the original data frame:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_melt</span>(</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">indexed_data_frame =</span> df2,</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns            =</span> cols,</span>
@@ -1023,8 +1446,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 4                   3    [1]Berlin            &lt;NA&gt;         &lt;NA&gt;     [1]home</span></span>
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 5                   3         &lt;NA&gt;       [1]France    [1]postal        &lt;NA&gt;</span></span>
 <span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 6                   3    [1]London      [1]England    [1]postal     [1]work</span></span></code></pre></div>
-<p>Values on the other variables will just repeat in the newly created rows.</p>
-<p>If you try to melt several variables that don’t belong to the same element in one call to <code>fhir_melt()</code>, this will cause problems, because the different elements won’t be combined correctly:</p>
+<p>Values on the other variables will just repeat in the newly created
+rows.</p>
+<p>If you try to melt several variables that don’t belong to the same
+element in one call to <code>fhir_melt()</code>, this will cause
+problems, because the different elements won’t be combined
+correctly:</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(cols, <span class="st">&quot;name.given&quot;</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_melt</span>(</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">indexed_data_frame =</span> df2,</span>
@@ -1103,11 +1530,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb29-53"><a href="#cb29-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 7                   5</span></span>
 <span id="cb29-54"><a href="#cb29-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 8                   6</span></span>
 <span id="cb29-55"><a href="#cb29-55" aria-hidden="true" tabindex="-1"></a><span class="co"># 9                   6</span></span></code></pre></div>
-<p>This will give you the appropriate product of all multiple entries.</p>
+<p>This will give you the appropriate product of all multiple
+entries.</p>
 </div>
 <div id="remove-indices" class="section level3">
 <h3>Remove indices</h3>
-<p>Once you have sorted out the multiple entries, you might want to get rid of the indices in your table. This can be achieved using <code>fhir_rm_indices()</code>:</p>
+<p>Once you have sorted out the multiple entries, you might want to get
+rid of the indices in your table. This can be achieved using
+<code>fhir_rm_indices()</code>:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_rm_indices</span>(<span class="at">indexed_data_frame =</span> molten_2, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>))</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   address.city address.country address.type address.use  id name.given</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1    Amsterdam     Netherlands     physical        home id1      Marie</span></span>
@@ -1129,11 +1559,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 7                   5</span></span>
 <span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 8                   6</span></span>
 <span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 9                   6</span></span></code></pre></div>
-<p>Again, <code>brackets</code> and <code>sep</code> should be given the same character vector that was used for <code>fhir_crack()</code> and <code>fhir_melt()</code> respectively.</p>
+<p>Again, <code>brackets</code> and <code>sep</code> should be given the
+same character vector that was used for <code>fhir_crack()</code> and
+<code>fhir_melt()</code> respectively.</p>
 </div>
 <div id="cast-tables-with-multiple-entries" class="section level3">
 <h3>Cast tables with multiple entries</h3>
-<p>Instead of spreading the entries across rows, you can also spread them across columns using <code>fhir_cast()</code>. As you’ve seen above this can be achieved by setting <code>format = &quot;wide&quot;</code> in <code>fhir_crack()</code>. There is, however, a function that turns a <code>compact</code> table into a <code>wide</code> table and this function is <code>fhir_cast()</code>. It takes a compact table with multiple entries and the brackets and separator that have been used in <code>fhir_crack()</code> as input:</p>
+<p>Instead of spreading the entries across rows, you can also spread
+them across columns using <code>fhir_cast()</code>. As you’ve seen above
+this can be achieved by setting <code>format = &quot;wide&quot;</code> in
+<code>fhir_crack()</code>. There is, however, a function that turns a
+<code>compact</code> table into a <code>wide</code> table and this
+function is <code>fhir_cast()</code>. It takes a compact table with
+multiple entries and the brackets and separator that have been used in
+<code>fhir_crack()</code> as input:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_cast</span>(df2, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>), <span class="at">sep =</span> <span class="st">&quot; | &quot;</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1.1]address.city [2.1]address.city [3.1]address.city [1.1]address.country</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1         Amsterdam              &lt;NA&gt;              &lt;NA&gt;          Netherlands</span></span>
@@ -1151,8 +1590,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 1           Marie            &lt;NA&gt;</span></span>
 <span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 2           Susie            &lt;NA&gt;</span></span>
 <span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 3           Frank             Max</span></span></code></pre></div>
-<p>Contrary to <code>fhir_melt()</code> this function requires all column names to reflect the XPath expression of the respective attribute. The column containing information on <code>address/city</code> for example has to be named <code>adress.city</code> because the information of the indices is incorporated in those names to avoid duplicate column names. This column naming scheme is automatically used when you don’t give explicit column names in the table_description/design for <code>fhir_crack()</code> so it makes sense to only cast tables that have automatically generated column names.</p>
-<p>The tables produced by <code>fhir_crack(..., format = &quot;wide&quot;)</code> and <code>fhir_cast()</code> can also be used to recreate the resources that were cracked in the first place, as you’ll the in the vignette about recreation of resources.</p>
+<p>Contrary to <code>fhir_melt()</code> this function requires all
+column names to reflect the XPath expression of the respective
+attribute. The column containing information on
+<code>address/city</code> for example has to be named
+<code>adress.city</code> because the information of the indices is
+incorporated in those names to avoid duplicate column names. This column
+naming scheme is automatically used when you don’t give explicit column
+names in the table_description/design for <code>fhir_crack()</code> so
+it makes sense to only cast tables that have automatically generated
+column names.</p>
+<p>The tables produced by <code>fhir_crack(..., format = &quot;wide&quot;)</code>
+and <code>fhir_cast()</code> can also be used to recreate the resources
+that were cracked in the first place, as you’ll the in the vignette
+about recreation of resources.</p>
 </div>
 </div>
 

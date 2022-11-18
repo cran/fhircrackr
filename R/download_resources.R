@@ -29,6 +29,11 @@
 #' 2. Token Authentication: Provide a token in the argument `token`, either as a character vector of length one or as as an object of class
 #' [httr::Token-class]. You can use the function [fhir_authenticate()] to create this object.
 #'
+#' ## Additional headers
+#' Per default, the underlying HTTP requests are equipped with *Accept* and *Authorization* headers. If you need to pass additional headers,
+#' e.g. cookies for authentication or other custom headers, you can add these to the request as a named character vector using the
+#' `add_headers` argument.
+#'
 #' ## HTML removal
 #' FHIR resources can contain a considerable amount of html code (e.g. in a [narrative](https://www.hl7.org/fhir/narrative.html#xhtml) object),
 #' which is often created by the server for example to provide a human-readable summary of the resource.
@@ -49,6 +54,8 @@
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param max_bundles Maximal number of bundles to get. Defaults to Inf meaning all available bundles are downloaded.
 #' @param verbose An integer vector of length one. If 0, nothing is printed, if 1, only finishing message is printed, if > 1,
 #' downloading progress will be printed. Defaults to 1.
@@ -82,16 +89,26 @@
 #' @importFrom lifecycle deprecated
 #' @examples
 #' \donttest{
-#' #Search with GET
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
+#' ### Search with GET
+#'
 #' #create fhir search url
+#'
 #' request <- fhir_url(url = "https://server.fire.ly",
 #'                     resource = "Patient",
 #'                     parameters = c(gender="female"))
+#'
 #' #download bundles
 #' bundles <- fhir_search(request, max_bundles = 5)
 #'
 #'
-#' #Search with POST (should actually be used for longer requests)
+#'
+#' ### Search with POST (should actually be used for longer requests)
+#'
 #' request <- fhir_url(url = "https://server.fire.ly",
 #'                     resource = "Patient")
 #'
@@ -100,7 +117,11 @@
 #' bundles <- fhir_search(request = request,
 #'                        body = body,
 #'                        max_bundles = 5)
-#' }
+#'
+#'
+#'  }, silent = TRUE)
+#'  }
+
 
 fhir_search <- function(
 	request                = fhir_current_request(),
@@ -108,6 +129,7 @@ fhir_search <- function(
 	username               = NULL,
 	password               = NULL,
 	token                  = NULL,
+	add_headers 	       = NULL,
 	max_bundles            = Inf,
 	verbose                = 1,
 	delay_between_attempts = c(1, 3, 9, 27, 81),
@@ -134,18 +156,20 @@ fhir_search <- function(
 	}
 
 	#Extract base URL
-	base <- stringr::str_match(request, ".*:\\/\\/.*?\\/")
+	base <- stringr::str_match(request, ".*?:\\/\\/.*?\\/")
 
 	#preparation for POST vs. GET
 	if(!is.null(body)) {
-		#filter out bad urls
-		if(grepl("\\?", request)) {
-			stop(
-				"The url in argument request should only consist of base url and resource type. ",
-				"The one you provided has a `?` which indicates the presence of parameters. ",
-				"If your request just ends with a `?`, please remove it to remove this error.\n",
-				"If you want to perform search via GET, please set body to NULL."
-			)
+		if(grepl("\\?", request)) {#if there are any params in the URL, move them to body
+			params <- stringr::str_match(request, "(?<=\\?).+")[1]
+			request <- stringr::str_remove(request,"\\?.*")
+			body@content <- paste(body@content, params, sep = "&")
+			# stop(
+			# 	"The url in argument request should only consist of base url and resource type. ",
+			# 	"The one you provided has a `?` which indicates the presence of parameters. ",
+			# 	"If your request just ends with a `?`, please remove it to remove this error.\n",
+			# 	"If you want to perform search via GET, please set body to NULL."
+			# )
 		}
 		if(!grepl("_search", request)) {request <- paste(request, "_search", sep = "/")}
 
@@ -196,6 +220,7 @@ fhir_search <- function(
 			username = username,
 			password = password,
 			token = token,
+			add_headers = add_headers,
 			verbose = verbose,
 			max_attempts = max_attempts,
 			delay_between_attempts = delay_between_attempts,
@@ -284,6 +309,13 @@ fhir_search <- function(
 #'
 #' @examples
 #' \donttest{
+#'
+#' #' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
+#'
 #' # workflow for small memory environments, downloading small batches of bundles
 #' # for really small memory environments consider also using the `_count` option in
 #' # your FHIR search request.
@@ -302,6 +334,9 @@ fhir_search <- function(
 #' }
 #' #you can see the saved tables here:
 #' dir(tempdir())
+#'
+#'
+#' }, silent = TRUE)
 #'}
 #'
 fhir_next_bundle_url <- function(bundle = NULL) {
@@ -330,11 +365,21 @@ fhir_next_bundle_url <- function(bundle = NULL) {
 #'
 #' @examples
 #' \donttest{
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
+#'
 #' request <- fhir_url(url = "https://server.fire.ly", resource = "Patient")
 #' fhir_current_request()
 #'
 #' fhir_search("https://server.fire.ly/Medication", max_bundles = 1)
 #' fhir_current_request()
+#'
+#'
+#' },silent = TRUE)
+#'
 #' }
 #'
 #'
@@ -383,6 +428,8 @@ fhir_recent_http_error <- function() {
 #' @param password A character vector of length one containing the password for basic authentication. Defaults to NULL, meaning no authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param sep A character vector of length one to separate pasted multiple entries
 #' @param brackets A character vector of length two defining the brackets surrounding indices for multiple entries, e.g. `c( "[", "]")`. Defaults to `NULL`.
 #' If `NULL`, no indices will be added to multiple entries.
@@ -420,6 +467,7 @@ fhir_capability_statement <- function(
 	username = NULL,
 	password = NULL,
 	token = NULL,
+	add_headers = NULL,
 	brackets = NULL,
 	sep = " ::: ",
 	log_errors = NULL,
@@ -444,7 +492,8 @@ fhir_capability_statement <- function(
 		url = pastep(url, "metadata?"),
 		config = httr::add_headers(
 			Accept = "application/fhir+xml",
-			Authorization = auth$token
+			Authorization = auth$token,
+			.headers = add_headers
 		),
 		auth$basicAuth
 	), silent = TRUE)
@@ -582,6 +631,8 @@ fhir_save <- function(bundles, directory) {
 #'
 #' @param directory A character vector of length one containing the path to the folder were the files are stored.
 #' @param indices A numeric vector of integers indicating which bundles from the specified directory should be loaded. Defaults to NULL meaning all bundles from the directory are loaded.
+#' @param pattern A character vector of length one with a regex expression defining the naming pattern of the xml files
+#' to be read. Defaults to the regex expression matching file names as produced by [fhir_save()].
 #' @return A [fhir_bundle_list-class].
 #' @export
 #'
@@ -602,7 +653,7 @@ fhir_save <- function(bundles, directory) {
 #' loaded_bundles <- fhir_load(dir, indices = c(2,3))
 #' length(loaded_bundles)
 
-fhir_load <- function(directory, indices = NULL) {
+fhir_load <- function(directory, indices = NULL, pattern = '^[0-9]+\\.xml$') {
 
 	if(!dir.exists(directory)) {
 
@@ -611,7 +662,7 @@ fhir_load <- function(directory, indices = NULL) {
 		return(fhir_bundle_list(list()))
 	}
 
-	files <- grep('^[0-9]+\\.xml$', dir(directory), value = T)
+	files <- grep(pattern, dir(directory), value = T)
 
 	if(is.null(indices)) {
 
@@ -884,6 +935,8 @@ fhir_authenticate <- function(
 #' @param username A character vector of length one containing the username for basic authentication. Defaults to NULL, meaning no authentication.
 #' @param password A character vector of length one containing the password for basic authentication. Defaults to NULL, meaning no authentication.
 #' @param token The token for token based auth, either a string or a httr token object
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param max_attempts Deprecated. The number of maximal attempts is determined by the length of `delay_between_attempts`
 #' @param verbose An integer scalar. If > 1,  Downloading progress is printed. Defaults to 2.
 #' @param delay_between_attempts A numeric vector specifying the delay in seconds between attempts of reaching the server
@@ -897,7 +950,15 @@ fhir_authenticate <- function(
 #'
 #' @examples
 #' \donttest{
+#'
+#' #' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
 #' bundle<-fhircrackr:::get_bundle(request = "https://hapi.fhir.org/baseR4/Patient?")
+#'
+#' }, silent = TRUE)
 #' }
 #'
 
@@ -907,6 +968,7 @@ get_bundle <- function(
 	username = NULL,
 	password = NULL,
 	token = NULL,
+	add_headers = NULL,
 	verbose = 2,
 	max_attempts = NULL,
 	delay_between_attempts = c(1,3,9,27,81),
@@ -923,15 +985,22 @@ get_bundle <- function(
 		#VonK: Next-Links have to be POSTed, Hapi: Next-Links have to be GETed
 		#search via POST
 		if(grepl("_search", request)) {
+			if(grepl("_search\\?.+", request)){#when the next link has parameters (e.g. _count), move them to body
+				params <- paste0("&",stringr::str_match(request, "(?<=\\?).+")[1])
+				request <- stringr::str_remove(request,"\\?.*")
+			}else{
+				params <- NULL
+			}
 			response <- try(httr::POST(
 				url = request,
 				config = httr::add_headers(
 					Accept = "application/fhir+xml",
-					Authorization = auth$token
+					Authorization = auth$token,
+					.headers = add_headers
 				),
 				httr::content_type(type = body@type),
 				auth$basicAuth,
-				body = body@content
+				body = paste(unique(strsplit(paste0(body@content, params), "&")[[1]]), collapse = "&") #gets rid of double params
 			), silent = TRUE)
 
 		} else {#search via GET
@@ -939,7 +1008,8 @@ get_bundle <- function(
 				url = request,
 				config = httr::add_headers(
 					Accept = "application/fhir+xml",
-					Authorization = auth$token
+					Authorization = auth$token,
+					.headers = add_headers
 				),
 				auth$basicAuth
 			), silent = TRUE)

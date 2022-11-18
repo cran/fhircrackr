@@ -10,6 +10,7 @@ fhir_search(
   username = NULL,
   password = NULL,
   token = NULL,
+  add_headers = NULL,
   max_bundles = Inf,
   verbose = 1,
   delay_between_attempts = c(1, 3, 9, 27, 81),
@@ -37,6 +38,9 @@ to the url in \code{request}. See examples and \code{?fhir_body}.}
 
 \item{token}{A character vector of length one or object of class \link[httr:Token-class]{httr::Token}, for bearer token authentication (e.g. OAuth2). See \code{\link[=fhir_authenticate]{fhir_authenticate()}}
 for how to create this.}
+
+\item{add_headers}{A named character vector of custom headers to add to the HTTP request, e.g. \code{c(myHeader = "somevalue")} or
+\code{c(firstHeader = "value1", secondHeader = "value2")}.}
 
 \item{max_bundles}{Maximal number of bundles to get. Defaults to Inf meaning all available bundles are downloaded.}
 
@@ -105,6 +109,13 @@ just leave the arguments described in the following at their default values of \
 }
 }
 
+\subsection{Additional headers}{
+
+Per default, the underlying HTTP requests are equipped with \emph{Accept} and \emph{Authorization} headers. If you need to pass additional headers,
+e.g. cookies for authentication or other custom headers, you can add these to the request as a named character vector using the
+\code{add_headers} argument.
+}
+
 \subsection{HTML removal}{
 
 FHIR resources can contain a considerable amount of html code (e.g. in a \href{https://www.hl7.org/fhir/narrative.html#xhtml}{narrative} object),
@@ -117,16 +128,26 @@ to increase speed at the cost of increased memory usage.
 }
 \examples{
 \donttest{
-#Search with GET
+#the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#you can skip it when the server is reachable
+
+try({
+
+### Search with GET
+
 #create fhir search url
+
 request <- fhir_url(url = "https://server.fire.ly",
                     resource = "Patient",
                     parameters = c(gender="female"))
+
 #download bundles
 bundles <- fhir_search(request, max_bundles = 5)
 
 
-#Search with POST (should actually be used for longer requests)
+
+### Search with POST (should actually be used for longer requests)
+
 request <- fhir_url(url = "https://server.fire.ly",
                     resource = "Patient")
 
@@ -135,7 +156,10 @@ body <- fhir_body(content = list(gender = "female"))
 bundles <- fhir_search(request = request,
                        body = body,
                        max_bundles = 5)
-}
+
+
+ }, silent = TRUE)
+ }
 }
 \seealso{
 \itemize{

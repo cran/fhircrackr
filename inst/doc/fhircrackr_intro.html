@@ -11,29 +11,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2022-07-13" />
+<meta name="date" content="2022-11-18" />
 
 <title>fhircrackr Intro: Handling HL7® FHIR® Resources in R</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -51,55 +64,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -108,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -126,7 +145,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -138,20 +337,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<h1 class="title toc-ignore">fhircrackr Intro: Handling HL7® FHIR® Resources in R</h1>
-<h4 class="date">2022-07-13</h4>
+<h1 class="title toc-ignore">fhircrackr Intro: Handling HL7® FHIR®
+Resources in R</h1>
+<h4 class="date">2022-11-18</h4>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p><code>fhircrackr</code> is a package designed to help analyzing HL7 FHIR<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> resources.</p>
-<p>FHIR stands for <em>Fast Healthcare Interoperability Resources</em> and is a standard describing data formats and elements (known as “resources”) as well as an application programming interface (API) for exchanging electronic health records. The standard was created by the Health Level Seven International (HL7) health-care standards organization. For more information on the FHIR standard, visit <a href="https://www.hl7.org/fhir/" target="_blank">https://www.hl7.org/fhir/</a>.</p>
-<p>While FHIR is a very useful standard to describe and exchange medical data in an interoperable way, it is not at all useful for statistical analyses of data. This is due to the fact that FHIR data is stored in many nested and interlinked resources instead of matrix-like structures.</p>
-<p>Thus, to be able to do statistical analyses a tool is needed that allows converting these nested resources into data frames. This process of tabulating FHIR resources is not trivial, as the unpredictable degree of nesting and connectedness of the resources makes generic solutions to this problem not feasible.</p>
-<p>We therefore implemented a package that makes it possible to download FHIR resources from a server into R and to tabulate these resources into (multiple) data frames.</p>
-<p>The package is still under development. The CRAN version of the package contains all functions that are already stable, for more recent (but potentially unstable) developments, the development version of the package can be downloaded from GitHub using <code>devtools::install_github(&quot;POLAR-fhiR/fhircrackr&quot;)</code>.</p>
-<p>This vignette is an introduction on the basic functionalities of the <code>fhircrackr</code> and should give you a broad overview over what the package can do. For more detailed instructions on each subtopic please have a look the other vignettes. This introduction covers the following topics:</p>
+<p><code>fhircrackr</code> is a package designed to help analyzing HL7
+FHIR<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>
+resources.</p>
+<p>FHIR stands for <em>Fast Healthcare Interoperability Resources</em>
+and is a standard describing data formats and elements (known as
+“resources”) as well as an application programming interface (API) for
+exchanging electronic health records. The standard was created by the
+Health Level Seven International (HL7) health-care standards
+organization. For more information on the FHIR standard, visit
+<a href="https://www.hl7.org/fhir/" target="_blank">https://www.hl7.org/fhir/</a>.</p>
+<p>While FHIR is a very useful standard to describe and exchange medical
+data in an interoperable way, it is not at all useful for statistical
+analyses of data. This is due to the fact that FHIR data is stored in
+many nested and interlinked resources instead of matrix-like
+structures.</p>
+<p>Thus, to be able to do statistical analyses a tool is needed that
+allows converting these nested resources into data frames. This process
+of tabulating FHIR resources is not trivial, as the unpredictable degree
+of nesting and connectedness of the resources makes generic solutions to
+this problem not feasible.</p>
+<p>We therefore implemented a package that makes it possible to download
+FHIR resources from a server into R and to tabulate these resources into
+(multiple) data frames.</p>
+<p>The package is still under development. The CRAN version of the
+package contains all functions that are already stable, for more recent
+(but potentially unstable) developments, the development version of the
+package can be downloaded from GitHub using
+<code>devtools::install_github(&quot;POLAR-fhiR/fhircrackr&quot;)</code>.</p>
+<p>This vignette is an introduction on the basic functionalities of the
+<code>fhircrackr</code> and should give you a broad overview over what
+the package can do. For more detailed instructions on each subtopic
+please have a look the other vignettes. This introduction covers the
+following topics:</p>
 <ul>
 <li><p>Prerequisites</p></li>
 <li><p>Downloading resources from a FHIR server</p></li>
@@ -162,24 +388,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="prerequisites" class="section level2">
 <h2>Prerequisites</h2>
-<p>The complexity of the problem requires a couple of prerequisites both regarding your knowledge and access to data. We will shortly list the preconditions for using the <code>fhircrackr</code> package here:</p>
+<p>The complexity of the problem requires a couple of prerequisites both
+regarding your knowledge and access to data. We will shortly list the
+preconditions for using the <code>fhircrackr</code> package here:</p>
 <ol style="list-style-type: decimal">
-<li><p>First of all, you need the base URL of the FHIR server you want to access. If you don’t have your own FHIR server, you can use one of the available public servers, such as <code>https://hapi.fhir.org/baseR4</code> or <code>http://fhir.hl7.de:8080/baseDstu3</code>. The base URL of a FHIR server is often referred to as [base].</p></li>
-<li><p>To download resources from the server, you should be familiar with <a href="https://www.hl7.org/fhir/search.html" target="_blank">FHIR search requests</a>. FHIR search allows you to download sets of resources that match very specific requirements. The <code>fhircrackr</code> package offers some help building FHIR search requests, for this please see the vignette on downloading FHIR resources.</p></li>
-<li><p>In the first step, <code>fhircrackr</code> downloads the resources in xml format into R. To specify which elements from the FHIR resources you want in your data frame, you should have at least some familiarity with XPath expressions. A good tutorial on XPath expressions can be found here: <a href="https://www.w3schools.com/xml/xpath_intro.asp" target="_blank">https://www.w3schools.com/xml/xpath_intro.asp</a>.</p></li>
+<li><p>First of all, you need the base URL of the FHIR server you want
+to access. If you don’t have your own FHIR server, you can use one of
+the available public servers, such as
+<code>https://hapi.fhir.org/baseR4</code> or
+<code>http://fhir.hl7.de:8080/baseDstu3</code>. The base URL of a FHIR
+server is often referred to as [base].</p></li>
+<li><p>To download resources from the server, you should be familiar
+with <a href="https://www.hl7.org/fhir/search.html" target="_blank">FHIR
+search requests</a>. FHIR search allows you to download sets of
+resources that match very specific requirements. The
+<code>fhircrackr</code> package offers some help building FHIR search
+requests, for this please see the vignette on downloading FHIR
+resources.</p></li>
+<li><p>In the first step, <code>fhircrackr</code> downloads the
+resources in xml format into R. To specify which elements from the FHIR
+resources you want in your data frame, you should have at least some
+familiarity with XPath expressions. A good tutorial on XPath expressions
+can be found here:
+<a href="https://www.w3schools.com/xml/xpath_intro.asp" target="_blank">https://www.w3schools.com/xml/xpath_intro.asp</a>.</p></li>
 </ol>
-<p>In the following we’ll go through a typical workflow with <code>fhircrackr</code> step by step. The first and foremost step is of course, to install and load the package:</p>
+<p>In the following we’ll go through a typical workflow with
+<code>fhircrackr</code> step by step. The first and foremost step is of
+course, to install and load the package:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;fhircrackr&quot;</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fhircrackr)</span></code></pre></div>
 </div>
 <div id="downloading-resources" class="section level2">
 <h2>Downloading resources</h2>
-<p>To download resources from a FHIR server, you need to send a FHIR search request using <code>fhir_search()</code>. This introduction will not go into the details of building a valid FHIR search request. For that, please see the vignette on downloading FHIR resources or have a look at <code>?fhir_url</code>. Here we will use a simple example of downloading all Patient resources from a public HAPI server:</p>
+<p>To download resources from a FHIR server, you need to send a FHIR
+search request using <code>fhir_search()</code>. This introduction will
+not go into the details of building a valid FHIR search request. For
+that, please see the vignette on downloading FHIR resources or have a
+look at <code>?fhir_url</code>. Here we will use a simple example of
+downloading all Patient resources from a public HAPI server:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://fhir.hl7.de:8080/baseDstu3&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>patient_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">2</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code></pre></div>
-<p>The minimum information <code>fhir_search()</code> requires is a url containing the full FHIR search request in the argument <code>request</code> which you can build by a call to <code>fhir_url()</code> or by providing an explicit string. In general, a FHIR search request returns a <em>bundle</em> of the resources you requested. If there are a lot of resources matching your request, the search result isn’t returned in one big bundle but distributed over several of them. If the argument <code>max_bundles</code> is set to its default <code>Inf</code>, <code>fhir_search()</code> will return all available bundles, meaning all resources matching your request. If you set it to <code>2</code> as in the example above, the download will stop after the first two bundles. Note that in this case, the result <em>may not contain all</em> the resources from the server matching your request.</p>
-<p>If you want to connect to a FHIR server that uses basic authentication, you can supply the arguments <code>username</code> and <code>password</code>. If your server uses some form of bearer token authorization, you can supply the token in the argument <code>token</code>.</p>
-<p>As you can see in the next block of code, <code>fhir_search()</code> returns a <code>fhir_bundle_list</code> object, which is basically a list of xml objects where each list element represents one bundle of resources, so a list of two xml objects in our case:</p>
+<p>The minimum information <code>fhir_search()</code> requires is a url
+containing the full FHIR search request in the argument
+<code>request</code> which you can build by a call to
+<code>fhir_url()</code> or by providing an explicit string. In general,
+a FHIR search request returns a <em>bundle</em> of the resources you
+requested. If there are a lot of resources matching your request, the
+search result isn’t returned in one big bundle but distributed over
+several of them. If the argument <code>max_bundles</code> is set to its
+default <code>Inf</code>, <code>fhir_search()</code> will return all
+available bundles, meaning all resources matching your request. If you
+set it to <code>2</code> as in the example above, the download will stop
+after the first two bundles. Note that in this case, the result <em>may
+not contain all</em> the resources from the server matching your
+request.</p>
+<p>If you want to connect to a FHIR server that uses basic
+authentication, you can supply the arguments <code>username</code> and
+<code>password</code>. If your server uses some form of bearer token
+authorization, you can supply the token in the argument
+<code>token</code>.</p>
+<p>As you can see in the next block of code, <code>fhir_search()</code>
+returns a <code>fhir_bundle_list</code> object, which is basically a
+list of xml objects where each list element represents one bundle of
+resources, so a list of two xml objects in our case:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(patient_bundles)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>patient_bundles</span>
@@ -243,13 +514,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837793&quot;/ ...</span></span>
 <span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837794&quot;/ ...</span></span>
 <span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...</span></span></code></pre></div>
-<p>If for some reason you cannot connect to a FHIR server at the moment but want to explore the following functions anyway, the package provides two example lists of bundles containing Patient and MedicationStatement resources. See <code>?patient_bundles</code> and <code>?medication_bundles</code> for how to use them.</p>
+<p>If for some reason you cannot connect to a FHIR server at the moment
+but want to explore the following functions anyway, the package provides
+two example lists of bundles containing Patient and MedicationStatement
+resources. See <code>?patient_bundles</code> and
+<code>?medication_bundles</code> for how to use them.</p>
 </div>
 <div id="flattening-resources" class="section level2">
 <h2>Flattening resources</h2>
-<p>Now we know that inside these xml objects there is the patient data somewhere. To bring it into a tabular format, we will use <code>fhir_crack()</code> which creates one table per resource type requested in the <code>design</code> argument. The most important argument <code>fhir_crack()</code> takes is <code>bundles</code>, the list of bundles that is returned by <code>fhir_search()</code>. The second important argument is <code>design</code>, an object that tells the function which data to extract from the bundle and how. <code>fhir_crack()</code> returns (a list of) data.frames or data.tables (if argument <code>data.table = TRUE</code>).</p>
-<p>The object that is passed to the <code>design</code> argument can be of class <code>fhir_table_description</code> or <code>fhir_design</code>. A <code>fhir_table_description</code> is used when you want to extract just one resource type, resulting in a single table. A <code>fhir_design</code> is basically a named list of <code>fhir_table_descriptions</code> and is used when you want to extract several resource types at once, resulting in a named list of tables.</p>
-<p>The details of what the different elements of a <code>fhir_table_description</code> or <code>fhir_design</code> mean are described in the vignette on flattening resources. Please refer to this document for more information, as we will just use one simple example here.</p>
+<p>Now we know that inside these xml objects there is the patient data
+somewhere. To bring it into a tabular format, we will use
+<code>fhir_crack()</code> which creates one table per resource type
+requested in the <code>design</code> argument. The most important
+argument <code>fhir_crack()</code> takes is <code>bundles</code>, the
+list of bundles that is returned by <code>fhir_search()</code>. The
+second important argument is <code>design</code>, an object that tells
+the function which data to extract from the bundle and how.
+<code>fhir_crack()</code> returns (a list of) data.frames or data.tables
+(if argument <code>data.table = TRUE</code>).</p>
+<p>The object that is passed to the <code>design</code> argument can be
+of class <code>fhir_table_description</code> or
+<code>fhir_design</code>. A <code>fhir_table_description</code> is used
+when you want to extract just one resource type, resulting in a single
+table. A <code>fhir_design</code> is basically a named list of
+<code>fhir_table_descriptions</code> and is used when you want to
+extract several resource types at once, resulting in a named list of
+tables.</p>
+<p>The details of what the different elements of a
+<code>fhir_table_description</code> or <code>fhir_design</code> mean are
+described in the vignette on flattening resources. Please refer to this
+document for more information, as we will just use one simple example
+here.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#define table_description</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>table_description <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
@@ -291,8 +586,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rm_empty_cols: FALSE</span></span>
 <span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; format:        &#39;compact&#39;</span></span>
 <span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; keep_attr:     FALSE</span></span></code></pre></div>
-<p>Each of the five style elements <code>sep</code>, <code>brackets</code>, <code>remove_empty_columns</code>, <code>format</code> and <code>keep_attr</code> in <code>table_description</code> can also be controlled directly by the argument of the same name of <code>fhir_crack()</code>. If one of these function arguments is <code>NULL</code> (the default value for each argument), the corresponding value specified from the <code>table_description</code> will be used. If the argument in <code>fhir_crack</code> is set, the corresponding value in <code>fhir_table_description</code> will be overruled. If both the <code>fhir_crack</code> function argument and the corresponding component in <code>fhir_table_description</code> are <code>NULL</code>, the respective default value (<code>sep = &#39;:::&#39;</code>, <code>brackets = NULL</code>, <code>rm_empty_cols = TRUE</code>, <code>format = &#39;compact&#39;</code>, <code>keep_attr = FALSE</code>) will be applied.</p>
-<p>After it is defined, the <code>fhir_table_description</code> can be used in <code>fhir_crack()</code> like this:</p>
+<p>Each of the five style elements <code>sep</code>,
+<code>brackets</code>, <code>remove_empty_columns</code>,
+<code>format</code> and <code>keep_attr</code> in
+<code>table_description</code> can also be controlled directly by the
+argument of the same name of <code>fhir_crack()</code>. If one of these
+function arguments is <code>NULL</code> (the default value for each
+argument), the corresponding value specified from the
+<code>table_description</code> will be used. If the argument in
+<code>fhir_crack</code> is set, the corresponding value in
+<code>fhir_table_description</code> will be overruled. If both the
+<code>fhir_crack</code> function argument and the corresponding
+component in <code>fhir_table_description</code> are <code>NULL</code>,
+the respective default value (<code>sep = &#39;:::&#39;</code>,
+<code>brackets = NULL</code>, <code>rm_empty_cols = TRUE</code>,
+<code>format = &#39;compact&#39;</code>, <code>keep_attr = FALSE</code>) will be
+applied.</p>
+<p>After it is defined, the <code>fhir_table_description</code> can be
+used in <code>fhir_crack()</code> like this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#flatten resources</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>patients <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> patient_bundles, <span class="at">design =</span> table_description, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -322,8 +633,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="extract-more-than-one-resource-type" class="section level2">
 <h2>Extract more than one resource type</h2>
-<p>Of course the previous example is using just one resource type. If you are interested in several types of resources, you use a <code>fhir_design</code> containing several <code>fhir_table_descriptions</code>.</p>
-<p>Consider the following example where we want to download MedicationStatements referring to a certain medication we specify with its SNOMED CT code and also the Patient resources these MedicationStatements are linked to.</p>
+<p>Of course the previous example is using just one resource type. If
+you are interested in several types of resources, you use a
+<code>fhir_design</code> containing several
+<code>fhir_table_descriptions</code>.</p>
+<p>Consider the following example where we want to download
+MedicationStatements referring to a certain medication we specify with
+its SNOMED CT code and also the Patient resources these
+MedicationStatements are linked to.</p>
 <p>We can build the request like this:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>request  <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4&quot;</span>, </span>
@@ -333,7 +650,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;_include&quot;</span> <span class="ot">=</span> <span class="st">&quot;MedicationStatement:subject&quot;</span>))</span></code></pre></div>
 <p>Then we can download the resources:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>medication_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p>Now our <code>design</code> needs two <code>table_descriptions</code> (called <code>MedicationStatements</code> and <code>Patients</code> in our example), one for the MedicationStatement resources and one for the Patient resources:</p>
+<p>Now our <code>design</code> needs two <code>table_descriptions</code>
+(called <code>MedicationStatements</code> and <code>Patients</code> in
+our example), one for the MedicationStatement resources and one for the
+Patient resources:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MedicationStatements <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;MedicationStatement&quot;</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols     =</span> <span class="fu">c</span>(</span>
@@ -357,7 +677,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>Patients <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">fhir_design</span>(MedicationStatements, Patients)</span></code></pre></div>
-<p>In this example, we have spelled out the table description <code>MedicationStatement</code> completely, while we have used a short form for <code>Patients</code>. The resulting design looks like this:</p>
+<p>In this example, we have spelled out the table description
+<code>MedicationStatement</code> completely, while we have used a short
+form for <code>Patients</code>. The resulting design looks like
+this:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>design</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; A fhir_design with 2 table descriptions:</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; A fhir_table_description with the following elements: </span></span>
@@ -396,7 +719,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; rm_empty_cols: FALSE</span></span>
 <span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; format:        &#39;compact&#39;</span></span>
 <span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; keep_attr:     FALSE</span></span></code></pre></div>
-<p>We can now use this <code>design</code> for <code>fhir_crack()</code>:</p>
+<p>We can now use this <code>design</code> for
+<code>fhir_crack()</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>list_of_tables <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> medication_bundles, <span class="at">design =</span> design, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>list_of_tables<span class="sc">$</span>MedicationStatements[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,]</span>
@@ -536,15 +860,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 18  555-213-2064   generated</span></span>
 <span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 19  555-213-2064   generated</span></span>
 <span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 20  (08)97654321   generated</span></span></code></pre></div>
-<p>As you can see, the result now contains two tables, one for Patient resources and one for MedicationStatement resources.</p>
+<p>As you can see, the result now contains two tables, one for Patient
+resources and one for MedicationStatement resources.</p>
 </div>
 <div id="multiple-entries" class="section level2">
 <h2>Multiple entries</h2>
-<p>A particularly complicated problem in flattening FHIR resources is caused by the fact that there can be multiple entries to an attribute. For a more detailed description of this problem, please see the vignette on flattening resources.</p>
-<p>In general, <code>fhir_crack()</code> will paste multiple entries for the same attribute together in the table, using the separator provided by the <code>sep</code> argument.</p>
-<p>Let’s have a look at the following simple example, where we have a bundle containing just two Patient resources. The example is part of the <code>fhircrackr</code> package and you can make it available like this:</p>
+<p>A particularly complicated problem in flattening FHIR resources is
+caused by the fact that there can be multiple entries to an attribute.
+For a more detailed description of this problem, please see the vignette
+on flattening resources.</p>
+<p>In general, <code>fhir_crack()</code> will paste multiple entries for
+the same attribute together in the table, using the separator provided
+by the <code>sep</code> argument.</p>
+<p>Let’s have a look at the following simple example, where we have a
+bundle containing just two Patient resources. The example is part of the
+<code>fhircrackr</code> package and you can make it available like
+this:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(<span class="at">bundles =</span> example_bundles1)</span></code></pre></div>
-<p>This represents a bundle list with only one very simple bundle of just two Patient resources which looks like this:</p>
+<p>This represents a bundle list with only one very simple bundle of
+just two Patient resources which looks like this:</p>
 <pre><code>&lt;Bundle&gt;
 
     &lt;Patient&gt;
@@ -585,8 +919,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     &lt;/Patient&gt;      
 
 &lt;/Bundle&gt;</code></pre>
-<p>The first resource has just one entry for the address attribute. The second Patient resource has an address attribute with three entries containing different elements and also two entries for the name attribute.</p>
-<p>This is where the style elements of the <code>table_description</code> comes into play:</p>
+<p>The first resource has just one entry for the address attribute. The
+second Patient resource has an address attribute with three entries
+containing different elements and also two entries for the name
+attribute.</p>
+<p>This is where the style elements of the
+<code>table_description</code> comes into play:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>table_description <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">brackets      =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>),</span>
@@ -605,13 +943,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                address.type           address.use     id            name.given</span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1             [1.1]physical             [1.1]home [1]id1            [1.1]Marie</span></span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 [2.1]postal | [3.1]postal [1.1]home | [3.1]work [1]id3 [1.1]Frank | [2.1]Max</span></span></code></pre></div>
-<p>Multiple entries are pasted together with the specified separator string (in this case: <code>&quot; | &quot;</code>) in between and the indices (inside the specified bracket strings (here: <code>&quot;[&quot;</code> and <code>&quot;]&quot;</code>)) display the entry the value belongs to. That way you can see that Patient resource 2 had three entries for the attribute <code>address</code> and you can also see which attributes belong to which entry.</p>
+<p>Multiple entries are pasted together with the specified separator
+string (in this case: <code>&quot; | &quot;</code>) in between and the indices
+(inside the specified bracket strings (here: <code>&quot;[&quot;</code> and
+<code>&quot;]&quot;</code>)) display the entry the value belongs to. That way you
+can see that Patient resource 2 had three entries for the attribute
+<code>address</code> and you can also see which attributes belong to
+which entry.</p>
 </div>
 <div id="process-tables-with-multiple-entries" class="section level2">
 <h2>Process Tables with multiple Entries</h2>
 <div id="melt-tables-with-multiple-entries" class="section level3">
 <h3>Melt tables with multiple entries</h3>
-<p>If the table produced by <code>fhir_crack()</code> contains multiple entries, you’ll probably want to divide these entries into distinct observations at some point. This is where <code>fhir_melt()</code> comes into play. <code>fhir_melt()</code> takes an <em>indexed table</em> with multiple entries in one or several <code>columns</code> and spreads (aka melts) these entries over several rows.</p>
+<p>If the table produced by <code>fhir_crack()</code> contains multiple
+entries, you’ll probably want to divide these entries into distinct
+observations at some point. This is where <code>fhir_melt()</code> comes
+into play. <code>fhir_melt()</code> takes an <em>indexed table</em> with
+multiple entries in one or several <code>columns</code> and spreads (aka
+melts) these entries over several rows.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_melt</span>(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">indexed_data_frame =</span> df,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns            =</span> <span class="st">&quot;address.city&quot;</span>,</span>
@@ -624,7 +973,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                   2    [1]Berlin</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                   2         &lt;NA&gt;</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                   2    [1]London</span></span></code></pre></div>
-<p>The new variable <code>resource_identifier</code> maps which rows in the created table belong to which row (usually equivalent to one resource) in the original table. <code>brackets</code> and <code>sep</code> have to be the same character vectors that have been used to build the indices with <code>fhir_crack()</code>. <code>columns</code> is a character vector with the names of the variables/columns you want to melt. You can provide more than one column here but it makes sense to only have variables from the same repeating attribute together in one call to <code>fhir_melt()</code>:</p>
+<p>The new variable <code>resource_identifier</code> maps which rows in
+the created table belong to which row (usually equivalent to one
+resource) in the original table. <code>brackets</code> and
+<code>sep</code> have to be the same character vectors that have been
+used to build the indices with <code>fhir_crack()</code>.
+<code>columns</code> is a character vector with the names of the
+variables/columns you want to melt. You can provide more than one column
+here but it makes sense to only have variables from the same repeating
+attribute together in one call to <code>fhir_melt()</code>:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;address.city&quot;</span>, <span class="st">&quot;address.use&quot;</span>, <span class="st">&quot;address.type&quot;</span>, <span class="st">&quot;address.country&quot;</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_melt</span>(</span>
@@ -639,7 +996,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                   2    [1]Berlin     [1]home         &lt;NA&gt;            &lt;NA&gt;</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                   2         &lt;NA&gt;        &lt;NA&gt;    [1]postal       [1]France</span></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                   2    [1]London     [1]work    [1]postal      [1]England</span></span></code></pre></div>
-<p>With the argument <code>all_columns</code> you can control whether the resulting table contains only the molten columns or all columns of the original table:</p>
+<p>With the argument <code>all_columns</code> you can control whether
+the resulting table contains only the molten columns or all columns of
+the original table:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>molten <span class="ot">&lt;-</span> <span class="fu">fhir_melt</span>(</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">indexed_data_frame =</span> df,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns            =</span> cols,</span>
@@ -659,11 +1018,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 [1.1]Frank | [2.1]Max                   2</span></span>
 <span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 [1.1]Frank | [2.1]Max                   2</span></span>
 <span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 [1.1]Frank | [2.1]Max                   2</span></span></code></pre></div>
-<p>Values on the other variables will just repeat in the newly created rows. For more information please see the vignette on flattening resources.</p>
+<p>Values on the other variables will just repeat in the newly created
+rows. For more information please see the vignette on flattening
+resources.</p>
 </div>
 <div id="remove-indices" class="section level3">
 <h3>Remove indices</h3>
-<p>Once you have sorted out the multiple entries, you might want to get rid of the indices in your data frame. This can be achieved using <code>fhir_rm_indices()</code>:</p>
+<p>Once you have sorted out the multiple entries, you might want to get
+rid of the indices in your data frame. This can be achieved using
+<code>fhir_rm_indices()</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_rm_indices</span>(<span class="at">indexed_data_frame =</span> molten, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>))</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   address.city address.country address.type address.use  id  name.given</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    Amsterdam     Netherlands     physical        home id1       Marie</span></span>
@@ -675,16 +1038,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                   2</span></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3                   2</span></span>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4                   2</span></span></code></pre></div>
-<p>Again, <code>brackets</code> should be given the same character vector that was used for <code>fhir_crack()</code> and <code>fhir_melt()</code> respectively.</p>
+<p>Again, <code>brackets</code> should be given the same character
+vector that was used for <code>fhir_crack()</code> and
+<code>fhir_melt()</code> respectively.</p>
 </div>
 </div>
 <div id="save-and-load-downloaded-bundles" class="section level2">
 <h2>Save and load downloaded bundles</h2>
-<p>Since <code>fhir_crack()</code> ignores all data that are not specified in <code>design</code>, it makes sense to store the original search result for reproducibility and in case you realize later on that you need elements from the resources that you haven’t extracted at first.</p>
-<p>There are two ways of saving the FHIR bundles you downloaded: Either you save them as R objects, or you write them to an xml file.</p>
+<p>Since <code>fhir_crack()</code> ignores all data that are not
+specified in <code>design</code>, it makes sense to store the original
+search result for reproducibility and in case you realize later on that
+you need elements from the resources that you haven’t extracted at
+first.</p>
+<p>There are two ways of saving the FHIR bundles you downloaded: Either
+you save them as R objects, or you write them to an xml file.</p>
 <div id="save-and-load-bundles-as-r-objects" class="section level3">
 <h3>Save and load bundles as R objects</h3>
-<p>If you want to save the list of downloaded bundles as an <code>.rda</code> or <code>.RData</code> file, you can’t just use R’s <code>save()</code> or <code>save_image()</code> on it, because this will break the external pointers in the xml objects representing your bundles. Instead, you have to serialize the bundles before saving and unserialize them after loading. For single xml objects the package <code>xml2</code> provides serialization functions. For convenience, however, <code>fhircrackr</code> provides the functions <code>fhir_serialize()</code> that can be used directly on the bundles returned by <code>fhir_search()</code> and <code>fhir_unserialize()</code>:</p>
+<p>If you want to save the list of downloaded bundles as an
+<code>.rda</code> or <code>.RData</code> file, you can’t just use R’s
+<code>save()</code> or <code>save_image()</code> on it, because this
+will break the external pointers in the xml objects representing your
+bundles. Instead, you have to serialize the bundles before saving and
+unserialize them after loading. For single xml objects the package
+<code>xml2</code> provides serialization functions. For convenience,
+however, <code>fhircrackr</code> provides the functions
+<code>fhir_serialize()</code> that can be used directly on the bundles
+returned by <code>fhir_search()</code> and
+<code>fhir_unserialize()</code>:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#serialize bundles</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>serialized_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_serialize</span>(<span class="at">bundles =</span> patient_bundles)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -696,7 +1076,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#save</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(serialized_bundles, <span class="at">file =</span> <span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/bundles.rda&quot;</span>))</span></code></pre></div>
-<p>If you reload this bundle, you have to unserialize it before you can work with it:</p>
+<p>If you reload this bundle, you have to unserialize it before you can
+work with it:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load bundles</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>serialized_bundles_reloaded <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/bundles.rda&quot;</span>))</span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unserialize</span></span>
@@ -764,26 +1145,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837793&quot;/ ...</span></span>
 <span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837794&quot;/ ...</span></span>
 <span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...</span></span></code></pre></div>
-<p>After unserialization, the pointers are restored and you can continue to work with the bundles. Note that the example bundles <code>medication_bundles</code> and <code>patient_bundles</code> that are provided with the <code>fhircrackr</code> package are also provided in their serialized form and have to be unserialized as described on their help page.</p>
+<p>After unserialization, the pointers are restored and you can continue
+to work with the bundles. Note that the example bundles
+<code>medication_bundles</code> and <code>patient_bundles</code> that
+are provided with the <code>fhircrackr</code> package are also provided
+in their serialized form and have to be unserialized as described on
+their help page.</p>
 </div>
 <div id="save-and-load-bundles-as-xml-files" class="section level3">
 <h3>Save and load bundles as xml files</h3>
-<p>If you want to store the bundles in xml files instead of R objects, you can use the functions <code>fhir_save()</code> and <code>fhir_load()</code>. <code>fhir_save()</code> takes a list of bundles in form of xml objects (as returned by <code>fhir_search()</code>) and writes them into the directory specified in the argument <code>directory</code>. Each bundle is saved as a separate xml-file. If the folder defined in <code>directory</code> doesn’t exist, it is created in the current working directory.</p>
+<p>If you want to store the bundles in xml files instead of R objects,
+you can use the functions <code>fhir_save()</code> and
+<code>fhir_load()</code>. <code>fhir_save()</code> takes a list of
+bundles in form of xml objects (as returned by
+<code>fhir_search()</code>) and writes them into the directory specified
+in the argument <code>directory</code>. Each bundle is saved as a
+separate xml-file. If the folder defined in <code>directory</code>
+doesn’t exist, it is created in the current working directory.</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#save bundles as xml files</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> patient_bundles, <span class="at">directory =</span> temp_dir)</span></code></pre></div>
-<p>To read bundles saved with <code>fhir_save()</code> back into R, you can use <code>fhir_load()</code>:</p>
+<p>To read bundles saved with <code>fhir_save()</code> back into R, you
+can use <code>fhir_load()</code>:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> temp_dir)</span></code></pre></div>
-<p><code>fhir_load()</code> takes the name of the directory (or path to it) as its only argument. All xml-files in this directory are read into R and returned as a list of bundles in xml format just as returned by <code>fhir_search()</code>.</p>
+<p><code>fhir_load()</code> takes the name of the directory (or path to
+it) as its only argument. All xml-files in this directory are read into
+R and returned as a list of bundles in xml format just as returned by
+<code>fhir_search()</code>.</p>
 </div>
 </div>
 <div id="acknowledgments" class="section level2">
 <h2>Acknowledgments</h2>
-<p>This work was carried out by the SMITH consortium and the cross-consortium use case POLAR_MI; both are part of the German Initiative for Medical Informatics and funded by the German Federal Ministry of Education and Research (BMBF), grant no. 01ZZ1803A , 01ZZ1803C and 01ZZ1910A.</p>
+<p>This work was carried out by the SMITH consortium and the
+cross-consortium use case POLAR_MI; both are part of the German
+Initiative for Medical Informatics and funded by the German Federal
+Ministry of Education and Research (BMBF), grant no. 01ZZ1803A ,
+01ZZ1803C and 01ZZ1910A.</p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>FHIR is the registered trademark of HL7 and is used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of this product by HL7<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>FHIR is the registered trademark of HL7 and is used with
+the permission of HL7. Use of the FHIR trademark does not constitute
+endorsement of this product by HL7<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 

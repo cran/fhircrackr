@@ -73,41 +73,52 @@ paste_parameters <- function(parameters = NULL, parameters2add = NULL, add_quest
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @return An integer of length 1 containing the number of resources matching the type and search parameters specified in `resource` and `parameters`.
 #' @export
 #'
 #' @examples
 #' \donttest{
+#'
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
 #' #number of female Patient resources on the server
 #' fhir_count_resource(
 #'   base_url = 'https://vonk.fire.ly/R4',
 #'   resource = "Patient",
 #'   parameters = c(gender = "female"))
+#' }, silent = TRUE)
 #'}
 fhir_count_resource <- function(
 	base_url,
 	resource,
-	parameters = NULL,
-	username   = NULL,
-	password   = NULL,
-	token      = NULL
+	parameters  = NULL,
+	username    = NULL,
+	password    = NULL,
+	token       = NULL,
+	add_headers = NULL
 ) {
 	as.numeric(
 		xml2::xml_attr(
 			xml2::xml_find_first(
 				fhir_search(
-					request = fhir_url(
-						url        = base_url,
-						resource   = resource,
-						parameters = paste_parameters(
-							parameters        = parameters,
-							parameters2add    = c("_summary" = "count"),
-							add_question_sign = FALSE
-						),
-					),
-					username = username,
-					password = password,
-					token    = token,
+					request     = fhir_url(
+									   url        = base_url,
+									   resource   = resource,
+									   parameters = paste_parameters(
+								   		   parameters        = parameters,
+										   parameters2add    = c("_summary" = "count"),
+										   add_question_sign = FALSE
+							   ),
+						   ),
+					username    = username,
+					password    = password,
+					token       = token,
+					add_headers = add_headers,
 					verbose  = 0
 				)[[1]],
 				"//total"
@@ -136,6 +147,8 @@ fhir_count_resource <- function(
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param verbose An integer of length 1 containing the level of verbosity. Defaults to 0.
 #'
 #' @return A character vector containing the resource (aka logical) IDs of all requested resources.
@@ -143,10 +156,19 @@ fhir_count_resource <- function(
 #' @seealso [fhir_search()], [fhir_get_resources_by_ids()]
 #' @examples
 #' \donttest{
+#'
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
 #' fhir_get_resource_ids(
 #'   base_url   = 'https://vonk.fire.ly/R4',
 #'   resource   = "Patient",
 #'   parameters = "gender=female", verbose=1)
+#'
+#'   }, silent = TRUE)
+#'
 #'   }
 fhir_get_resource_ids <- function(
 	base_url,
@@ -155,6 +177,7 @@ fhir_get_resource_ids <- function(
 	username   = NULL,
 	password   = NULL,
 	token      = NULL,
+	add_headers = NULL,
 	verbose    = 0
 ) {
 	if(0 < verbose) {
@@ -167,7 +190,8 @@ fhir_get_resource_ids <- function(
 					parameters = paste_parameters(parameters),
 					username   = username,
 					password   = password,
-					token      = token
+					token      = token,
+					add_headers = add_headers
 				),
 				" ",
 				resource,
@@ -188,6 +212,7 @@ fhir_get_resource_ids <- function(
 			username = username,
 			password = password,
 			token    = token,
+			add_headers = add_headers,
 			verbose  = 0
 		)
 	)
@@ -248,6 +273,8 @@ fhir_get_resource_ids <- function(
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param verbose An integer vector of length 1 containing the level of verbosity. Defaults to 0.
 #'
 #' @return A [fhir_bundle_list-class] containing the downloaded resources.
@@ -255,6 +282,12 @@ fhir_get_resource_ids <- function(
 #' @seealso [fhir_search()], [fhir_get_resource_ids()]
 #' @examples
 #' \donttest{
+#'
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
 #' #find IDs of Patient resources representing Homer Simpson
 #' ids <- fhir_get_resource_ids(
 #'   base_url   = 'https://hapi.fhir.org/baseR4',
@@ -276,6 +309,8 @@ fhir_get_resource_ids <- function(
 #'       ID      = "id",
 #'       given   = "name/given",
 #'       family  = "name/family")))
+#'
+#' }, silent = TRUE)
 #'}
 fhir_get_resources_by_ids <- function(
 	base_url,
@@ -286,10 +321,11 @@ fhir_get_resources_by_ids <- function(
 	username   = NULL,
 	password   = NULL,
 	token      = NULL,
+	add_headers = NULL,
 	verbose    = 0
 ) {
 	#download via GET
-	get_resources_by_ids_get <- function(base_url, resource, ids, id_param, username = NULL, password = NULL, token = NULL,  verbose = 1) {
+	get_resources_by_ids_get <- function(base_url, resource, ids, id_param, username = NULL, password = NULL, token = NULL, add_headers=NULL, verbose = 1) {
 		collect_ids_for_request <- function(ids, max_ids = length(ids), max_len = 2083 - sum(nchar(base_url),nchar(resource),50)) {
 			if(length(ids) < 1) {
 				warning(
@@ -325,7 +361,7 @@ fhir_get_resources_by_ids <- function(
 		while(0 < length(ids)) {
 			ids_ <- collect_ids_for_request(ids = ids, max_ids = length(ids))
 			url_ <- fhir_url(base_url, resource, paste_parameters(paste0(id_param, "=", ids_$str), parameters))
-			bnd_ <- fhir_search(request = url_, username = username, password = password, token = token, verbose = 0)
+			bnd_ <- fhir_search(request = url_, username = username, password = password, token = token, add_headers = add_headers, verbose = 0)
 			total <- total + ids_$n
 			ids <- ids[-seq_len(ids_$n)]
 			bundles <- c(bundles, bnd_)
@@ -336,7 +372,7 @@ fhir_get_resources_by_ids <- function(
 	}
 
 	#download via POST
-	get_resources_by_ids_post <- function(base_url, resource, ids, id_param, username, password, token, verbose = 1) {
+	get_resources_by_ids_post <- function(base_url, resource, ids, id_param, username, password, token, add_headers, verbose = 1) {
 
 		parameters_list <- stats::setNames(
 			list(paste0(ids, collapse = ","),"100"),
@@ -359,6 +395,7 @@ fhir_get_resources_by_ids <- function(
 			username = username,
 			password = password,
 			token    = token,
+			add_headers = add_headers,
 			verbose  = verbose
 		)
 	}
@@ -372,6 +409,7 @@ fhir_get_resources_by_ids <- function(
 			username = username,
 			password = password,
 			token    = token,
+			add_headers = add_headers,
 			verbose  = verbose
 		),
 		silent = TRUE
@@ -389,6 +427,7 @@ fhir_get_resources_by_ids <- function(
 			username = username,
 			password = password,
 			token    = token,
+			add_headers = add_headers,
 			verbose  = verbose
 		)
 	}
@@ -420,6 +459,8 @@ fhir_get_resources_by_ids <- function(
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param sample_size A integer of length 1 containing the number of resources to sample.
 #' @param seed A integer of length 1 containing the seed for the random generator.
 #' @param verbose An integer of length 1 containing the level of verbosity. Defaults to 1.
@@ -429,6 +470,12 @@ fhir_get_resources_by_ids <- function(
 #' @seealso [fhir_search()], [fhir_sample_resources()], [fhir_get_resources_by_ids()], [fhir_count_resource()]
 #' @examples
 #' \donttest{
+#'
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
 #' #find IDs of all resources representing Homer Simpson
 #' ids <- fhir_get_resource_ids(
 #'   base_url   = 'https://hapi.fhir.org/baseR4',
@@ -452,6 +499,8 @@ fhir_get_resources_by_ids <- function(
 #'       ID     = "id",
 #'       given  = "name/given",
 #'       family = "name/family")))
+#'
+#' }, silent = TRUE)
 #'}
 fhir_sample_resources_by_ids <- function(
 	base_url,
@@ -461,6 +510,7 @@ fhir_sample_resources_by_ids <- function(
 	username    = NULL,
 	password    = NULL,
 	token       = NULL,
+	add_headers = NULL,
 	sample_size = 20,
 	seed        = 1,
 	verbose     = 1
@@ -484,6 +534,7 @@ fhir_sample_resources_by_ids <- function(
 		username = username,
 		password = password,
 		token    = token,
+		add_headers = add_headers,
 		verbose  = verbose
 	)
 }
@@ -523,6 +574,8 @@ fhir_sample_resources_by_ids <- function(
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param sample_size A integer of length 1 containing the number of resources to sample.
 #' @param seed A integer of length 1 containing the seed for the random generator.
 #' @param verbose An integer of length 1 containing the level of verbosity. Defaults to 1.
@@ -533,6 +586,12 @@ fhir_sample_resources_by_ids <- function(
 #'
 #' @examples
 #' \donttest{
+#'
+#' #the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#' #you can skip it when the server is reachable
+#'
+#' try({
+#'
 #' #how many resources are on the server?
 #' count <- fhir_count_resource(
 #'   base_url    = 'https://hapi.fhir.org/baseR4',
@@ -548,6 +607,8 @@ fhir_sample_resources_by_ids <- function(
 #'   seed        = 1)
 #'
 #' bundles
+#'
+#' }, silent = TRUE)
 #'}
 
 fhir_sample_resources <- function(
@@ -557,6 +618,7 @@ fhir_sample_resources <- function(
 	username    = NULL,
 	password    = NULL,
 	token       = NULL,
+	add_headers = NULL,
 	sample_size = 20,
 	seed        = 1,
 	verbose     = 1
@@ -567,7 +629,8 @@ fhir_sample_resources <- function(
 		parameters = parameters,
 		username   = username,
 		password   = password,
-		token      = token
+		token      = token,
+		add_headers = add_headers
 	)
 
 	if(cnt < sample_size) {
@@ -588,11 +651,13 @@ fhir_sample_resources <- function(
 			username   = username,
 			password   = password,
 			token      = token,
+			add_headers = add_headers,
 			verbose    = verbose
 		),
 		username    = username,
 		password    = password,
 		token       = token,
+		add_headers = add_headers,
 		sample_size = sample_size,
 		seed        = seed,
 		verbose     = verbose

@@ -17,6 +17,7 @@ fhir_post(
   username = NULL,
   password = NULL,
   token = NULL,
+  add_headers = NULL,
   verbose = 1,
   log_errors = NULL
 )
@@ -27,6 +28,7 @@ fhir_post(
   username = NULL,
   password = NULL,
   token = NULL,
+  add_headers = NULL,
   verbose = 1,
   log_errors = NULL
 )
@@ -37,6 +39,7 @@ fhir_post(
   username = NULL,
   password = NULL,
   token = NULL,
+  add_headers = NULL,
   verbose = 1,
   log_errors = NULL
 )
@@ -47,6 +50,7 @@ fhir_post(
   username = NULL,
   password = NULL,
   token = NULL,
+  add_headers = NULL,
   verbose = 1,
   log_errors = NULL
 )
@@ -63,6 +67,9 @@ See details for how to generate them.}
 
 \item{token}{A character vector of length one or object of class \link[httr:Token-class]{httr::Token}, for bearer token authentication (e.g. OAuth2). See \code{\link[=fhir_authenticate]{fhir_authenticate()}}
 for how to create this.}
+
+\item{add_headers}{A named character vector of custom headers to add to the HTTP request, e.g. \code{c(myHeader = "somevalue")} or
+\code{c(firstHeader = "value1", secondHeader = "value2")}.}
 
 \item{verbose}{An integer vector of length one. If 0, nothing is printed, if > 0 success message is printed. Defaults to 1.}
 

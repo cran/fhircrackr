@@ -313,6 +313,8 @@ setMethod(
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param verbose An integer vector of length one. If 0, nothing is printed, if > 0 success message is printed. Defaults to 1.
 #' @param log_errors Either `NULL` or a character vector of length one indicating the name of a file in which to save http errors.
 #' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to `NULL`.
@@ -364,6 +366,7 @@ setGeneric(
 				   username   = NULL,
 				   password   = NULL,
 				   token      = NULL,
+				   add_headers = NULL,
 				   verbose    = 1,
 				   log_errors = NULL) {
 		standardGeneric("fhir_post")
@@ -380,6 +383,7 @@ setMethod(
 						  username   = NULL,
 						  password   = NULL,
 						  token      = NULL,
+						  add_headers = NULL,
 						  verbose    = 1,
 						  log_errors = NULL) {
 		auth <-
@@ -390,7 +394,8 @@ setMethod(
 		response <- httr::POST(
 			url    = url,
 			config = httr::add_headers(Accept        = "application/fhir+xml",
-									   Authorization = auth$token),
+									   Authorization = auth$token,
+									   .headers = add_headers),
 			httr::content_type(type = "xml"),
 			auth$basicAuth,
 			body = toString(body)
@@ -415,6 +420,7 @@ setMethod(
 						  username   = NULL,
 						  password   = NULL,
 						  token      = NULL,
+						  add_headers = NULL,
 						  verbose    = 1,
 						  log_errors = NULL) {
 		auth <-
@@ -425,7 +431,8 @@ setMethod(
 		response <- httr::POST(
 			url = url,
 			config = httr::add_headers(Accept = "application/fhir+xml",
-									   Authorization = auth$token),
+									   Authorization = auth$token,
+									   .headers = add_headers),
 			httr::content_type(type = "xml"),
 			auth$basicAuth,
 			body = toString(body)
@@ -452,6 +459,7 @@ setMethod(
 						  username   = NULL,
 						  password   = NULL,
 						  token      = NULL,
+						  add_headers = NULL,
 						  verbose    = 1,
 						  log_errors = NULL) {
 		auth <-
@@ -462,7 +470,8 @@ setMethod(
 		response <- httr::POST(
 			url    = url,
 			config = httr::add_headers(Accept        = "application/fhir+xml",
-									   Authorization = auth$token),
+									   Authorization = auth$token,
+									   .headers = add_headers),
 			httr::content_type(type = body@type),
 			auth$basicAuth,
 			body = body@content
@@ -499,6 +508,8 @@ setMethod(
 #' @param password A character vector of length one containing the password for basic authentication.
 #' @param token A character vector of length one or object of class [httr::Token-class], for bearer token authentication (e.g. OAuth2). See [fhir_authenticate()]
 #' for how to create this.
+#' @param add_headers A named character vector of custom headers to add to the HTTP request, e.g. `c(myHeader = "somevalue")` or
+#' `c(firstHeader = "value1", secondHeader = "value2")`.
 #' @param verbose An integer vector of length one. If 0, nothing is printed, if > 0 success message is printed. Defaults to 1.
 #' @param log_errors Either `NULL` or a character vector of length one indicating the name of a file in which to save http errors.
 #' `NULL` means no error logging. When a file name is provided, the errors are saved in the specified file. Defaults to `NULL`.
@@ -532,6 +543,7 @@ fhir_put <- function(url,
 					 username   = NULL,
 					 password   = NULL,
 					 token      = NULL,
+					 add_headers = NULL,
 					 verbose    = 1,
 					 log_errors = NULL) {
 	auth <-
@@ -543,7 +555,8 @@ fhir_put <- function(url,
 		response <- httr::PUT(
 			url    = url,
 			config = httr::add_headers(Accept        = "application/fhir+xml",
-									   Authorization = auth$token),
+									   Authorization = auth$token,
+									   .headers = add_headers),
 			httr::content_type(type = "xml"),
 			auth$basicAuth,
 			body = toString(body)
@@ -563,7 +576,8 @@ fhir_put <- function(url,
 		response <- httr::PUT(
 			url    = url,
 			config = httr::add_headers(Accept        = "application/fhir+xml",
-									   Authorization = auth$token),
+									   Authorization = auth$token,
+									   .headers = add_headers),
 			httr::content_type(type = body@type),
 			auth$basicAuth,
 			body = body@content

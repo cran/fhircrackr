@@ -11,6 +11,7 @@ fhir_sample_resources(
   username = NULL,
   password = NULL,
   token = NULL,
+  add_headers = NULL,
   sample_size = 20,
   seed = 1,
   verbose = 1
@@ -31,6 +32,9 @@ or \code{c(gender="male", "_summary"="count")}. Note that parameter names beginn
 
 \item{token}{A character vector of length one or object of class \link[httr:Token-class]{httr::Token}, for bearer token authentication (e.g. OAuth2). See \code{\link[=fhir_authenticate]{fhir_authenticate()}}
 for how to create this.}
+
+\item{add_headers}{A named character vector of custom headers to add to the HTTP request, e.g. \code{c(myHeader = "somevalue")} or
+\code{c(firstHeader = "value1", secondHeader = "value2")}.}
 
 \item{sample_size}{A integer of length 1 containing the number of resources to sample.}
 
@@ -65,6 +69,12 @@ For more information on authentication options, please see the help page of \cod
 }
 \examples{
 \donttest{
+
+#the try({}, silent = TRUE) statement is only there to catch errors when the server is down
+#you can skip it when the server is reachable
+
+try({
+
 #how many resources are on the server?
 count <- fhir_count_resource(
   base_url    = 'https://hapi.fhir.org/baseR4',
@@ -80,6 +90,8 @@ bundles <- fhir_sample_resources(
   seed        = 1)
 
 bundles
+
+}, silent = TRUE)
 }
 }
 \seealso{
