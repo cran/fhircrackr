@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#"
@@ -108,6 +108,7 @@ head(table)
 fhir_canonical_design()
 
 ## -----------------------------------------------------------------------------
+#all attributes defined explicitly
 meds <- fhir_table_description(
 	resource = "MedicationStatement",
 	cols     = list(
@@ -115,11 +116,7 @@ meds <- fhir_table_description(
 		status_text = "text/status",
 		status      = "status",
 		med_system  = "medicationCodeableConcept/coding/system",
-		med_code    = "medicationCodeableConcept/coding/code",
-		med_display = "medicationCodeableConcept/coding/display",
-		dosage      = "dosage/text",
-		patient     = "subject/reference",
-		last_update = "meta/lastUpdated"
+		med_code    = "medicationCodeableConcept/coding/code"
 	),
 	sep           = "|",
 	brackets      = NULL,
@@ -128,8 +125,10 @@ meds <- fhir_table_description(
 	keep_attr     = FALSE 
 )
 
+#automatic extraction/default values
 pat <- fhir_table_description(resource = "Patient")
 
+#combine both table_descriptions
 design <- fhir_design(meds, pat)
 
 ## -----------------------------------------------------------------------------
@@ -185,6 +184,33 @@ df2
 df3 <- fhir_crack(bundles = bundle, design = desc2, format = "wide", verbose = 0)
 
 df3
+
+## -----------------------------------------------------------------------------
+desc3 <- fhir_table_description(
+	resource = "Patient",
+	cols = c(id = "id",
+			 name = "name/given",
+			 address.city = "address[type[@value='physical'] and use[@value='home']]/city",
+			 address.country = "address[type[@value='physical'] and use[@value='home']]/country"
+			 )
+)
+
+df_selected <- fhir_crack(bundles = bundle, design = desc3, verbose = 0)
+df_selected
+
+## -----------------------------------------------------------------------------
+bundle2 <- fhir_unserialize(bundles = example_bundles5)
+desc4 <- fhir_table_description(resource = "Observation",
+								cols = c(
+									id = "id",
+									code = "code/coding[system[@value='http://loinc.org']]/code",
+								 	display = "code/coding[system[@value='http://loinc.org']]/display")
+									 )
+df_selected2 <- fhir_crack(bundles = bundle2,
+					design = desc4,
+					verbose = F)
+
+df_selected2
 
 ## -----------------------------------------------------------------------------
  fhir_melt(
@@ -258,6 +284,6 @@ fhir_rm_indices(indexed_data_frame = molten_2, brackets = c("[", "]"))
 ## -----------------------------------------------------------------------------
 fhir_cast(df2, brackets = c("[", "]"), sep = " | ", verbose = 0)
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 file.remove(paste0(temp_dir, "/design.xml"))
 

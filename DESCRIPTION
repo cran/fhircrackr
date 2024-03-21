@@ -1,8 +1,8 @@
 Package: fhircrackr
 Type: Package
 Title: Handling HL7 FHIR® Resources in R
-Version: 2.1.1
-Date: 2023-02-10
+Version: 2.2.0
+Date: 2024-03-21
 Authors@R: c(
     person( given = "Thomas", 
             family = "Peschel", 
@@ -46,11 +46,11 @@ Collate: 'fhir_body.R' 'fhir_resource.R' 'fhir_url.R' 'fhir_bundle.R'
         'fhir_table_list.R' 'fhir_tree.R' 'flatten_resources.R'
         'miscellaneous.R' 'multiple_entries.R' 'sample_resources.R'
 NeedsCompilation: no
-Packaged: 2023-02-10 09:09:50 UTC; J01546
+Packaged: 2024-03-21 14:17:17 UTC; j01546
 Author: Thomas Peschel [aut],
   Julia Palm [aut, cre] (<https://orcid.org/0000-0003-1568-5893>),
   Jens Przybilla [aut],
   Frank Meineke [aut] (<https://orcid.org/0000-0002-9256-7543>)
 Maintainer: Julia Palm <julia.palm@med.uni-jena.de>
 Repository: CRAN
-Date/Publication: 2023-02-10 09:30:07 UTC
+Date/Publication: 2024-03-21 14:40:06 UTC

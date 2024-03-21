@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2023-02-10" />
+<meta name="date" content="2024-03-21" />
 
 <title>fhircrackr: Download FHIR resources</title>
 
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">fhircrackr: Download FHIR resources</h1>
-<h4 class="date">2023-02-10</h4>
+<h4 class="date">2024-03-21</h4>
 
 
 <div id="TOC">
@@ -371,7 +371,7 @@ from a server in some depth. If you are interested in a quick overview,
 please have a look at the fhircrackr:intro vignette.</p>
 <p>Before running any of the following code, you need to load the
 <code>fhircrackr</code> package:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fhircrackr)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(fhircrackr)</span></code></pre></div>
 <div id="fhir-search-requests" class="section level2">
 <h2>FHIR search requests</h2>
 <p>To download data from a FHIR server, you need to specify which
@@ -393,33 +393,33 @@ solution to bring those three components together correctly, taking care
 of proper formatting.</p>
 <p>In the simplest case, <code>fhir_url()</code> takes only the base url
 and the resource type you are looking for like this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_url&quot;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;http://hapi.fhir.org/baseR4/Patient&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_url&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># [1] &quot;http://hapi.fhir.org/baseR4/Patient&quot;</span></span></code></pre></div>
 <p>Internally, the function <code>fhir_resource_type()</code> is called
 to check the type you provided against list of all currently available
 resource types can be found at
 <a href="https://hl7.org/FHIR/resourcelist.html" target="_blank">https://hl7.org/FHIR/resourcelist.html</a>.
 Case errors are corrected automatically and the function throws a
 warning, if the resource type doesn’t match the list under hl7.org:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;Patient&quot;</span>) <span class="co">#correct</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  Patient</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;medicationstatement&quot;</span>) <span class="co">#fixed</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Changing resource type &quot;medicationstatement&quot; into &quot;MedicationStatement&quot;.</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  MedicationStatement</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;medicationstatement&quot;</span>, <span class="at">fix_capitalization =</span> <span class="cn">FALSE</span>) <span class="co">#not fixed</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  medicationstatement</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;Hospital&quot;</span>) <span class="co">#an unknown resource type, a warning is issued</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  Hospital</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Warning:</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># In fhir_resource_type(&quot;Hospital&quot;) :</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   You gave &quot;Hospital&quot; as the resource type.</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># This doesn&#39;t match any of the resource types defined under</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># https://hl7.org/FHIR/resourcelist.html.</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># If you are sure the resource type is correct anyway, you can ignore this warning.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;Patient&quot;</span>) <span class="co">#correct</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  Patient</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;medicationstatement&quot;</span>) <span class="co">#fixed</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># Changing resource type &quot;medicationstatement&quot; into &quot;MedicationStatement&quot;.</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  MedicationStatement</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;medicationstatement&quot;</span>, <span class="at">fix_capitalization =</span> <span class="cn">FALSE</span>) <span class="co">#not fixed</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  medicationstatement</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">fhir_resource_type</span>(<span class="at">string =</span> <span class="st">&quot;Hospital&quot;</span>) <span class="co">#an unknown resource type, a warning is issued</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co"># A fhir_resource_type object:  Hospital</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co"># Warning:</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co"># In fhir_resource_type(&quot;Hospital&quot;) :</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#   You gave &quot;Hospital&quot; as the resource type.</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co"># This doesn&#39;t match any of the resource types defined under</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co"># https://hl7.org/FHIR/resourcelist.html.</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co"># If you are sure the resource type is correct anyway, you can ignore this warning.</span></span></code></pre></div>
 <p>Besides telling the server which resource type to give back, the
 resource type also determines the kinds of search parameters that are
 allowed. Search parameters are used to further qualify the resources you
@@ -447,17 +447,17 @@ year 2000 or <code>&quot;gender&quot; = &quot;female&quot;</code> to get female 
 only.</p>
 <p>You can add search parameters to your request via a named list or a
 named character vector:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource   =</span> <span class="st">&quot;Patient&quot;</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">parameters =</span> <span class="fu">list</span>(</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;birthdate&quot;</span> <span class="ot">=</span> <span class="st">&quot;lt2000-01-01&quot;</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;code&quot;</span>      <span class="ot">=</span> <span class="st">&quot;http://loinc.org|1751-1&quot;</span>))</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>request</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_url&quot;</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;http://hapi.fhir.org/baseR4/Patient?birthdate=lt2000-01-01&amp;code=http://</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># loinc.org%7C1751-1&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    <span class="at">resource   =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="at">parameters =</span> <span class="fu">list</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>        <span class="st">&quot;birthdate&quot;</span> <span class="ot">=</span> <span class="st">&quot;lt2000-01-01&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>        <span class="st">&quot;code&quot;</span>      <span class="ot">=</span> <span class="st">&quot;http://loinc.org|1751-1&quot;</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>request</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_url&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co"># [1] &quot;http://hapi.fhir.org/baseR4/Patient?birthdate=lt2000-01-01&amp;code=http://</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co"># loinc.org%7C1751-1&quot;</span></span></code></pre></div>
 <p>As you can see, <code>fhir_url()</code> performs automatic url
 encoding and the <code>|</code> is transformed to <code>%7C</code>.</p>
 <div id="accessing-the-current-request" class="section level3">
@@ -480,9 +480,9 @@ request, the function will automatically call
 <p>We will start with a very simple example and use
 <code>fhir_search()</code> to download Patient resources from a public
 HAPI server:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>patient_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">2</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>patient_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">2</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code></pre></div>
 <p>In general, a FHIR search request returns a <em>bundle</em> of the
 resources you requested. If there are a lot of resources matching your
 request, the search result isn’t returned in one big bundle but
@@ -511,67 +511,67 @@ attempts as well the time interval between them.</p>
 returns an object of class <code>fhir_bundle_list</code> where each
 element represents one bundle of resources, so a list of two in our
 case:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>patient_bundles</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_bundle_list&quot;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [[1]]</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4/Patient</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#  [6] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837602&quot;/ ...</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/example-r ...</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837624&quot;/ ...</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837626&quot;/ ...</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837631&quot;/ ...</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837716&quot;/ ...</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837720&quot;/ ...</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837714&quot;/ ...</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837721&quot;/ ...</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837722&quot;/ ...</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837723&quot;/ ...</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837724&quot;/ ...</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/cfsb16116 ...</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837736&quot;/ ...</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837737&quot;/ ...</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># [[2]]</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co">#  [6] &lt;link&gt;\n  &lt;relation value=&quot;previous&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.o ...</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837760&quot;/ ...</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837766&quot;/ ...</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837768&quot;/ ...</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837781&quot;/ ...</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837783&quot;/ ...</span></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837784&quot;/ ...</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837787&quot;/ ...</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837788&quot;/ ...</span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837789&quot;/ ...</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837790&quot;/ ...</span></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837791&quot;/ ...</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837792&quot;/ ...</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837793&quot;/ ...</span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837794&quot;/ ...</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>patient_bundles</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_bundle_list&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># [[1]]</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4/Patient</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#  [6] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837602&quot;/ ...</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/example-r ...</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837624&quot;/ ...</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837626&quot;/ ...</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837631&quot;/ ...</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837716&quot;/ ...</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837720&quot;/ ...</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837714&quot;/ ...</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837721&quot;/ ...</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837722&quot;/ ...</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837723&quot;/ ...</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837724&quot;/ ...</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/cfsb16116 ...</span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837736&quot;/ ...</span></span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837737&quot;/ ...</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a><span class="co"># [[2]]</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="co">#  [6] &lt;link&gt;\n  &lt;relation value=&quot;previous&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.o ...</span></span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837760&quot;/ ...</span></span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837766&quot;/ ...</span></span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837768&quot;/ ...</span></span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837781&quot;/ ...</span></span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837783&quot;/ ...</span></span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837784&quot;/ ...</span></span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837787&quot;/ ...</span></span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837788&quot;/ ...</span></span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837789&quot;/ ...</span></span>
+<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837790&quot;/ ...</span></span>
+<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837791&quot;/ ...</span></span>
+<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837792&quot;/ ...</span></span>
+<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837793&quot;/ ...</span></span>
+<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837794&quot;/ ...</span></span>
+<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div>
 <p>If for some reason you cannot connect to a FHIR server at the moment
 but want to explore the bundles anyway, the package provides an example
 list of bundles containing Patient resources. See
@@ -585,20 +585,20 @@ MedicationStatement resources with the snomed code
 <code>429374003</code> and also download the Patient resources these
 MedicationStatements refer to. The FHIR search request to do this can be
 built like this:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4/&quot;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource   =</span> <span class="st">&quot;MedicationStatement&quot;</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">parameters =</span> <span class="fu">list</span>(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;code&quot;</span>     <span class="ot">=</span> <span class="st">&quot;http://snomed.info/ct|429374003&quot;</span>,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;_include&quot;</span> <span class="ot">=</span> <span class="st">&quot;MedicationStatement:subject&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4/&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="at">resource   =</span> <span class="st">&quot;MedicationStatement&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="at">parameters =</span> <span class="fu">list</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>        <span class="st">&quot;code&quot;</span>     <span class="ot">=</span> <span class="st">&quot;http://snomed.info/ct|429374003&quot;</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>        <span class="st">&quot;_include&quot;</span> <span class="ot">=</span> <span class="st">&quot;MedicationStatement:subject&quot;</span>))</span></code></pre></div>
 <p>Then you provide the request to <code>fhir_search()</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>medication_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>medication_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> request, <span class="at">max_bundles =</span> <span class="dv">3</span>)</span></code></pre></div>
 <p>These bundles now contain two types of resources, MedicationStatement
 resources as well as Patient resources. If you want to have a look at
 the bundles, it is not very useful to print them to the console. Instead
 just save them as xml-files to a directory of you choice and look at the
 resources there:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> medication_bundles, <span class="at">directory =</span> <span class="st">&quot;MyProject/medicationBundles&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> medication_bundles, <span class="at">directory =</span> <span class="st">&quot;MyProject/medicationBundles&quot;</span>)</span></code></pre></div>
 <p>If you want to have a look at a bundle like this but don’t have
 access to a FHIR server at the moment, check out
 <code>?medication_bundles</code>.</p>
@@ -625,14 +625,14 @@ gets long enough to exceed the allowed url length. A common scenario for
 this would be a request querying an explicit list of identifiers. Let’s
 for example say you are looking for the following list of patient
 identifiers:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;72622884-0a09-4ea9-9a91-685bce3b0fe3&quot;</span>, </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;2ca48b68-a641-4be7-a39d-9ffe2691a29a&quot;</span>, </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;8bcdd92d-5f96-4e07-9f6a-e22a3591ee30&quot;</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;2067558f-c9ed-489a-9c2f-7387bb3426a2&quot;</span>, </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;5077b4b0-07c9-4d03-b9ec-1f9f218f8239&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;72622884-0a09-4ea9-9a91-685bce3b0fe3&quot;</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>         <span class="st">&quot;2ca48b68-a641-4be7-a39d-9ffe2691a29a&quot;</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>         <span class="st">&quot;8bcdd92d-5f96-4e07-9f6a-e22a3591ee30&quot;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>         <span class="st">&quot;2067558f-c9ed-489a-9c2f-7387bb3426a2&quot;</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>         <span class="st">&quot;5077b4b0-07c9-4d03-b9ec-1f9f218f8239&quot;</span>)</span></code></pre></div>
 <p>You can use them comma separated in the value of the
 <code>identifier</code> search parameter like this:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>id_strings <span class="ot">&lt;-</span> <span class="fu">paste</span>(ids, <span class="at">collapse =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>id_strings <span class="ot">&lt;-</span> <span class="fu">paste</span>(ids, <span class="at">collapse =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
 <p>But this string would make the FHIR search request URL very long,
 especially if it is combined with additional other search
 parameters.</p>
@@ -642,19 +642,19 @@ body of type <code>application/x-www-form-urlencoded</code> and sent via
 POST. A body of this kind can be created the same way the parameters are
 usually given to the <code>parameters</code> argument of
 <code>fhir_url()</code>, i.e. as a named list or character:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#note the list()-expression</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="fu">fhir_body</span>(<span class="at">content =</span> <span class="fu">list</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;identifier&quot;</span>  <span class="ot">=</span> id_strings,</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;_revinclude&quot;</span> <span class="ot">=</span> <span class="st">&quot;Observation:patient&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co">#note the list()-expression</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>body <span class="ot">&lt;-</span> <span class="fu">fhir_body</span>(<span class="at">content =</span> <span class="fu">list</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    <span class="st">&quot;identifier&quot;</span>  <span class="ot">=</span> id_strings,</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    <span class="st">&quot;_revinclude&quot;</span> <span class="ot">=</span> <span class="st">&quot;Observation:patient&quot;</span>))</span></code></pre></div>
 <p>The body will then automatically be assigned the content type
 <code>application/x-www-form-urlencoded</code>. If you provide a body
 like this in <code>fhir_search()</code>, the url in request should
 <strong>only</strong> contain the base URL and the resource type. The
 function will automatically amend it with the suffix
 <code>_search</code> and perform a POST:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4/&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> url, <span class="at">body =</span> body)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;https://hapi.fhir.org/baseR4/&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> url, <span class="at">body =</span> body)</span></code></pre></div>
 </div>
 <div id="deal-with-http-errors" class="section level2">
 <h2>Deal with HTTP Errors</h2>
@@ -669,10 +669,10 @@ either call <code>fhir_recent_http_error()</code> to print more
 information into the console or you can pass a string with a file name
 to the argument <code>log_errors</code>. This will write a log with
 error information to the specified file:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>medication_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">request     =</span> request,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_bundles =</span> <span class="dv">3</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_errors  =</span> <span class="st">&quot;myErrorFile&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>medication_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    <span class="at">request     =</span> request,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    <span class="at">max_bundles =</span> <span class="dv">3</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="at">log_errors  =</span> <span class="st">&quot;myErrorFile&quot;</span>)</span></code></pre></div>
 </div>
 <div id="save-the-downloaded-bundles" class="section level2">
 <h2>Save the downloaded bundles</h2>
@@ -695,86 +695,86 @@ however, <code>fhircrackr</code> provides the functions
 <code>fhir_serialize()</code> and <code>fhir_unserialize()</code> that
 can be used directly on the bundles returned by
 <code>fhir_search()</code>:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#serialize bundles</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>serialized_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_serialize</span>(<span class="at">bundles =</span> patient_bundles)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#have a look at them</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(serialized_bundles[[<span class="dv">1</span>]])</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] 58 0a 00 00 00 03</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create temporary directory for saving</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>temp_dir <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#save</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(serialized_bundles, <span class="at">file =</span> <span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/bundles.rda&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">#serialize bundles</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>serialized_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_serialize</span>(<span class="at">bundles =</span> patient_bundles)</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#have a look at them</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="fu">head</span>(serialized_bundles[[<span class="dv">1</span>]])</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co"># [1] 58 0a 00 00 00 03</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co">#create temporary directory for saving</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>temp_dir <span class="ot">&lt;-</span> <span class="fu">tempdir</span>()</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#save</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="fu">save</span>(serialized_bundles, <span class="at">file =</span> <span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/bundles.rda&quot;</span>))</span></code></pre></div>
 <p>If you load this bundle again, you have to unserialize it before you
 can work with it:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load bundles</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/bundles.rda&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#unserialize</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(<span class="at">bundles =</span> serialized_bundles)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#have a look</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>bundles</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_bundle_list&quot;</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># [[1]]</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4/Patient</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#  [6] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837602&quot;/ ...</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/example-r ...</span></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837624&quot;/ ...</span></span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837626&quot;/ ...</span></span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837631&quot;/ ...</span></span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837716&quot;/ ...</span></span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837720&quot;/ ...</span></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837714&quot;/ ...</span></span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837721&quot;/ ...</span></span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837722&quot;/ ...</span></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837723&quot;/ ...</span></span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837724&quot;/ ...</span></span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/cfsb16116 ...</span></span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837736&quot;/ ...</span></span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837737&quot;/ ...</span></span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="co"># [[2]]</span></span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
-<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
-<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
-<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
-<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
-<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a><span class="co">#  [6] &lt;link&gt;\n  &lt;relation value=&quot;previous&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.o ...</span></span>
-<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837760&quot;/ ...</span></span>
-<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837766&quot;/ ...</span></span>
-<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837768&quot;/ ...</span></span>
-<span id="cb18-54"><a href="#cb18-54" aria-hidden="true" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837781&quot;/ ...</span></span>
-<span id="cb18-55"><a href="#cb18-55" aria-hidden="true" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837783&quot;/ ...</span></span>
-<span id="cb18-56"><a href="#cb18-56" aria-hidden="true" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837784&quot;/ ...</span></span>
-<span id="cb18-57"><a href="#cb18-57" aria-hidden="true" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837787&quot;/ ...</span></span>
-<span id="cb18-58"><a href="#cb18-58" aria-hidden="true" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837788&quot;/ ...</span></span>
-<span id="cb18-59"><a href="#cb18-59" aria-hidden="true" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837789&quot;/ ...</span></span>
-<span id="cb18-60"><a href="#cb18-60" aria-hidden="true" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837790&quot;/ ...</span></span>
-<span id="cb18-61"><a href="#cb18-61" aria-hidden="true" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837791&quot;/ ...</span></span>
-<span id="cb18-62"><a href="#cb18-62" aria-hidden="true" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837792&quot;/ ...</span></span>
-<span id="cb18-63"><a href="#cb18-63" aria-hidden="true" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837793&quot;/ ...</span></span>
-<span id="cb18-64"><a href="#cb18-64" aria-hidden="true" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837794&quot;/ ...</span></span>
-<span id="cb18-65"><a href="#cb18-65" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co">#load bundles</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">paste0</span>(temp_dir, <span class="st">&quot;/bundles.rda&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co">#unserialize</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(<span class="at">bundles =</span> serialized_bundles)</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#have a look</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>bundles</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co"># An object of class &quot;fhir_bundle_list&quot;</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co"># [[1]]</span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4/Patient</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="co">#  [6] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837602&quot;/ ...</span></span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/example-r ...</span></span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837624&quot;/ ...</span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837626&quot;/ ...</span></span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837631&quot;/ ...</span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837716&quot;/ ...</span></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837720&quot;/ ...</span></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837714&quot;/ ...</span></span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837721&quot;/ ...</span></span>
+<span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837722&quot;/ ...</span></span>
+<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837723&quot;/ ...</span></span>
+<span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837724&quot;/ ...</span></span>
+<span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/cfsb16116 ...</span></span>
+<span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837736&quot;/ ...</span></span>
+<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837737&quot;/ ...</span></span>
+<span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a><span class="co"># [[2]]</span></span>
+<span id="cb18-38"><a href="#cb18-38" tabindex="-1"></a><span class="co"># A fhir_bundle_xml object</span></span>
+<span id="cb18-39"><a href="#cb18-39" tabindex="-1"></a><span class="co"># No. of entries : 20</span></span>
+<span id="cb18-40"><a href="#cb18-40" tabindex="-1"></a><span class="co"># Self Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
+<span id="cb18-41"><a href="#cb18-41" tabindex="-1"></a><span class="co"># Next Link: http://hapi.fhir.org/baseR4?_getpages=ce958386-53d0-4042-888c-cad53bf5d5a1 ...</span></span>
+<span id="cb18-42"><a href="#cb18-42" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb18-43"><a href="#cb18-43" tabindex="-1"></a><span class="co"># {xml_node}</span></span>
+<span id="cb18-44"><a href="#cb18-44" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
+<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a><span class="co">#  [1] &lt;id value=&quot;ce958386-53d0-4042-888c-cad53bf5d5a1&quot;/&gt;</span></span>
+<span id="cb18-46"><a href="#cb18-46" tabindex="-1"></a><span class="co">#  [2] &lt;meta&gt;\n  &lt;lastUpdated value=&quot;2021-05-10T12:12:43.317+00:00&quot;/&gt;\n&lt;/meta&gt;</span></span>
+<span id="cb18-47"><a href="#cb18-47" tabindex="-1"></a><span class="co">#  [3] &lt;type value=&quot;searchset&quot;/&gt;</span></span>
+<span id="cb18-48"><a href="#cb18-48" tabindex="-1"></a><span class="co">#  [4] &lt;link&gt;\n  &lt;relation value=&quot;self&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb18-49"><a href="#cb18-49" tabindex="-1"></a><span class="co">#  [5] &lt;link&gt;\n  &lt;relation value=&quot;next&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.org/b ...</span></span>
+<span id="cb18-50"><a href="#cb18-50" tabindex="-1"></a><span class="co">#  [6] &lt;link&gt;\n  &lt;relation value=&quot;previous&quot;/&gt;\n  &lt;url value=&quot;http://hapi.fhir.o ...</span></span>
+<span id="cb18-51"><a href="#cb18-51" tabindex="-1"></a><span class="co">#  [7] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837760&quot;/ ...</span></span>
+<span id="cb18-52"><a href="#cb18-52" tabindex="-1"></a><span class="co">#  [8] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837766&quot;/ ...</span></span>
+<span id="cb18-53"><a href="#cb18-53" tabindex="-1"></a><span class="co">#  [9] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837768&quot;/ ...</span></span>
+<span id="cb18-54"><a href="#cb18-54" tabindex="-1"></a><span class="co"># [10] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837781&quot;/ ...</span></span>
+<span id="cb18-55"><a href="#cb18-55" tabindex="-1"></a><span class="co"># [11] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837783&quot;/ ...</span></span>
+<span id="cb18-56"><a href="#cb18-56" tabindex="-1"></a><span class="co"># [12] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837784&quot;/ ...</span></span>
+<span id="cb18-57"><a href="#cb18-57" tabindex="-1"></a><span class="co"># [13] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837787&quot;/ ...</span></span>
+<span id="cb18-58"><a href="#cb18-58" tabindex="-1"></a><span class="co"># [14] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837788&quot;/ ...</span></span>
+<span id="cb18-59"><a href="#cb18-59" tabindex="-1"></a><span class="co"># [15] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837789&quot;/ ...</span></span>
+<span id="cb18-60"><a href="#cb18-60" tabindex="-1"></a><span class="co"># [16] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837790&quot;/ ...</span></span>
+<span id="cb18-61"><a href="#cb18-61" tabindex="-1"></a><span class="co"># [17] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837791&quot;/ ...</span></span>
+<span id="cb18-62"><a href="#cb18-62" tabindex="-1"></a><span class="co"># [18] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837792&quot;/ ...</span></span>
+<span id="cb18-63"><a href="#cb18-63" tabindex="-1"></a><span class="co"># [19] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837793&quot;/ ...</span></span>
+<span id="cb18-64"><a href="#cb18-64" tabindex="-1"></a><span class="co"># [20] &lt;entry&gt;\n  &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/1837794&quot;/ ...</span></span>
+<span id="cb18-65"><a href="#cb18-65" tabindex="-1"></a><span class="co"># ...</span></span></code></pre></div>
 <p>After unserialization, the pointers are restored and you can continue
 to work with the bundles. Note that the example bundles
 <code>medication_bundles</code> and <code>patient_bundles</code> that
@@ -793,15 +793,51 @@ in the argument <code>directory</code>. Each bundle is saved as a
 separate xml-file named by its index, e.g. 3.xml for the third
 downloaded bundle. If the folder defined in <code>directory</code>
 doesn’t exist, it is created in the current working directory.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#save bundles as xml files</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> patient_bundles, <span class="at">directory =</span> temp_dir)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co">#save bundles as xml files</span></span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">fhir_save</span>(<span class="at">bundles =</span> patient_bundles, <span class="at">directory =</span> temp_dir)</span></code></pre></div>
 <p>To read bundles saved with <code>fhir_save()</code> back into R, you
 can use <code>fhir_load()</code>:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> temp_dir)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> temp_dir)</span></code></pre></div>
 <p><code>fhir_load()</code> takes the name of the directory (or path to
 it) as its only argument. All xml-files in this directory will be read
 into R and returned as a list of bundles in xml format just as returned
 by <code>fhir_search()</code>.</p>
+<p>If for some reason your bundles are stored as a character vector
+containing xml strings (e.g. because you extracted them from somewhere
+other than a FHIR API), you can use the function <code>as_fhir()</code>
+to coerce this character vector to a <code>fhir_bundle_list</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co">#character vector containing fhir bundles</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>bundle_strings <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="st">&quot;&lt;Bundle&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="st"> &lt;type value=&#39;searchset&#39;/&gt;</span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="st"> &lt;entry&gt;</span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="st">  &lt;resource&gt;</span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="st">    &lt;Patient&gt;</span></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="st">       &lt;id value=&#39;id1&#39;/&gt;</span></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="st">          &lt;name&gt;</span></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="st">             &lt;given value=&#39;Marie&#39;/&gt;</span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="st">          &lt;/name&gt;</span></span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="st">    &lt;/Patient&gt;</span></span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a><span class="st">  &lt;/resource&gt;</span></span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a><span class="st"> &lt;/entry&gt;</span></span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a><span class="st">&lt;/Bundle&gt;&quot;</span>,</span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a><span class="st">&quot;&lt;Bundle&gt;</span></span>
+<span id="cb21-17"><a href="#cb21-17" tabindex="-1"></a><span class="st"> &lt;type value=&#39;searchset&#39;/&gt;</span></span>
+<span id="cb21-18"><a href="#cb21-18" tabindex="-1"></a><span class="st"> &lt;entry&gt;</span></span>
+<span id="cb21-19"><a href="#cb21-19" tabindex="-1"></a><span class="st">  &lt;resource&gt;</span></span>
+<span id="cb21-20"><a href="#cb21-20" tabindex="-1"></a><span class="st">    &lt;Patient&gt;</span></span>
+<span id="cb21-21"><a href="#cb21-21" tabindex="-1"></a><span class="st">       &lt;id value=&#39;id2&#39;/&gt;</span></span>
+<span id="cb21-22"><a href="#cb21-22" tabindex="-1"></a><span class="st">          &lt;name&gt;</span></span>
+<span id="cb21-23"><a href="#cb21-23" tabindex="-1"></a><span class="st">             &lt;given value=&#39;Max&#39;/&gt;</span></span>
+<span id="cb21-24"><a href="#cb21-24" tabindex="-1"></a><span class="st">          &lt;/name&gt;</span></span>
+<span id="cb21-25"><a href="#cb21-25" tabindex="-1"></a><span class="st">    &lt;/Patient&gt;</span></span>
+<span id="cb21-26"><a href="#cb21-26" tabindex="-1"></a><span class="st">  &lt;/resource&gt;</span></span>
+<span id="cb21-27"><a href="#cb21-27" tabindex="-1"></a><span class="st"> &lt;/entry&gt;</span></span>
+<span id="cb21-28"><a href="#cb21-28" tabindex="-1"></a><span class="st">&lt;/Bundle&gt;&quot;</span></span>
+<span id="cb21-29"><a href="#cb21-29" tabindex="-1"></a>)</span>
+<span id="cb21-30"><a href="#cb21-30" tabindex="-1"></a></span>
+<span id="cb21-31"><a href="#cb21-31" tabindex="-1"></a><span class="co">#convert to FHIR bundle list</span></span>
+<span id="cb21-32"><a href="#cb21-32" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">as_fhir</span>(bundle_strings)</span></code></pre></div>
 </div>
 </div>
 <div id="dealing-with-large-data-sets" class="section level2">
@@ -835,96 +871,96 @@ resources only contain those elements plus the mandatory elements
 in the examples restricts the number of resources in the bundle to 2,
 which is just done to make the result more printable for this
 vignette.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>, </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">parameters =</span> <span class="fu">c</span>(<span class="st">&quot;_elements&quot;</span> <span class="ot">=</span> <span class="st">&quot;name,gender,birthDate&quot;</span>,</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;_count&quot;</span><span class="ot">=</span> <span class="st">&quot;2&quot;</span>))</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(request, <span class="at">max_bundles =</span> <span class="dv">1</span>)</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;id value=&quot;8e0db3ce-817b-48cd-ba3e-1a0d20f64366&quot;/&gt;</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;meta&gt;</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;lastUpdated value=&quot;2022-03-31T08:48:55.934+00:00&quot;/&gt;</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;/meta&gt;</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;type value=&quot;searchset&quot;/&gt;</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;link&gt;</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;relation value=&quot;self&quot;/&gt;</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;url value=&quot;http://hapi.fhir.org/baseR4/Patient?_count=2&amp;amp;_elements=name%2Cgender%2CbirthDate&quot;/&gt;</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;/link&gt;</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;link&gt;</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;relation value=&quot;next&quot;/&gt;</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;url value=&quot;http://hapi.fhir.org/baseR4?_getpages=8e0db3ce-817b-48cd-ba3e-1a0d20f64366&amp;amp;_getpagesoffset=2&amp;amp;_count=2&amp;amp;_pretty=true&amp;amp;_bundletype=searchset&amp;amp;_elements=birthDate,gender,name&quot;/&gt;</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;/link&gt;</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;entry&gt;</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/2564886&quot;/&gt;</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;resource&gt;</span></span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">#       &lt;Patient&gt;</span></span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;id value=&quot;2564886&quot;/&gt;</span></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;meta&gt;</span></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;versionId value=&quot;1&quot;/&gt;</span></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;lastUpdated value=&quot;2021-09-28T01:04:35.774+00:00&quot;/&gt;</span></span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;source value=&quot;#rxRuwftRVG3erMwy&quot;/&gt;</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;tag&gt;</span></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v3-ObservationValue&quot;/&gt;</span></span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;SUBSETTED&quot;/&gt;</span></span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;display value=&quot;Resource encoded in summary mode&quot;/&gt;</span></span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;/tag&gt;</span></span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;/meta&gt;</span></span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;name&gt;</span></span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;text value=&quot;반영훈 사원&quot;/&gt;</span></span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;family value=&quot;반&quot;/&gt;</span></span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;given value=&quot;영훈&quot;/&gt;</span></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;prefix value=&quot;사원&quot;/&gt;</span></span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;/name&gt;</span></span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;gender value=&quot;male&quot;/&gt;</span></span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;birthDate value=&quot;1992-01-12&quot;/&gt;</span></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a><span class="co">#       &lt;/Patient&gt;</span></span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;/resource&gt;</span></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;search&gt;</span></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="co">#       &lt;mode value=&quot;match&quot;/&gt;</span></span>
-<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;/search&gt;</span></span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;/entry&gt;</span></span>
-<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;entry&gt;</span></span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/2564911&quot;/&gt;</span></span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;resource&gt;</span></span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a><span class="co">#       &lt;Patient&gt;</span></span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;id value=&quot;2564911&quot;/&gt;</span></span>
-<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;meta&gt;</span></span>
-<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;versionId value=&quot;1&quot;/&gt;</span></span>
-<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;lastUpdated value=&quot;2021-09-28T01:12:59.207+00:00&quot;/&gt;</span></span>
-<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;source value=&quot;#rmWF4JDz6p1WVwzl&quot;/&gt;</span></span>
-<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;security&gt;</span></span>
-<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v2-0203&quot;/&gt;</span></span>
-<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;RM&quot;/&gt;</span></span>
-<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;/security&gt;</span></span>
-<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;tag&gt;</span></span>
-<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v2-0203sbtest05&quot;/&gt;</span></span>
-<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;SBTest05m&quot;/&gt;</span></span>
-<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;/tag&gt;</span></span>
-<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;tag&gt;</span></span>
-<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v3-ObservationValue&quot;/&gt;</span></span>
-<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;SUBSETTED&quot;/&gt;</span></span>
-<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a><span class="co">#             &lt;display value=&quot;Resource encoded in summary mode&quot;/&gt;</span></span>
-<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;/tag&gt;</span></span>
-<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;/meta&gt;</span></span>
-<span id="cb22-67"><a href="#cb22-67" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;name&gt;</span></span>
-<span id="cb22-68"><a href="#cb22-68" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;use value=&quot;usual&quot;/&gt;</span></span>
-<span id="cb22-69"><a href="#cb22-69" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;text value=&quot;human name&quot;/&gt;</span></span>
-<span id="cb22-70"><a href="#cb22-70" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;family value=&quot;Jonathan&quot;/&gt;</span></span>
-<span id="cb22-71"><a href="#cb22-71" aria-hidden="true" tabindex="-1"></a><span class="co">#           &lt;given value=&quot;token_sort_test_data05&quot;/&gt;</span></span>
-<span id="cb22-72"><a href="#cb22-72" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;/name&gt;</span></span>
-<span id="cb22-73"><a href="#cb22-73" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;gender value=&quot;male&quot;/&gt;</span></span>
-<span id="cb22-74"><a href="#cb22-74" aria-hidden="true" tabindex="-1"></a><span class="co">#         &lt;birthDate value=&quot;2021-09-01&quot;/&gt;</span></span>
-<span id="cb22-75"><a href="#cb22-75" aria-hidden="true" tabindex="-1"></a><span class="co">#       &lt;/Patient&gt;</span></span>
-<span id="cb22-76"><a href="#cb22-76" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;/resource&gt;</span></span>
-<span id="cb22-77"><a href="#cb22-77" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;search&gt;</span></span>
-<span id="cb22-78"><a href="#cb22-78" aria-hidden="true" tabindex="-1"></a><span class="co">#       &lt;mode value=&quot;match&quot;/&gt;</span></span>
-<span id="cb22-79"><a href="#cb22-79" aria-hidden="true" tabindex="-1"></a><span class="co">#     &lt;/search&gt;</span></span>
-<span id="cb22-80"><a href="#cb22-80" aria-hidden="true" tabindex="-1"></a><span class="co">#   &lt;/entry&gt;</span></span>
-<span id="cb22-81"><a href="#cb22-81" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;/Bundle&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>, </span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>                    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>                    <span class="at">parameters =</span> <span class="fu">c</span>(<span class="st">&quot;_elements&quot;</span> <span class="ot">=</span> <span class="st">&quot;name,gender,birthDate&quot;</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>                                   <span class="st">&quot;_count&quot;</span><span class="ot">=</span> <span class="st">&quot;2&quot;</span>))</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(request, <span class="at">max_bundles =</span> <span class="dv">1</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">toString</span>(bundles[[<span class="dv">1</span>]]))</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># &lt;Bundle&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="co">#   &lt;id value=&quot;8e0db3ce-817b-48cd-ba3e-1a0d20f64366&quot;/&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">#   &lt;meta&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co">#     &lt;lastUpdated value=&quot;2022-03-31T08:48:55.934+00:00&quot;/&gt;</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="co">#   &lt;/meta&gt;</span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#   &lt;type value=&quot;searchset&quot;/&gt;</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#   &lt;link&gt;</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co">#     &lt;relation value=&quot;self&quot;/&gt;</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="co">#     &lt;url value=&quot;http://hapi.fhir.org/baseR4/Patient?_count=2&amp;amp;_elements=name%2Cgender%2CbirthDate&quot;/&gt;</span></span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="co">#   &lt;/link&gt;</span></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co">#   &lt;link&gt;</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a><span class="co">#     &lt;relation value=&quot;next&quot;/&gt;</span></span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a><span class="co">#     &lt;url value=&quot;http://hapi.fhir.org/baseR4?_getpages=8e0db3ce-817b-48cd-ba3e-1a0d20f64366&amp;amp;_getpagesoffset=2&amp;amp;_count=2&amp;amp;_pretty=true&amp;amp;_bundletype=searchset&amp;amp;_elements=birthDate,gender,name&quot;/&gt;</span></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a><span class="co">#   &lt;/link&gt;</span></span>
+<span id="cb23-15"><a href="#cb23-15" tabindex="-1"></a><span class="co">#   &lt;entry&gt;</span></span>
+<span id="cb23-16"><a href="#cb23-16" tabindex="-1"></a><span class="co">#     &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/2564886&quot;/&gt;</span></span>
+<span id="cb23-17"><a href="#cb23-17" tabindex="-1"></a><span class="co">#     &lt;resource&gt;</span></span>
+<span id="cb23-18"><a href="#cb23-18" tabindex="-1"></a><span class="co">#       &lt;Patient&gt;</span></span>
+<span id="cb23-19"><a href="#cb23-19" tabindex="-1"></a><span class="co">#         &lt;id value=&quot;2564886&quot;/&gt;</span></span>
+<span id="cb23-20"><a href="#cb23-20" tabindex="-1"></a><span class="co">#         &lt;meta&gt;</span></span>
+<span id="cb23-21"><a href="#cb23-21" tabindex="-1"></a><span class="co">#           &lt;versionId value=&quot;1&quot;/&gt;</span></span>
+<span id="cb23-22"><a href="#cb23-22" tabindex="-1"></a><span class="co">#           &lt;lastUpdated value=&quot;2021-09-28T01:04:35.774+00:00&quot;/&gt;</span></span>
+<span id="cb23-23"><a href="#cb23-23" tabindex="-1"></a><span class="co">#           &lt;source value=&quot;#rxRuwftRVG3erMwy&quot;/&gt;</span></span>
+<span id="cb23-24"><a href="#cb23-24" tabindex="-1"></a><span class="co">#           &lt;tag&gt;</span></span>
+<span id="cb23-25"><a href="#cb23-25" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v3-ObservationValue&quot;/&gt;</span></span>
+<span id="cb23-26"><a href="#cb23-26" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;SUBSETTED&quot;/&gt;</span></span>
+<span id="cb23-27"><a href="#cb23-27" tabindex="-1"></a><span class="co">#             &lt;display value=&quot;Resource encoded in summary mode&quot;/&gt;</span></span>
+<span id="cb23-28"><a href="#cb23-28" tabindex="-1"></a><span class="co">#           &lt;/tag&gt;</span></span>
+<span id="cb23-29"><a href="#cb23-29" tabindex="-1"></a><span class="co">#         &lt;/meta&gt;</span></span>
+<span id="cb23-30"><a href="#cb23-30" tabindex="-1"></a><span class="co">#         &lt;name&gt;</span></span>
+<span id="cb23-31"><a href="#cb23-31" tabindex="-1"></a><span class="co">#           &lt;text value=&quot;반영훈 사원&quot;/&gt;</span></span>
+<span id="cb23-32"><a href="#cb23-32" tabindex="-1"></a><span class="co">#           &lt;family value=&quot;반&quot;/&gt;</span></span>
+<span id="cb23-33"><a href="#cb23-33" tabindex="-1"></a><span class="co">#           &lt;given value=&quot;영훈&quot;/&gt;</span></span>
+<span id="cb23-34"><a href="#cb23-34" tabindex="-1"></a><span class="co">#           &lt;prefix value=&quot;사원&quot;/&gt;</span></span>
+<span id="cb23-35"><a href="#cb23-35" tabindex="-1"></a><span class="co">#         &lt;/name&gt;</span></span>
+<span id="cb23-36"><a href="#cb23-36" tabindex="-1"></a><span class="co">#         &lt;gender value=&quot;male&quot;/&gt;</span></span>
+<span id="cb23-37"><a href="#cb23-37" tabindex="-1"></a><span class="co">#         &lt;birthDate value=&quot;1992-01-12&quot;/&gt;</span></span>
+<span id="cb23-38"><a href="#cb23-38" tabindex="-1"></a><span class="co">#       &lt;/Patient&gt;</span></span>
+<span id="cb23-39"><a href="#cb23-39" tabindex="-1"></a><span class="co">#     &lt;/resource&gt;</span></span>
+<span id="cb23-40"><a href="#cb23-40" tabindex="-1"></a><span class="co">#     &lt;search&gt;</span></span>
+<span id="cb23-41"><a href="#cb23-41" tabindex="-1"></a><span class="co">#       &lt;mode value=&quot;match&quot;/&gt;</span></span>
+<span id="cb23-42"><a href="#cb23-42" tabindex="-1"></a><span class="co">#     &lt;/search&gt;</span></span>
+<span id="cb23-43"><a href="#cb23-43" tabindex="-1"></a><span class="co">#   &lt;/entry&gt;</span></span>
+<span id="cb23-44"><a href="#cb23-44" tabindex="-1"></a><span class="co">#   &lt;entry&gt;</span></span>
+<span id="cb23-45"><a href="#cb23-45" tabindex="-1"></a><span class="co">#     &lt;fullUrl value=&quot;http://hapi.fhir.org/baseR4/Patient/2564911&quot;/&gt;</span></span>
+<span id="cb23-46"><a href="#cb23-46" tabindex="-1"></a><span class="co">#     &lt;resource&gt;</span></span>
+<span id="cb23-47"><a href="#cb23-47" tabindex="-1"></a><span class="co">#       &lt;Patient&gt;</span></span>
+<span id="cb23-48"><a href="#cb23-48" tabindex="-1"></a><span class="co">#         &lt;id value=&quot;2564911&quot;/&gt;</span></span>
+<span id="cb23-49"><a href="#cb23-49" tabindex="-1"></a><span class="co">#         &lt;meta&gt;</span></span>
+<span id="cb23-50"><a href="#cb23-50" tabindex="-1"></a><span class="co">#           &lt;versionId value=&quot;1&quot;/&gt;</span></span>
+<span id="cb23-51"><a href="#cb23-51" tabindex="-1"></a><span class="co">#           &lt;lastUpdated value=&quot;2021-09-28T01:12:59.207+00:00&quot;/&gt;</span></span>
+<span id="cb23-52"><a href="#cb23-52" tabindex="-1"></a><span class="co">#           &lt;source value=&quot;#rmWF4JDz6p1WVwzl&quot;/&gt;</span></span>
+<span id="cb23-53"><a href="#cb23-53" tabindex="-1"></a><span class="co">#           &lt;security&gt;</span></span>
+<span id="cb23-54"><a href="#cb23-54" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v2-0203&quot;/&gt;</span></span>
+<span id="cb23-55"><a href="#cb23-55" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;RM&quot;/&gt;</span></span>
+<span id="cb23-56"><a href="#cb23-56" tabindex="-1"></a><span class="co">#           &lt;/security&gt;</span></span>
+<span id="cb23-57"><a href="#cb23-57" tabindex="-1"></a><span class="co">#           &lt;tag&gt;</span></span>
+<span id="cb23-58"><a href="#cb23-58" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v2-0203sbtest05&quot;/&gt;</span></span>
+<span id="cb23-59"><a href="#cb23-59" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;SBTest05m&quot;/&gt;</span></span>
+<span id="cb23-60"><a href="#cb23-60" tabindex="-1"></a><span class="co">#           &lt;/tag&gt;</span></span>
+<span id="cb23-61"><a href="#cb23-61" tabindex="-1"></a><span class="co">#           &lt;tag&gt;</span></span>
+<span id="cb23-62"><a href="#cb23-62" tabindex="-1"></a><span class="co">#             &lt;system value=&quot;http://terminology.hl7.org/CodeSystem/v3-ObservationValue&quot;/&gt;</span></span>
+<span id="cb23-63"><a href="#cb23-63" tabindex="-1"></a><span class="co">#             &lt;code value=&quot;SUBSETTED&quot;/&gt;</span></span>
+<span id="cb23-64"><a href="#cb23-64" tabindex="-1"></a><span class="co">#             &lt;display value=&quot;Resource encoded in summary mode&quot;/&gt;</span></span>
+<span id="cb23-65"><a href="#cb23-65" tabindex="-1"></a><span class="co">#           &lt;/tag&gt;</span></span>
+<span id="cb23-66"><a href="#cb23-66" tabindex="-1"></a><span class="co">#         &lt;/meta&gt;</span></span>
+<span id="cb23-67"><a href="#cb23-67" tabindex="-1"></a><span class="co">#         &lt;name&gt;</span></span>
+<span id="cb23-68"><a href="#cb23-68" tabindex="-1"></a><span class="co">#           &lt;use value=&quot;usual&quot;/&gt;</span></span>
+<span id="cb23-69"><a href="#cb23-69" tabindex="-1"></a><span class="co">#           &lt;text value=&quot;human name&quot;/&gt;</span></span>
+<span id="cb23-70"><a href="#cb23-70" tabindex="-1"></a><span class="co">#           &lt;family value=&quot;Jonathan&quot;/&gt;</span></span>
+<span id="cb23-71"><a href="#cb23-71" tabindex="-1"></a><span class="co">#           &lt;given value=&quot;token_sort_test_data05&quot;/&gt;</span></span>
+<span id="cb23-72"><a href="#cb23-72" tabindex="-1"></a><span class="co">#         &lt;/name&gt;</span></span>
+<span id="cb23-73"><a href="#cb23-73" tabindex="-1"></a><span class="co">#         &lt;gender value=&quot;male&quot;/&gt;</span></span>
+<span id="cb23-74"><a href="#cb23-74" tabindex="-1"></a><span class="co">#         &lt;birthDate value=&quot;2021-09-01&quot;/&gt;</span></span>
+<span id="cb23-75"><a href="#cb23-75" tabindex="-1"></a><span class="co">#       &lt;/Patient&gt;</span></span>
+<span id="cb23-76"><a href="#cb23-76" tabindex="-1"></a><span class="co">#     &lt;/resource&gt;</span></span>
+<span id="cb23-77"><a href="#cb23-77" tabindex="-1"></a><span class="co">#     &lt;search&gt;</span></span>
+<span id="cb23-78"><a href="#cb23-78" tabindex="-1"></a><span class="co">#       &lt;mode value=&quot;match&quot;/&gt;</span></span>
+<span id="cb23-79"><a href="#cb23-79" tabindex="-1"></a><span class="co">#     &lt;/search&gt;</span></span>
+<span id="cb23-80"><a href="#cb23-80" tabindex="-1"></a><span class="co">#   &lt;/entry&gt;</span></span>
+<span id="cb23-81"><a href="#cb23-81" tabindex="-1"></a><span class="co"># &lt;/Bundle&gt;</span></span></code></pre></div>
 <p>As you can see, the resulting Bundle is much smaller than it would be
 if the full resources where downloaded.</p>
 </div>
@@ -942,15 +978,15 @@ doesn’t exist yet, <code>fhir_search()</code> will create it for you.
 This way, the R session will only have to keep one bundle at a time in
 the working memory. You can later load them using
 <code>fhir_load()</code> and crack them one after another:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_search</span>(</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">request      =</span> request,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_bundles  =</span> <span class="dv">10</span>,</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">save_to_disc =</span> <span class="st">&quot;MyProject/downloadedBundles&quot;</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>bundles<span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> <span class="st">&quot;MyProject/downloadedBundles&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>request <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>, <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="fu">fhir_search</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>    <span class="at">request      =</span> request,</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>    <span class="at">max_bundles  =</span> <span class="dv">10</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>    <span class="at">save_to_disc =</span> <span class="st">&quot;MyProject/downloadedBundles&quot;</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>    )</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>bundles<span class="ot">&lt;-</span> <span class="fu">fhir_load</span>(<span class="at">directory =</span> <span class="st">&quot;MyProject/downloadedBundles&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="batch-process-bundles-by-downloading-them-piece-by-piece" class="section level3">
@@ -960,13 +996,13 @@ This function returns the url to the next bundle from you most recent
 call to <code>fhir_search()</code>:</p>
 <p>To get a better overview, we can split this very long link along the
 <code>&amp;</code>:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">strsplit</span>(<span class="fu">fhir_next_bundle_url</span>(), <span class="st">&quot;&amp;&quot;</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># [[1]]</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1] &quot;http://hapi.fhir.org/baseR4?_getpages=0be4d713-a4db-4c27-b384-b772deabcbc4&quot;</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># [2] &quot;_getpagesoffset=200&quot;                                                       </span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># [3] &quot;_count=20&quot;                                                                 </span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># [4] &quot;_pretty=true&quot;                                                              </span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co"># [5] &quot;_bundletype=searchset&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">strsplit</span>(<span class="fu">fhir_next_bundle_url</span>(), <span class="st">&quot;&amp;&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="co"># [[1]]</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co"># [1] &quot;http://hapi.fhir.org/baseR4?_getpages=0be4d713-a4db-4c27-b384-b772deabcbc4&quot;</span></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="co"># [2] &quot;_getpagesoffset=200&quot;                                                       </span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="co"># [3] &quot;_count=20&quot;                                                                 </span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="co"># [4] &quot;_pretty=true&quot;                                                              </span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a><span class="co"># [5] &quot;_bundletype=searchset&quot;</span></span></code></pre></div>
 <p>You can see two interesting numbers: <code>_count=20</code> tells you
 that the queried hapi server has a default bundle size of 20.
 <code>getpagesoffset=200</code> tells you that the bundle referred to in
@@ -991,33 +1027,33 @@ downloaded. Note that this example can be very time consuming if there
 are a lot of resources on the server. To limit the number of iterations
 uncomment the <code>if</code> statement at the end of the
 <code>while</code> loop:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Starting fhir search request</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource   =</span> <span class="st">&quot;Observation&quot;</span>,</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">parameters =</span> <span class="fu">list</span>(<span class="st">&quot;_count&quot;</span> <span class="ot">=</span> <span class="st">&quot;500&quot;</span>))</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>count <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>table_description <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Observation&quot;</span>)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span>(<span class="sc">!</span><span class="fu">is.null</span>(url)){</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#load 10 bundles</span></span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> url, <span class="at">max_bundles =</span> <span class="dv">10</span>) </span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    <span class="co">#crack bundles</span></span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    dfs <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> table_description)</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#save cracked bundle to RData-file (can be exchanged by other data type)</span></span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">save</span>(tables, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/table_&quot;</span>, count, <span class="st">&quot;.RData&quot;</span>))</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#retrieve starting point for next 10 bundles</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>    url <span class="ot">&lt;-</span> <span class="fu">fhir_next_bundle_url</span>()</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>    count <span class="ot">&lt;-</span> count <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if(count &gt;= 20) {break}</span></span>
-<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="co">#Starting fhir search request</span></span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">fhir_url</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>    <span class="at">url        =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>    <span class="at">resource   =</span> <span class="st">&quot;Observation&quot;</span>,</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a>    <span class="at">parameters =</span> <span class="fu">list</span>(<span class="st">&quot;_count&quot;</span> <span class="ot">=</span> <span class="st">&quot;500&quot;</span>))</span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a>count <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a>table_description <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Observation&quot;</span>)</span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="cf">while</span>(<span class="sc">!</span><span class="fu">is.null</span>(url)){</span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a>    </span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a>    <span class="co">#load 10 bundles</span></span>
+<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a>    bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> url, <span class="at">max_bundles =</span> <span class="dv">10</span>) </span>
+<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a>    </span>
+<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a>    <span class="co">#crack bundles</span></span>
+<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a>    dfs <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> table_description)</span>
+<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a>    </span>
+<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a>    <span class="co">#save cracked bundle to RData-file (can be exchanged by other data type)</span></span>
+<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a>    <span class="fu">save</span>(tables, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="fu">tempdir</span>(), <span class="st">&quot;/table_&quot;</span>, count, <span class="st">&quot;.RData&quot;</span>))</span>
+<span id="cb26-21"><a href="#cb26-21" tabindex="-1"></a>    </span>
+<span id="cb26-22"><a href="#cb26-22" tabindex="-1"></a>    <span class="co">#retrieve starting point for next 10 bundles</span></span>
+<span id="cb26-23"><a href="#cb26-23" tabindex="-1"></a>    url <span class="ot">&lt;-</span> <span class="fu">fhir_next_bundle_url</span>()</span>
+<span id="cb26-24"><a href="#cb26-24" tabindex="-1"></a>    </span>
+<span id="cb26-25"><a href="#cb26-25" tabindex="-1"></a>    count <span class="ot">&lt;-</span> count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb26-26"><a href="#cb26-26" tabindex="-1"></a>    <span class="co"># if(count &gt;= 20) {break}</span></span>
+<span id="cb26-27"><a href="#cb26-27" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div id="saving-download-time" class="section level3">
 <h3>Saving download time</h3>
@@ -1064,32 +1100,32 @@ for exactly that use case called
 of course only works if the ids defined here are actually found on the
 server:</li>
 </ol>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define list of Patient resource ids</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;4b7736c3-c005-4383-bf7c-99710811efd9&quot;</span>, <span class="st">&quot;bef39d3a-62bb-48c0-83ff-3bb70b51d831&quot;</span>,</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;f371ed2f-5cb0-4093-a491-9df6e6bfcdf2&quot;</span>, <span class="st">&quot;277c4631-955e-4b52-bd40-78ddcde333b1&quot;</span>,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">&quot;72173a13-d32f-4489-a7b4-dfc301df087f&quot;</span>, <span class="st">&quot;4a97acec-028e-4b45-a72f-2b7e08cf80ba&quot;</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#split into smaller chunks of 2</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>id_list <span class="ot">&lt;-</span> <span class="fu">split</span>(ids, <span class="fu">ceiling</span>(<span class="fu">seq_along</span>(ids)<span class="sc">/</span><span class="dv">2</span>))</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Define function that downloads one chunk of patients and serializes the result</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>extract_and_serialize <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                            b <span class="ot">&lt;-</span> <span class="fu">fhir_get_resources_by_ids</span>(<span class="at">base_url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>                                                           <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>                                                           <span class="at">ids =</span> x)</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">fhir_serialize</span>(b)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co">#Download using 2 cores on linux:</span></span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>bundles_serialized <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">mclapply</span>(</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">X =</span> pat_list,</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN =</span> extract_and_serialize,</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">mc.cores =</span> <span class="dv">2</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Unserialize the resulting list and create one fhir_bundle_list object from it</span></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>bundles_unserialized <span class="ot">&lt;-</span> <span class="fu">lapply</span>(bundles_serialized, fhir_unserialize)</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">fhir_bundle_list</span>(<span class="fu">unlist</span>(bundles_unserialized, <span class="at">recursive =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="co"># define list of Patient resource ids</span></span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>ids <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;4b7736c3-c005-4383-bf7c-99710811efd9&quot;</span>, <span class="st">&quot;bef39d3a-62bb-48c0-83ff-3bb70b51d831&quot;</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>         <span class="st">&quot;f371ed2f-5cb0-4093-a491-9df6e6bfcdf2&quot;</span>, <span class="st">&quot;277c4631-955e-4b52-bd40-78ddcde333b1&quot;</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>         <span class="st">&quot;72173a13-d32f-4489-a7b4-dfc301df087f&quot;</span>, <span class="st">&quot;4a97acec-028e-4b45-a72f-2b7e08cf80ba&quot;</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="co">#split into smaller chunks of 2</span></span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>id_list <span class="ot">&lt;-</span> <span class="fu">split</span>(ids, <span class="fu">ceiling</span>(<span class="fu">seq_along</span>(ids)<span class="sc">/</span><span class="dv">2</span>))</span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a><span class="co">#Define function that downloads one chunk of patients and serializes the result</span></span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>extract_and_serialize <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>                            b <span class="ot">&lt;-</span> <span class="fu">fhir_get_resources_by_ids</span>(<span class="at">base_url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
+<span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a>                                                           <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a>                                                           <span class="at">ids =</span> x)</span>
+<span id="cb27-14"><a href="#cb27-14" tabindex="-1"></a>                            <span class="fu">fhir_serialize</span>(b)</span>
+<span id="cb27-15"><a href="#cb27-15" tabindex="-1"></a>}</span>
+<span id="cb27-16"><a href="#cb27-16" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" tabindex="-1"></a><span class="co">#Download using 2 cores on linux:</span></span>
+<span id="cb27-18"><a href="#cb27-18" tabindex="-1"></a>bundles_serialized <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">mclapply</span>(</span>
+<span id="cb27-19"><a href="#cb27-19" tabindex="-1"></a>    <span class="at">X =</span> pat_list,</span>
+<span id="cb27-20"><a href="#cb27-20" tabindex="-1"></a>    <span class="at">FUN =</span> extract_and_serialize,</span>
+<span id="cb27-21"><a href="#cb27-21" tabindex="-1"></a>    <span class="at">mc.cores =</span> <span class="dv">2</span></span>
+<span id="cb27-22"><a href="#cb27-22" tabindex="-1"></a>)</span>
+<span id="cb27-23"><a href="#cb27-23" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" tabindex="-1"></a><span class="co">#Unserialize the resulting list and create one fhir_bundle_list object from it</span></span>
+<span id="cb27-25"><a href="#cb27-25" tabindex="-1"></a>bundles_unserialized <span class="ot">&lt;-</span> <span class="fu">lapply</span>(bundles_serialized, fhir_unserialize)</span>
+<span id="cb27-26"><a href="#cb27-26" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">fhir_bundle_list</span>(<span class="fu">unlist</span>(bundles_unserialized, <span class="at">recursive =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>You have a request that downloads multiple resource types, like
 <code>&quot;http://hapi.fhir.org/baseR4/Encounter?_include=Encounter:patient&quot;</code>,
@@ -1099,39 +1135,39 @@ time and can (depending on your system) be sped up if you only load the
 encounters in a first step, extract the ids of the referenced Patient
 resources and download those in parallel in a second step:</li>
 </ol>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Download all Encounters</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>encounter_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4/Encounter&quot;</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Flatten</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>encounter_table <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">bundles =</span> encounter_bundles,</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">design =</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Encounter&quot;</span>)</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Extract Patient ids</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>pat_ids <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;Patient/&quot;</span>, <span class="st">&quot;&quot;</span>, encounter_table<span class="sc">$</span>subject.reference)</span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Split into chunks of 20</span></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>pat_id_list <span class="ot">&lt;-</span> <span class="fu">split</span>(pat_ids, <span class="fu">ceiling</span>(<span class="fu">seq_along</span>(pat_ids)<span class="sc">/</span><span class="dv">20</span>))</span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Define function that downloads one chunk and serializes the result</span></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>extract_and_serialize <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>                            b <span class="ot">&lt;-</span> <span class="fu">fhir_get_resources_by_ids</span>(<span class="at">base_url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>                                                           <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>                                                           <span class="at">ids =</span> x)</span>
-<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">fhir_serialize</span>(b)</span>
-<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Download using 4 cores on linux:</span></span>
-<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>bundles_serialized <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">mclapply</span>(</span>
-<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">X =</span> pat_id_list,</span>
-<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">FUN =</span> extract_and_serialize,</span>
-<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">mc.cores =</span> <span class="dv">4</span></span>
-<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="co">#Unserialize the resulting list and create one fhir_bundle_list object from it</span></span>
-<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>bundles_unserialized <span class="ot">&lt;-</span> <span class="fu">lapply</span>(bundles_serialized, fhir_unserialize)</span>
-<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">fhir_bundle_list</span>(<span class="fu">unlist</span>(bundles_unserialized, <span class="at">recursive =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a><span class="co">#Download all Encounters</span></span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>encounter_bundles <span class="ot">&lt;-</span> <span class="fu">fhir_search</span>(<span class="at">request =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4/Encounter&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a><span class="co">#Flatten</span></span>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a>encounter_table <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>    <span class="at">bundles =</span> encounter_bundles,</span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>    <span class="at">design =</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Encounter&quot;</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>)</span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a><span class="co">#Extract Patient ids</span></span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a>pat_ids <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">&quot;Patient/&quot;</span>, <span class="st">&quot;&quot;</span>, encounter_table<span class="sc">$</span>subject.reference)</span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a><span class="co">#Split into chunks of 20</span></span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a>pat_id_list <span class="ot">&lt;-</span> <span class="fu">split</span>(pat_ids, <span class="fu">ceiling</span>(<span class="fu">seq_along</span>(pat_ids)<span class="sc">/</span><span class="dv">20</span>))</span>
+<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a></span>
+<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a><span class="co">#Define function that downloads one chunk and serializes the result</span></span>
+<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a>extract_and_serialize <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a>                            b <span class="ot">&lt;-</span> <span class="fu">fhir_get_resources_by_ids</span>(<span class="at">base_url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
+<span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a>                                                           <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a>                                                           <span class="at">ids =</span> x)</span>
+<span id="cb28-21"><a href="#cb28-21" tabindex="-1"></a>                            <span class="fu">fhir_serialize</span>(b)</span>
+<span id="cb28-22"><a href="#cb28-22" tabindex="-1"></a>}</span>
+<span id="cb28-23"><a href="#cb28-23" tabindex="-1"></a></span>
+<span id="cb28-24"><a href="#cb28-24" tabindex="-1"></a><span class="co">#Download using 4 cores on linux:</span></span>
+<span id="cb28-25"><a href="#cb28-25" tabindex="-1"></a>bundles_serialized <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">mclapply</span>(</span>
+<span id="cb28-26"><a href="#cb28-26" tabindex="-1"></a>    <span class="at">X =</span> pat_id_list,</span>
+<span id="cb28-27"><a href="#cb28-27" tabindex="-1"></a>    <span class="at">FUN =</span> extract_and_serialize,</span>
+<span id="cb28-28"><a href="#cb28-28" tabindex="-1"></a>    <span class="at">mc.cores =</span> <span class="dv">4</span></span>
+<span id="cb28-29"><a href="#cb28-29" tabindex="-1"></a>)</span>
+<span id="cb28-30"><a href="#cb28-30" tabindex="-1"></a></span>
+<span id="cb28-31"><a href="#cb28-31" tabindex="-1"></a><span class="co">#Unserialize the resulting list and create one fhir_bundle_list object from it</span></span>
+<span id="cb28-32"><a href="#cb28-32" tabindex="-1"></a>bundles_unserialized <span class="ot">&lt;-</span> <span class="fu">lapply</span>(bundles_serialized, fhir_unserialize)</span>
+<span id="cb28-33"><a href="#cb28-33" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">fhir_bundle_list</span>(<span class="fu">unlist</span>(bundles_unserialized, <span class="at">recursive =</span> <span class="cn">FALSE</span>))</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -1144,12 +1180,12 @@ type and (optionally) some FHIR Search parameters and returns a random
 sample with a given size of those resources. For example you could
 download 10 random Patient resources of all female patients born before
 1960 like this:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="fu">fhir_sample_resources</span>(</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">base_url    =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">resource    =</span> <span class="st">&quot;Patient&quot;</span>,</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">parameters  =</span> <span class="fu">c</span>(<span class="at">gender =</span> <span class="st">&quot;female&quot;</span>, <span class="at">birthdate =</span> <span class="st">&quot;lt1960-01-01&quot;</span>),</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_size =</span> <span class="dv">10</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>bundle <span class="ot">&lt;-</span> <span class="fu">fhir_sample_resources</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>    <span class="at">base_url    =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>    <span class="at">resource    =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a>    <span class="at">parameters  =</span> <span class="fu">c</span>(<span class="at">gender =</span> <span class="st">&quot;female&quot;</span>, <span class="at">birthdate =</span> <span class="st">&quot;lt1960-01-01&quot;</span>),</span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>    <span class="at">sample_size =</span> <span class="dv">10</span></span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>)</span></code></pre></div>
 <p>This request may take some time because in the first step, the
 resource (aka logical) IDs of all resources matching the request
 (i.e. all Patient resources of females born before 1960) are downloaded.
@@ -1159,23 +1195,23 @@ of resource IDs.</p>
 resources who are female and born before 1960. If you want to know more
 about how to extract information from the resources like this, please
 see the vignette on flattening resources.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pat <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;gender&quot;</span>, <span class="st">&quot;birthDate&quot;</span>))</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundle, <span class="at">design =</span> pat)</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Cracking 1 Patients&#39; Bundle on a WINDOWS-Engine using 1/1 CPU ... </span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># finished.</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                                      id gender  birthDate</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1  15c8f95d-3eb3-4849-8ac7-c5675404baf4 female 1953-06-09</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2                               1160954 female 1934-04-11</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 3                               2060404 female 1935-12-09</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 4                               2060585 female 1935-12-09</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 5                               2062708 female 1935-12-09</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 6                               2365237 female 1924-10-10</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 7                               2885700 female 1940-08-08</span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 8                               2930446 female 1833-05-29</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 9                               2932864 female 1830-04-27</span></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 10                              2932964 female 1866-08-22</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>pat <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(<span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>                              <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;gender&quot;</span>, <span class="st">&quot;birthDate&quot;</span>))</span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a><span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundle, <span class="at">design =</span> pat)</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a><span class="co"># Cracking 1 Patients&#39; Bundle on a WINDOWS-Engine using 1/1 CPU ... </span></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a><span class="co"># finished.</span></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a><span class="co">#                                      id gender  birthDate</span></span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a><span class="co"># 1  15c8f95d-3eb3-4849-8ac7-c5675404baf4 female 1953-06-09</span></span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a><span class="co"># 2                               1160954 female 1934-04-11</span></span>
+<span id="cb30-10"><a href="#cb30-10" tabindex="-1"></a><span class="co"># 3                               2060404 female 1935-12-09</span></span>
+<span id="cb30-11"><a href="#cb30-11" tabindex="-1"></a><span class="co"># 4                               2060585 female 1935-12-09</span></span>
+<span id="cb30-12"><a href="#cb30-12" tabindex="-1"></a><span class="co"># 5                               2062708 female 1935-12-09</span></span>
+<span id="cb30-13"><a href="#cb30-13" tabindex="-1"></a><span class="co"># 6                               2365237 female 1924-10-10</span></span>
+<span id="cb30-14"><a href="#cb30-14" tabindex="-1"></a><span class="co"># 7                               2885700 female 1940-08-08</span></span>
+<span id="cb30-15"><a href="#cb30-15" tabindex="-1"></a><span class="co"># 8                               2930446 female 1833-05-29</span></span>
+<span id="cb30-16"><a href="#cb30-16" tabindex="-1"></a><span class="co"># 9                               2932864 female 1830-04-27</span></span>
+<span id="cb30-17"><a href="#cb30-17" tabindex="-1"></a><span class="co"># 10                              2932964 female 1866-08-22</span></span></code></pre></div>
 <p>Internally <code>fhir_sample_resources()</code> performs the
 following steps:</p>
 <ol style="list-style-type: decimal">
@@ -1207,7 +1243,7 @@ be unique for each resource.</p>
 statement</a> documents a set of capabilities (behaviors) of a FHIR
 Server for a particular version of FHIR. You can download this statement
 using the function <code>fhir_capability_statement()</code>:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>cap <span class="ot">&lt;-</span> <span class="fu">fhir_capability_statement</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a>cap <span class="ot">&lt;-</span> <span class="fu">fhir_capability_statement</span>(<span class="at">url =</span> <span class="st">&quot;http://hapi.fhir.org/baseR4&quot;</span>)</span></code></pre></div>
 <p><code>fhir_capability_statement()</code> takes the base URL of a FHIR
 server and returns a list of three data frames containing all
 information from the capability statement of this server. The first one

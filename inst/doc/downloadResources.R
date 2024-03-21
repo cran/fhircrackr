@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#"
@@ -49,7 +49,7 @@ fhir_resource_type(string = "Hospital") #an unknown resource type, a warning is 
 # https://hl7.org/FHIR/resourcelist.html.
 # If you are sure the resource type is correct anyway, you can ignore this warning.
 
-## ---- out.lines=110-----------------------------------------------------------
+## ----out.lines=110------------------------------------------------------------
 request <- fhir_url(
 	url        = "http://hapi.fhir.org/baseR4",
 	resource   = "Patient",
@@ -59,12 +59,12 @@ request <- fhir_url(
 
 request
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  request <- fhir_url(url = "https://hapi.fhir.org/baseR4", resource = "Patient")
 #  
 #  patient_bundles <- fhir_search(request = request, max_bundles = 2, verbose = 0)
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 patient_bundles <- fhir_unserialize(bundles = patient_bundles)
 
 ## ----results='hide'-----------------------------------------------------------
@@ -138,13 +138,13 @@ request <- fhir_url(
 		"code"     = "http://snomed.info/ct|429374003",
 		"_include" = "MedicationStatement:subject"))
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  medication_bundles <- fhir_search(request = request, max_bundles = 3)
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 medication_bundles <- fhir_unserialize(bundles = medication_bundles)
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  fhir_save(bundles = medication_bundles, directory = "MyProject/medicationBundles")
 
 ## -----------------------------------------------------------------------------
@@ -163,12 +163,12 @@ body <- fhir_body(content = list(
 	"identifier"  = id_strings,
 	"_revinclude" = "Observation:patient"))
 
-## ---- eval = F----------------------------------------------------------------
+## ----eval = F-----------------------------------------------------------------
 #  url <- fhir_url(url = "https://hapi.fhir.org/baseR4/", resource = "Patient")
 #  
 #  bundles <- fhir_search(request = url, body = body)
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  medication_bundles <- fhir_search(
 #  	request     = request,
 #  	max_bundles = 3,
@@ -267,7 +267,41 @@ fhir_save(bundles = patient_bundles, directory = temp_dir)
 ## -----------------------------------------------------------------------------
 bundles <- fhir_load(directory = temp_dir)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## -----------------------------------------------------------------------------
+#character vector containing fhir bundles
+bundle_strings <- c(
+"<Bundle>
+ <type value='searchset'/>
+ <entry>
+  <resource>
+    <Patient>
+       <id value='id1'/>
+	      <name>
+	         <given value='Marie'/>
+	      </name>
+    </Patient>
+  </resource>
+ </entry>
+</Bundle>",
+"<Bundle>
+ <type value='searchset'/>
+ <entry>
+  <resource>
+    <Patient>
+       <id value='id2'/>
+	      <name>
+	         <given value='Max'/>
+	      </name>
+    </Patient>
+  </resource>
+ </entry>
+</Bundle>"
+)
+
+#convert to FHIR bundle list
+bundles <- as_fhir(bundle_strings)
+
+## ----eval=FALSE---------------------------------------------------------------
 #  request <- fhir_url(url = "http://hapi.fhir.org/baseR4",
 #  					resource = "Patient",
 #  					parameters = c("_elements" = "name,gender,birthDate",
@@ -361,7 +395,7 @@ bundles <- fhir_load(directory = temp_dir)
 #   </entry>
 # </Bundle>
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  request <- fhir_url(url = "http://hapi.fhir.org/baseR4", resource = "Patient")
 #  
 #  fhir_search(
@@ -372,14 +406,14 @@ bundles <- fhir_load(directory = temp_dir)
 #  
 #  bundles<- fhir_load(directory = "MyProject/downloadedBundles")
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 assign(x = "last_next_link", value = fhir_url( "http://hapi.fhir.org/baseR4?_getpages=0be4d713-a4db-4c27-b384-b772deabcbc4&_getpagesoffset=200&_count=20&_pretty=true&_bundletype=searchset"), envir = fhircrackr:::fhircrackr_env)
 
 
 ## -----------------------------------------------------------------------------
 strsplit(fhir_next_bundle_url(), "&")
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  #Starting fhir search request
 #  url <- fhir_url(
 #  	url        = "http://hapi.fhir.org/baseR4",
@@ -409,7 +443,7 @@ strsplit(fhir_next_bundle_url(), "&")
 #  }
 #  
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  # define list of Patient resource ids
 #  ids <- c("4b7736c3-c005-4383-bf7c-99710811efd9", "bef39d3a-62bb-48c0-83ff-3bb70b51d831",
 #  		 "f371ed2f-5cb0-4093-a491-9df6e6bfcdf2", "277c4631-955e-4b52-bd40-78ddcde333b1",
@@ -438,7 +472,7 @@ strsplit(fhir_next_bundle_url(), "&")
 #  result <- fhir_bundle_list(unlist(bundles_unserialized, recursive = FALSE))
 #  
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  #Download all Encounters
 #  encounter_bundles <- fhir_search(request = "http://hapi.fhir.org/baseR4/Encounter")
 #  
@@ -474,7 +508,7 @@ strsplit(fhir_next_bundle_url(), "&")
 #  result <- fhir_bundle_list(unlist(bundles_unserialized, recursive = FALSE))
 #  
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  bundle <- fhir_sample_resources(
 #  	base_url    = "http://hapi.fhir.org/baseR4",
 #  	resource    = "Patient",
@@ -482,7 +516,7 @@ strsplit(fhir_next_bundle_url(), "&")
 #  	sample_size = 10
 #  )
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 bundle <- fhir_unserialize(fhircrackr:::female_pat_bundle)
 
 ## -----------------------------------------------------------------------------
@@ -491,6 +525,6 @@ pat <- fhir_table_description(resource = "Patient",
 
 fhir_crack(bundles = bundle, design = pat)
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  cap <- fhir_capability_statement(url = "http://hapi.fhir.org/baseR4")
 

@@ -1,21 +1,21 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  install.packages("fhircrackr")
 #  library(fhircrackr)
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 library(fhircrackr)
 
-## ---- eval=F------------------------------------------------------------------
+## ----eval=F-------------------------------------------------------------------
 #  request <- fhir_url(url = "http://fhir.hl7.de:8080/baseDstu3", resource = "Patient")
 #  patient_bundles <- fhir_search(request = request, max_bundles = 2, verbose = 0)
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 patient_bundles <- fhir_unserialize(bundles = fhircrackr::patient_bundles)
 
 ## ----results='hide'-----------------------------------------------------------
@@ -88,7 +88,7 @@ patient_bundles
 table_description <- fhir_table_description(
 	resource = "Patient",
 	cols     = c(
-		PID         = "id",
+		id        = "id",
 		use_name    = "name/use",
 		given_name  = "name/given",
 		family_name = "name/family",
@@ -113,56 +113,6 @@ patients <- fhir_crack(bundles = patient_bundles, design = table_description, ve
 head(patients)
 
 ## -----------------------------------------------------------------------------
-request  <- fhir_url(
-	url        = "https://hapi.fhir.org/baseR4", 
-	resource   = "MedicationStatement", 
-	parameters = c(
-		 "code"    = "http://snomed.info/ct|429374003",
-		"_include" = "MedicationStatement:subject"))
-
-## ---- eval=F------------------------------------------------------------------
-#  medication_bundles <- fhir_search(request = request, max_bundles = 3)
-
-## ---- include=F---------------------------------------------------------------
-medication_bundles <- fhir_unserialize(bundles = medication_bundles)
-
-## -----------------------------------------------------------------------------
-MedicationStatements <- fhir_table_description(
-	resource = "MedicationStatement",
-	cols     = c(
-		MS.ID              = "id",
-		STATUS.TEXT        = "text/status",
-		STATUS             = "status",
-		MEDICATION.SYSTEM  = "medicationCodeableConcept/coding/system",
-		MEDICATION.CODE    = "medicationCodeableConcept/coding/code",
-		MEDICATION.DISPLAY = "medicationCodeableConcept/coding/display",
-		DOSAGE             = "dosage/text",
-		PATIENT            = "subject/reference",
-		LAST.UPDATE        = "meta/lastUpdated"
-	),
-	sep           = "|",
-	brackets      = NULL,
-	rm_empty_cols = FALSE,
-	format        = "compact",
-	keep_attr     = FALSE
-)
-
-Patients <- fhir_table_description(resource = "Patient")
-
-design <- fhir_design(MedicationStatements, Patients)
-
-
-## -----------------------------------------------------------------------------
-design
-
-## -----------------------------------------------------------------------------
-list_of_tables <- fhir_crack(bundles = medication_bundles, design = design, verbose = 0)
-
-list_of_tables$MedicationStatements[1:5,]
-
-list_of_tables$Patients[18:20,]
-
-## -----------------------------------------------------------------------------
 bundles <- fhir_unserialize(bundles = example_bundles1)
 
 ## -----------------------------------------------------------------------------
@@ -178,6 +128,23 @@ table_description <- fhir_table_description(
 df <- fhir_crack(bundles = bundles, design = table_description, verbose = 0)
 
 df
+
+## -----------------------------------------------------------------------------
+table_description <- fhir_table_description(
+	resource = "Patient",
+	cols = c(
+		id = "id",
+		city = "address[use[@value='home']]/city",
+		type = "address[use[@value='home']]/type",
+		country = "address[use[@value='home']]/country",
+		name = "name/given"
+	)
+)
+
+df_filtered <- fhir_crack(bundles = bundles, design = table_description, verbose = 0)
+
+df_filtered
+
 
 ## -----------------------------------------------------------------------------
 fhir_melt(
@@ -306,7 +273,7 @@ fhir_save(bundles = patient_bundles, directory = temp_dir)
 ## -----------------------------------------------------------------------------
 bundles <- fhir_load(directory = temp_dir)
 
-## ---- include=F---------------------------------------------------------------
+## ----include=F----------------------------------------------------------------
 file.remove(
 	paste0(
 		temp_dir,
