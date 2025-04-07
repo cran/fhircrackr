@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2024-03-21" />
+<meta name="date" content="2025-04-07" />
 
 <title>fhircrackr: Flatten FHIR resources</title>
 
@@ -50,7 +50,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">fhircrackr: Flatten FHIR resources</h1>
-<h4 class="date">2024-03-21</h4>
+<h4 class="date">2025-04-07</h4>
 
 
 <div id="TOC">
@@ -364,8 +364,11 @@ values using predicates in XPath expression</a></li>
 entries</a></li>
 <li><a href="#remove-indices" id="toc-remove-indices">Remove
 indices</a></li>
+<li><a href="#melt-all-multiple-entries-at-once" id="toc-melt-all-multiple-entries-at-once">Melt all multiple entries at
+once</a></li>
 <li><a href="#cast-tables-with-multiple-entries" id="toc-cast-tables-with-multiple-entries">Cast tables with multiple
 entries</a></li>
+<li><a href="#collapse-multiple-entries" id="toc-collapse-multiple-entries">Collapse multiple entries</a></li>
 </ul></li>
 </ul>
 </div>
@@ -1656,6 +1659,33 @@ rid of the indices in your table. This can be achieved using
 same character vector that was used for <code>fhir_crack()</code> and
 <code>fhir_melt()</code> respectively.</p>
 </div>
+<div id="melt-all-multiple-entries-at-once" class="section level3">
+<h3>Melt all multiple entries at once</h3>
+<p>If you want to melt all multiple entries in a table regardless of
+their origin, you can use the function <code>fhir_melt_all()</code>:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">fhir_melt_all</span>(<span class="at">indexed_data_frame =</span> df2, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>), <span class="at">sep =</span> <span class="st">&quot; | &quot;</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co">#   address.city address.country address.type address.use  id name.given</span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="co"># 1    Amsterdam     Netherlands     physical        home id1      Marie</span></span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a><span class="co"># 2         Rome           Italy     physical        home id2      Susie</span></span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a><span class="co"># 3    Stockholm          Sweden       postal        work id2      Susie</span></span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a><span class="co"># 4       Berlin            &lt;NA&gt;         &lt;NA&gt;        home id3      Frank</span></span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a><span class="co"># 5       Berlin            &lt;NA&gt;         &lt;NA&gt;        home id3        Max</span></span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a><span class="co"># 6         &lt;NA&gt;          France       postal        &lt;NA&gt; id3      Frank</span></span>
+<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a><span class="co"># 7         &lt;NA&gt;          France       postal        &lt;NA&gt; id3        Max</span></span>
+<span id="cb34-10"><a href="#cb34-10" tabindex="-1"></a><span class="co"># 8       London         England       postal        work id3      Frank</span></span>
+<span id="cb34-11"><a href="#cb34-11" tabindex="-1"></a><span class="co"># 9       London         England       postal        work id3        Max</span></span></code></pre></div>
+<p>This function performs the above steps automatically and repeatedly
+calls <code>fhir_melt()</code> on groups of columns that belong to the
+same FHIR element (e.g. <code>address.city</code>,
+<code>address.country</code> and <code>address.type</code>) until every
+cell contains a single value. If there is more than one FHIR element
+with multiple values (e.g. multiple address elements and multiple name
+elements), every possible combination of the two elements will appear in
+the resulting table.</p>
+<p><em>Caution!</em> This creates something like a cross product of all
+values and can multiply the number of rows from the original table
+considerably.</p>
+</div>
 <div id="cast-tables-with-multiple-entries" class="section level3">
 <h3>Cast tables with multiple entries</h3>
 <p>Instead of spreading the entries across rows, you can also spread
@@ -1666,23 +1696,23 @@ this can be achieved by setting <code>format = &quot;wide&quot;</code> in
 function is <code>fhir_cast()</code>. It takes a compact table with
 multiple entries and the brackets and separator that have been used in
 <code>fhir_crack()</code> as input:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">fhir_cast</span>(df2, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>), <span class="at">sep =</span> <span class="st">&quot; | &quot;</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co">#   [1.1]address.city [2.1]address.city [3.1]address.city [1.1]address.country</span></span>
-<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="co"># 1         Amsterdam              &lt;NA&gt;              &lt;NA&gt;          Netherlands</span></span>
-<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a><span class="co"># 2              Rome         Stockholm              &lt;NA&gt;                Italy</span></span>
-<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a><span class="co"># 3            Berlin              &lt;NA&gt;            London                 &lt;NA&gt;</span></span>
-<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a><span class="co">#   [2.1]address.country [3.1]address.country [1.1]address.type [2.1]address.type</span></span>
-<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a><span class="co"># 1                 &lt;NA&gt;                 &lt;NA&gt;          physical              &lt;NA&gt;</span></span>
-<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a><span class="co"># 2               Sweden                 &lt;NA&gt;          physical            postal</span></span>
-<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a><span class="co"># 3               France              England              &lt;NA&gt;            postal</span></span>
-<span id="cb34-10"><a href="#cb34-10" tabindex="-1"></a><span class="co">#   [3.1]address.type [1.1]address.use [2.1]address.use [3.1]address.use [1]id</span></span>
-<span id="cb34-11"><a href="#cb34-11" tabindex="-1"></a><span class="co"># 1              &lt;NA&gt;             home             &lt;NA&gt;             &lt;NA&gt;   id1</span></span>
-<span id="cb34-12"><a href="#cb34-12" tabindex="-1"></a><span class="co"># 2              &lt;NA&gt;             home             work             &lt;NA&gt;   id2</span></span>
-<span id="cb34-13"><a href="#cb34-13" tabindex="-1"></a><span class="co"># 3            postal             home             &lt;NA&gt;             work   id3</span></span>
-<span id="cb34-14"><a href="#cb34-14" tabindex="-1"></a><span class="co">#   [1.1]name.given [2.1]name.given</span></span>
-<span id="cb34-15"><a href="#cb34-15" tabindex="-1"></a><span class="co"># 1           Marie            &lt;NA&gt;</span></span>
-<span id="cb34-16"><a href="#cb34-16" tabindex="-1"></a><span class="co"># 2           Susie            &lt;NA&gt;</span></span>
-<span id="cb34-17"><a href="#cb34-17" tabindex="-1"></a><span class="co"># 3           Frank             Max</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">fhir_cast</span>(df2, <span class="at">brackets =</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>), <span class="at">sep =</span> <span class="st">&quot; | &quot;</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a><span class="co">#   [1.1]address.city [2.1]address.city [3.1]address.city [1.1]address.country</span></span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a><span class="co"># 1         Amsterdam              &lt;NA&gt;              &lt;NA&gt;          Netherlands</span></span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a><span class="co"># 2              Rome         Stockholm              &lt;NA&gt;                Italy</span></span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a><span class="co"># 3            Berlin              &lt;NA&gt;            London                 &lt;NA&gt;</span></span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a><span class="co">#   [2.1]address.country [3.1]address.country [1.1]address.type [2.1]address.type</span></span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a><span class="co"># 1                 &lt;NA&gt;                 &lt;NA&gt;          physical              &lt;NA&gt;</span></span>
+<span id="cb35-8"><a href="#cb35-8" tabindex="-1"></a><span class="co"># 2               Sweden                 &lt;NA&gt;          physical            postal</span></span>
+<span id="cb35-9"><a href="#cb35-9" tabindex="-1"></a><span class="co"># 3               France              England              &lt;NA&gt;            postal</span></span>
+<span id="cb35-10"><a href="#cb35-10" tabindex="-1"></a><span class="co">#   [3.1]address.type [1.1]address.use [2.1]address.use [3.1]address.use [1]id</span></span>
+<span id="cb35-11"><a href="#cb35-11" tabindex="-1"></a><span class="co"># 1              &lt;NA&gt;             home             &lt;NA&gt;             &lt;NA&gt;   id1</span></span>
+<span id="cb35-12"><a href="#cb35-12" tabindex="-1"></a><span class="co"># 2              &lt;NA&gt;             home             work             &lt;NA&gt;   id2</span></span>
+<span id="cb35-13"><a href="#cb35-13" tabindex="-1"></a><span class="co"># 3            postal             home             &lt;NA&gt;             work   id3</span></span>
+<span id="cb35-14"><a href="#cb35-14" tabindex="-1"></a><span class="co">#   [1.1]name.given [2.1]name.given</span></span>
+<span id="cb35-15"><a href="#cb35-15" tabindex="-1"></a><span class="co"># 1           Marie            &lt;NA&gt;</span></span>
+<span id="cb35-16"><a href="#cb35-16" tabindex="-1"></a><span class="co"># 2           Susie            &lt;NA&gt;</span></span>
+<span id="cb35-17"><a href="#cb35-17" tabindex="-1"></a><span class="co"># 3           Frank             Max</span></span></code></pre></div>
 <p>Contrary to <code>fhir_melt()</code> this function requires all
 column names to reflect the XPath expression of the respective
 attribute. The column containing information on
@@ -1697,6 +1727,118 @@ column names.</p>
 and <code>fhir_cast()</code> can also be used to recreate the resources
 that were cracked in the first place, as you’ll the in the vignette
 about recreation of resources.</p>
+</div>
+<div id="collapse-multiple-entries" class="section level3">
+<h3>Collapse multiple entries</h3>
+<p>In some cases, you don’t want to split up multiple entries but
+collapse them into one value in a suitable way. Consider the following
+example bundle:</p>
+<pre><code>&lt;Bundle&gt;
+    &lt;type value=&#39;searchset&#39;/&gt;
+    &lt;entry&gt;
+    &lt;resource&gt;
+        &lt;Patient&gt;
+            &lt;id value=&#39;id1&#39;/&gt;
+            &lt;name&gt;
+                &lt;given value=&#39;Marie&#39;/&gt;
+                &lt;given value=&#39;Luise&#39;/&gt;
+                &lt;family value = &#39;Smith&#39;/&gt;
+                &lt;use value = &#39;official&#39;/&gt;
+            &lt;/name&gt;
+            &lt;name&gt;
+                &lt;given value = &#39;Lea&#39;/&gt;
+                &lt;given value = &#39;Sophie&#39;/&gt;
+                &lt;given value = &#39;Anna&#39;/&gt;
+                &lt;family value = &#39;Baker&#39;/&gt;
+                &lt;use value = &#39;nickname&#39;/&gt;
+            &lt;/name&gt;
+        &lt;/Patient&gt;
+     &lt;/resource&gt;
+  &lt;/entry&gt;
+  &lt;entry&gt;
+    &lt;resource&gt;
+        &lt;Patient&gt;
+            &lt;id value=&#39;id2&#39;/&gt;
+            &lt;name&gt;
+                &lt;given value=&#39;Max&#39;/&gt;
+                &lt;family value = &#39;Brown&#39;/&gt;
+                &lt;use value = &#39;official&#39;/&gt;
+            &lt;/name&gt;
+            &lt;name&gt;
+                &lt;given value = &#39;Anton&#39;/&gt;
+                &lt;given value = &#39;John&#39;/&gt;
+                &lt;family value = &#39;Jones&#39;/&gt;
+                &lt;use value = &#39;nickname&#39;/&gt;
+            &lt;/name&gt;
+        &lt;/Patient&gt;
+    &lt;/resource&gt;
+  &lt;/entry&gt;
+&lt;/Bundle&gt;</code></pre>
+<p>In this example, you would want to collapse all given names into one
+value instead of dividing them across multiple rows. The official name
+and the nickname, however, should stay separated. This can be achieved
+with the function <code>fhir_collapse()</code>. First we crack the
+example resources:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="co">#unserialize example</span></span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>bundles <span class="ot">&lt;-</span> <span class="fu">fhir_unserialize</span>(<span class="at">bundles =</span> example_bundles7)</span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a><span class="co">#Define sep and brackets</span></span>
+<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a>sep <span class="ot">&lt;-</span> <span class="st">&quot;|&quot;</span></span>
+<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>brackets <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;[&quot;</span>, <span class="st">&quot;]&quot;</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" tabindex="-1"></a><span class="co">#crack fhir resources</span></span>
+<span id="cb37-9"><a href="#cb37-9" tabindex="-1"></a>table_desc <span class="ot">&lt;-</span> <span class="fu">fhir_table_description</span>(</span>
+<span id="cb37-10"><a href="#cb37-10" tabindex="-1"></a>    <span class="at">resource =</span> <span class="st">&quot;Patient&quot;</span>,</span>
+<span id="cb37-11"><a href="#cb37-11" tabindex="-1"></a>    <span class="at">brackets =</span> brackets,</span>
+<span id="cb37-12"><a href="#cb37-12" tabindex="-1"></a>    <span class="at">sep =</span> sep</span>
+<span id="cb37-13"><a href="#cb37-13" tabindex="-1"></a>)</span>
+<span id="cb37-14"><a href="#cb37-14" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">fhir_crack</span>(<span class="at">bundles =</span> bundles, <span class="at">design =</span> table_desc, <span class="at">verbose =</span> <span class="dv">0</span>)</span>
+<span id="cb37-16"><a href="#cb37-16" tabindex="-1"></a>df</span>
+<span id="cb37-17"><a href="#cb37-17" tabindex="-1"></a><span class="co">#       id           name.family</span></span>
+<span id="cb37-18"><a href="#cb37-18" tabindex="-1"></a><span class="co"># 1 [1]id1 [1.1]Smith|[2.1]Baker</span></span>
+<span id="cb37-19"><a href="#cb37-19" tabindex="-1"></a><span class="co"># 2 [1]id2 [1.1]Brown|[2.1]Jones</span></span>
+<span id="cb37-20"><a href="#cb37-20" tabindex="-1"></a><span class="co">#                                             name.given</span></span>
+<span id="cb37-21"><a href="#cb37-21" tabindex="-1"></a><span class="co"># 1 [1.1]Marie|[1.2]Luise|[2.1]Lea|[2.2]Sophie|[2.3]Anna</span></span>
+<span id="cb37-22"><a href="#cb37-22" tabindex="-1"></a><span class="co"># 2                        [1.1]Max|[2.1]Anton|[2.2]John</span></span>
+<span id="cb37-23"><a href="#cb37-23" tabindex="-1"></a><span class="co">#                      name.use</span></span>
+<span id="cb37-24"><a href="#cb37-24" tabindex="-1"></a><span class="co"># 1 [1.1]official|[2.1]nickname</span></span>
+<span id="cb37-25"><a href="#cb37-25" tabindex="-1"></a><span class="co"># 2 [1.1]official|[2.1]nickname</span></span></code></pre></div>
+<p>Then we collapse the given names. The function uses the information
+in the indices to make sure it only collapses given names within the
+same name element (official vs. nickname):</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a><span class="co">#name.given elements from the same name (i.e. the official vs. the nickname) </span></span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="co">#should be collapsed</span></span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">fhir_collapse</span>(df, <span class="at">columns =</span> <span class="st">&quot;name.given&quot;</span>, <span class="at">sep =</span> sep, <span class="at">brackets =</span> brackets)</span>
+<span id="cb38-5"><a href="#cb38-5" tabindex="-1"></a>df2</span>
+<span id="cb38-6"><a href="#cb38-6" tabindex="-1"></a><span class="co">#       id           name.family                            name.given</span></span>
+<span id="cb38-7"><a href="#cb38-7" tabindex="-1"></a><span class="co"># 1 [1]id1 [1.1]Smith|[2.1]Baker [1.1]Marie Luise [2.1]Lea Sophie Anna</span></span>
+<span id="cb38-8"><a href="#cb38-8" tabindex="-1"></a><span class="co"># 2 [1]id2 [1.1]Brown|[2.1]Jones              [1.1]Max [2.1]Anton John</span></span>
+<span id="cb38-9"><a href="#cb38-9" tabindex="-1"></a><span class="co">#                      name.use</span></span>
+<span id="cb38-10"><a href="#cb38-10" tabindex="-1"></a><span class="co"># 1 [1.1]official|[2.1]nickname</span></span>
+<span id="cb38-11"><a href="#cb38-11" tabindex="-1"></a><span class="co"># 2 [1.1]official|[2.1]nickname</span></span></code></pre></div>
+<p>After collapsing the given names, we can melt the table to split
+apart the official and the nickname:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>df2_molten <span class="ot">&lt;-</span> <span class="fu">fhir_melt</span>(<span class="at">indexed_data_frame =</span>  df2, </span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a>                        <span class="at">brackets =</span> brackets, </span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a>                        <span class="at">sep =</span> sep, </span>
+<span id="cb39-4"><a href="#cb39-4" tabindex="-1"></a>                        <span class="at">columns =</span> <span class="fu">fhir_common_columns</span>(df2,<span class="st">&quot;name&quot;</span>),</span>
+<span id="cb39-5"><a href="#cb39-5" tabindex="-1"></a>                        <span class="at">all_columns =</span> <span class="cn">TRUE</span></span>
+<span id="cb39-6"><a href="#cb39-6" tabindex="-1"></a>                        )</span>
+<span id="cb39-7"><a href="#cb39-7" tabindex="-1"></a>df2_molten</span>
+<span id="cb39-8"><a href="#cb39-8" tabindex="-1"></a><span class="co">#       id name.family         name.given    name.use resource_identifier</span></span>
+<span id="cb39-9"><a href="#cb39-9" tabindex="-1"></a><span class="co"># 1 [1]id1    [1]Smith    [1]Marie Luise  [1]official                   1</span></span>
+<span id="cb39-10"><a href="#cb39-10" tabindex="-1"></a><span class="co"># 2 [1]id1    [1]Baker [1]Lea Sophie Anna [1]nickname                   1</span></span>
+<span id="cb39-11"><a href="#cb39-11" tabindex="-1"></a><span class="co"># 3 [1]id2    [1]Brown            [1]Max  [1]official                   2</span></span>
+<span id="cb39-12"><a href="#cb39-12" tabindex="-1"></a><span class="co"># 4 [1]id2    [1]Jones      [1]Anton John [1]nickname                   2</span></span></code></pre></div>
+<p>And finish off by removing the indices:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">fhir_rm_indices</span>(df2_molten, <span class="at">brackets =</span> brackets)</span>
+<span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a><span class="co">#    id name.family      name.given name.use resource_identifier</span></span>
+<span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a><span class="co"># 1 id1       Smith    Marie Luise  official                   1</span></span>
+<span id="cb40-4"><a href="#cb40-4" tabindex="-1"></a><span class="co"># 2 id1       Baker Lea Sophie Anna nickname                   1</span></span>
+<span id="cb40-5"><a href="#cb40-5" tabindex="-1"></a><span class="co"># 3 id2       Brown            Max  official                   2</span></span>
+<span id="cb40-6"><a href="#cb40-6" tabindex="-1"></a><span class="co"># 4 id2       Jones      Anton John nickname                   2</span></span></code></pre></div>
 </div>
 </div>
 

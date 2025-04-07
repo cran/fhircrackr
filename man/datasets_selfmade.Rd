@@ -7,8 +7,17 @@
 \alias{example_bundles3}
 \alias{example_bundles4}
 \alias{example_bundles5}
+\alias{example_bundles6}
+\alias{example_bundles7}
+\alias{example_bundles_empty}
 \title{Toy example bundles for multiple entries}
 \format{
+An object of class \code{fhir_bundle_list} of length 1.
+
+An object of class \code{fhir_bundle_list} of length 1.
+
+An object of class \code{fhir_bundle_list} of length 1.
+
 An object of class \code{fhir_bundle_list} of length 1.
 
 An object of class \code{fhir_bundle_list} of length 1.
@@ -354,6 +363,117 @@ An object of class \code{fhir_bundle_list} of length 1.
 </Bundle>"
 
 }\if{html}{\out{</div>}}
+
+\strong{example_bundles6}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{"<Bundle>
+    <type value='searchset'/>
+    <entry>
+   	<resource>
+		<Patient>
+			<id value='id1'/>
+			<address>
+				<line value='Example Street 1'/>
+				<line value='c/o Baker'/>
+				<city value = 'London'/>
+				<use value = 'home'/>
+			</address>
+			<address>
+				<line value = 'Some firm'/>
+				<line value = 'Some Department'/>
+				<line value = 'Some Lane 1'/>
+				<city value = 'London'/>
+				<use value = 'work'/>
+			</address>
+		</Patient>
+	 </resource>
+  </entry>
+  <entry>
+	<resource>
+		<Patient>
+			<id value='id2'/>
+			<address>
+				<line value='Rue example 3'/>
+				<city value = 'Paris'/>
+				<use value = 'home'/>
+			</address>
+			<address>
+				<line value = 'La fabrique'/>
+				<line value = 'Avenue 33'/>
+				<city value = 'Paris'/>
+				<use value = 'work'/>
+			</address>
+		</Patient>
+	</resource>
+  </entry>
+</Bundle>"
+
+}\if{html}{\out{</div>}}
+
+\strong{example_bundles7}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{"<Bundle>
+    <type value='searchset'/>
+    <entry>
+   	<resource>
+		<Patient>
+			<id value='id1'/>
+			<name>
+				<given value='Marie'/>
+				<given value='Luise'/>
+				<family value = 'Smith'/>
+				<use value = 'official'/>
+			</name>
+			<name>
+				<given value = 'Lea'/>
+				<given value = 'Sophie'/>
+				<given value = 'Anna'/>
+				<family value = 'Baker'/>
+				<use value = 'nickname'/>
+			</name>
+		</Patient>
+	 </resource>
+  </entry>
+  <entry>
+	<resource>
+		<Patient>
+			<id value='id2'/>
+			<name>
+				<given value='Max'/>
+				<family value = 'Brown'/>
+				<use value = 'official'/>
+			</name>
+			<name>
+				<given value = 'Anton'/>
+				<given value = 'John'/>
+				<family value = 'Jones'/>
+				<use value = 'nickname'/>
+			</name>
+		</Patient>
+	</resource>
+  </entry>
+</Bundle>"
+
+}\if{html}{\out{</div>}}
+
+\strong{example_bundles_empty}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{<Bundle>
+    <id value="c9edcd82-092c-4f63-8c8d-fdfd03e38d64"/>
+    <meta>
+        <versionId value="23558aa5-aeba-4145-89a3-195bb6ec5401"/>
+        <lastUpdated value="2024-11-19T13:43:34.556+00:00"/>
+    </meta>
+    <type value="searchset"/>
+    <timestamp value="2024-11-19T13:43:34.556+00:00"/>
+    <total value="0"/>
+    <link>
+        <relation value="self"/>
+        <url value="https://server.fire.ly/Patient?gender=bla&amp;_total=accurate&amp;_count=0&amp;_skip=0"/>
+    </link>
+</Bundle>
+
+}\if{html}{\out{</div>}}
 }
 \usage{
 example_bundles1
@@ -365,6 +485,12 @@ example_bundles3
 example_bundles4
 
 example_bundles5
+
+example_bundles6
+
+example_bundles7
+
+example_bundles_empty
 }
 \description{
 These data examples are bundles that contain very few, very simple resources
@@ -381,6 +507,12 @@ xml versions look.
 \code{example_bundles4} contains 1 bundle with 2 Medication resources, one of which has some \verb{@id} xml attributes
 
 \code{example_bundles5} contains 1 bundle with 2 Observation resources.
+
+\code{example_bundles6} contains 1 bundle with 2 Patient resources.
+
+\code{example_bundles7} contains 1 bundle with 2 Patient resources.
+
+\code{example_bundles_empty} contains one empty bundle.
 }
 \examples{
 #unserialize xml objects before doing anything else with them!
@@ -393,5 +525,11 @@ fhir_unserialize(bundles = example_bundles3)
 fhir_unserialize(bundles = example_bundles4)
 #unserialize xml objects before doing anything else with them!
 fhir_unserialize(bundles = example_bundles5)
+#unserialize xml objects before doing anything else with them!
+fhir_unserialize(bundles = example_bundles6)
+#unserialize xml objects before doing anything else with them!
+fhir_unserialize(bundles = example_bundles7)
+#unserialize xml objects before doing anything else with them!
+fhir_unserialize(bundles = example_bundles_empty)
 }
 \keyword{datasets}

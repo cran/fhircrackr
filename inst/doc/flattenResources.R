@@ -282,8 +282,48 @@ molten_2
 fhir_rm_indices(indexed_data_frame = molten_2, brackets = c("[", "]"))
 
 ## -----------------------------------------------------------------------------
+fhir_melt_all(indexed_data_frame = df2, brackets = c("[", "]"), sep = " | ")
+
+## -----------------------------------------------------------------------------
 fhir_cast(df2, brackets = c("[", "]"), sep = " | ", verbose = 0)
 
 ## ----include=F----------------------------------------------------------------
 file.remove(paste0(temp_dir, "/design.xml"))
+
+## -----------------------------------------------------------------------------
+#unserialize example
+bundles <- fhir_unserialize(bundles = example_bundles7)
+
+#Define sep and brackets
+sep <- "|"
+brackets <- c("[", "]")
+
+#crack fhir resources
+table_desc <- fhir_table_description(
+    resource = "Patient",
+    brackets = brackets,
+    sep = sep
+)
+
+df <- fhir_crack(bundles = bundles, design = table_desc, verbose = 0)
+df
+
+## -----------------------------------------------------------------------------
+#name.given elements from the same name (i.e. the official vs. the nickname) 
+#should be collapsed
+
+df2 <- fhir_collapse(df, columns = "name.given", sep = sep, brackets = brackets)
+df2
+
+## -----------------------------------------------------------------------------
+df2_molten <- fhir_melt(indexed_data_frame =  df2, 
+						brackets = brackets, 
+						sep = sep, 
+						columns = fhir_common_columns(df2,"name"),
+						all_columns = TRUE
+						)
+df2_molten
+
+## -----------------------------------------------------------------------------
+fhir_rm_indices(df2_molten, brackets = brackets)
 
